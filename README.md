@@ -13,7 +13,30 @@ Web system for particulars or families. It helps them manage and track their med
 - [License](#license)
 
 ## Status
-TBA
+![Project version][badge-repo-version]
+[![Code Coverage][badge-code-coverage]][link-code-coverage]
+[![Quality Gate Status][badge-soundcloud-quality]][link-soundcloud-status]
+[![Maintainability Rating][badge-soundcloud-maintanibility]][link-soundcloud-status]
+[![Security Rating][badge-soundcloud-security]][link-soundcloud-status]
+[![Technical Debt][badge-soundcloud-tech-debt]][link-soundcloud-status]
+[![Known Vulnerabilities][badge-snyk-status]][link-snyk-status]
+![GitHub Repo stars][badge-github-repo-stars]
+![GitHub commit activity][badge-github-commits]
+![GitHub last commit][badge-github-last-commit]
+
+[badge-repo-version]: https://img.shields.io/github/package-json/v/nicolasomar/meds-warning?label=version&logo=npm&color=success
+[badge-code-coverage]: https://img.shields.io/codecov/c/github/nicolasomar/meds-warning?label=coverage&logo=codecov
+[link-code-coverage]: https://app.codecov.io/gh/NicolasOmar/meds-warning
+[badge-soundcloud-quality]: https://sonarcloud.io/api/project_badges/measure?project=NicolasOmar_meds-warning&metric=alert_status
+[badge-soundcloud-maintanibility]: https://sonarcloud.io/api/project_badges/measure?project=NicolasOmar_meds-warning&metric=sqale_rating
+[badge-soundcloud-security]: https://sonarcloud.io/api/project_badges/measure?project=NicolasOmar_meds-warning&metric=security_rating
+[badge-soundcloud-tech-debt]: https://sonarcloud.io/api/project_badges/measure?project=NicolasOmar_meds-warning&metric=sqale_index
+[link-soundcloud-status]: https://sonarcloud.io/summary/new_code?id=NicolasOmar_meds-warning
+[badge-snyk-status]: https://snyk.io/test/github/nicolasomar/meds-warning/badge.svg
+[link-snyk-status]: https://snyk.io/test/github/nicolasomar/meds-warning
+[badge-github-repo-stars]: https://img.shields.io/github/stars/nicolasomar/meds-warning?label=stars&logo=github&labelColor=535353&style=flat
+[badge-github-commits]: https://img.shields.io/github/commit-activity/m/nicolasomar/meds-warning?logo=github
+[badge-github-last-commit]: https://img.shields.io/github/last-commit/nicolasomar/meds-warning?logo=github
 
 ## Dependencies
 TBA

@@ -13,13 +13,27 @@
 - **Path Alias**: `@/*` resolves to root directory (configured in [tsconfig.json](tsconfig.json))
 
 ## Development Workflow
-
+### Building and Running
 ```bash
 npm start        # Start development server (http://localhost:3000)
 npm run build      # Build for production
 npm run start:prod # Build and run production server
 npm run lint       # Run ESLint checks
 ```
+
+### Testing
+- Tests are written using Vitest. To run all tests:
+  ```bash
+  npm test
+  ```
+- To run the tests with coverage report:
+  ```bash
+  npm run test:ci
+  ```
+- To run specific tests for `App` and `AppWrapper` components, use the predefined task:
+  ```bash
+  npm test src/components/App/index.test.tsx src/components/AppWrapper/index.test.tsx
+  ```
 
 The dev server auto-reloads on file changes. TypeScript strict mode ensures type safety.
 
