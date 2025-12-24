@@ -1,12 +1,30 @@
 {
   "name": "meds-warning",
   "version": "0.1.0",
-  "private": true,
+  "description": "A react-based web application for daily activity log of family pets",
+  "author": "Nicolás Omar González Passerino",
+  "license": "MIT",
+  "private": false,
+  "homepage": "https://meds-warning-j2hqm1kak.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NicolasOmar/meds-warning.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NicolasOmar/meds-warning/issues"
+  },
   "scripts": {
     "start": "next dev",
-    "build": "next build",
     "start:prod": "npm run build && next start",
-    "lint": "eslint"
+    "build": "tsc -b && next build",
+    "test": "vitest",
+    "test:ci": "npm run test -- --coverage",
+    "lint": "eslint",
+    "prettier": "prettier app/**/*.tsx --check",
+    "prettier:fix": "prettier app/**/*.tsx --write",
+    "lint-staged": "lint-staged -v",
+    "update": "ncu -i --format group --doctor --doctorTest update:doctor",
+    "update:doctor": "npm run prettier && npm run lint && npm run build && npm run test"
   },
   "dependencies": {
     "next": "16.1.1",
@@ -15,12 +33,28 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
+    "@testing-library/dom": "^10.4.1",
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
     "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
+    "@types/react": "^19.2.7",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.2",
+    "@vitest/coverage-v8": "^4.0.16",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
+    "jsdom": "^27.3.0",
+    "lint-staged": "^16.2.7",
+    "npm-check-updates": "^19.2.0",
+    "prettier": "^3.7.4",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^4.0.16"
+  },
+  "lint-staged": {
+    "app/**/*.(ts|tsx)": [
+      "prettier --write",
+      "eslint"
+    ]
   }
 }
