@@ -16,7 +16,9 @@
   "scripts": {
     "start": "next dev",
     "start:prod": "npm run build && next start",
-    "build": "tsc -b && next build",
+    "compile": "tsc -b",
+    "build": "npm run compile && next build",
+    "build:db": "npm run compile && prisma migrate dev --name init && prisma generate",
     "test": "vitest",
     "test:ci": "npm run test -- --coverage",
     "lint": "eslint",
@@ -27,7 +29,10 @@
     "update:doctor": "npm run prettier && npm run lint && npm run build && npm run test"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^7.2.0",
+    "@prisma/client": "^7.2.0",
     "next": "16.1.1",
+    "pg": "^8.16.3",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
@@ -36,7 +41,8 @@
     "@testing-library/dom": "^10.4.1",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
-    "@types/node": "^20",
+    "@types/node": "^20.19.27",
+    "@types/pg": "^8.16.0",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.2",
@@ -47,6 +53,7 @@
     "lint-staged": "^16.2.7",
     "npm-check-updates": "^19.2.0",
     "prettier": "^3.7.4",
+    "prisma": "^7.2.0",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.0.16"
