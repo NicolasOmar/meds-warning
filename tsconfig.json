@@ -20,7 +20,8 @@
       }
     ],
     "paths": {
-      "@prisma/*": ["./prisma/*"]
+      "@components/*": ["./app/components/*"],
+      "@prisma/*": ["./prisma/*"],
     }
   },
   "include": [
