@@ -2,6 +2,7 @@
 
 import { SignUpActionState } from 'ts/forms'
 import { signUpFormSchema } from './schemas'
+import { prisma } from '@prisma/index'
 
 export async function subscribeUserForm(
   _: SignUpActionState,
@@ -23,10 +24,30 @@ export async function subscribeUserForm(
     }
   }
 
-  // Handle Success (e.g., save to DB)
-  // await db.subscribe(validatedFields.data.email)
+  const userAlreadyCreated = await prisma.user.findUnique({
+    where: { email: validatedFields.data.email as string }
+  })
+  
+  if (userAlreadyCreated === null) {
+    await prisma.user.create({
+      data: { email: validatedFields.data.email as string }
+    })
+
+    await prisma.userForm.create({
+      data: {
+        name: validatedFields.data.name as string,
+        lastName: validatedFields.data.lastName as string,
+        likedMovie: validatedFields.data.likedMovie as string,
+        email: validatedFields.data.email as string
+      }
+    })
+
+    return {
+      message: `You have been subscribed successfully with your email [${validatedFields.data.email}]!`
+    }
+  }
 
   return {
-    message: 'You have been subscribed successfully!'
+    message: `Sorry, your email [${validatedFields.data.email}] has been already subscribed!`
   }
 }
