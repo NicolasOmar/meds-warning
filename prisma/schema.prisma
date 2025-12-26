@@ -14,17 +14,15 @@ datasource db {
 }
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+  email String  @id @unique
+  form UserForm[]
 }
 
-model Post {
+model UserForm {
   id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
-  authorId  Int
+  name      String
+  lastName  String?
+  likedMovie String?
+  email     String
+  user      User    @relation(fields: [email], references: [email])
 }
