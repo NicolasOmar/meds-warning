@@ -23,16 +23,22 @@
       }
     ],
     "paths": {
-      "@components/*": ["app/components/*"],
+      "@actions/*": ["actions/*"],
+      "@components/*": ["components/*"],
       "@prisma/*": ["prisma/*"],
+      "@ts/*": ["ts/*"]
     }
   },
   "include": [
-    "app/**/*.ts",
+    "actions/**/*.ts",
     "app/**/*.tsx",
+    "components/**/*.tsx",
+    "components/**/*.ts",
+    "prisma/**/*.ts",
+    "ts/**/*.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "next-env.d.ts"
+    "next-env.d.ts",
   ],
   "exclude": ["node_modules"]
 }

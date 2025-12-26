@@ -1,8 +1,9 @@
 'use server'
 
-import { SignUpActionState, signUpFormSchema } from './things'
+import { SignUpActionState } from 'ts/forms'
+import { signUpFormSchema } from './schemas'
 
-export async function subscribe(
+export async function subscribeUserForm(
   _: SignUpActionState,
   formData: FormData
 ): Promise<SignUpActionState> {

@@ -12,7 +12,7 @@ if [ -z "$COMPONENT_NAME" ]; then
 fi
 
 # Define the component folder path
-COMPONENT_DIR="./app/components/$COMPONENT_NAME"
+COMPONENT_DIR="./components/$COMPONENT_NAME"
 
 # Check if component already exists
 if [ -d "$COMPONENT_DIR" ]; then
