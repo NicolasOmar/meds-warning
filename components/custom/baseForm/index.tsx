@@ -1,11 +1,14 @@
 'use client'
 
 import { FC, useActionState } from 'react'
+// ACTIONS
 import { subscribeUserForm } from '@actions/index'
-import { SignUpActionState } from 'ts/forms'
+// COMPONENTS
 import { FieldGroup, FieldLegend, FieldSet } from '@base-components/field'
-import CustomField from '@custom-components/customField'
 import { Button } from '@base-components/button'
+import CustomField from '@custom-components/customField'
+// TYPES
+import { SignUpActionState } from 'ts/forms'
 
 const initialState: SignUpActionState = {
   errors: {}
@@ -48,20 +51,20 @@ const UserForm: FC = () => {
         <FieldSet>
           <FieldLegend>Create an user</FieldLegend>
 
-          {
-            Object.values(userFormStructure).map(({ name, label, type, placeholder }) => (
-              <CustomField
-                key={name}
-                name={name}
-                label={label}
-                type={type}
-                placeholder={placeholder}
-              />
-            ))
-          }
-          
+          {Object.values(userFormStructure).map(({ name, label, type, placeholder }) => (
+            <CustomField
+              key={name}
+              name={name}
+              label={label}
+              type={type}
+              placeholder={placeholder}
+            />
+          ))}
+
           {/* Display Error for Email */}
-          {state.errors?.email ? <p className="text-red-500 text-sm">{state.errors.email[0]}</p> : null}
+          {state.errors?.email ? (
+            <p className="text-red-500 text-sm">{state.errors.email[0]}</p>
+          ) : null}
         </FieldSet>
       </FieldGroup>
 

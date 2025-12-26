@@ -1,7 +1,19 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
+// COMPONENTS
+import { Item, ItemContent } from '@base-components/item'
+import { ButtonGroup } from '@base-components/button-group'
+import { Button } from '@base-components/button'
+// STYLES
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
-import { Item, ItemContent } from '@base-components/item'
+
+enum ROUTES {
+  HOME = '/',
+  CREATE = '/create',
+  UPDATE = '/update',
+  FIND = '/find'
+}
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -26,6 +38,24 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased grid grid-cols-3`}>
+        <header className="m-4 col-span-full justify-self-center">
+          <ButtonGroup>
+            {Object.keys(ROUTES).map((routeKey, routeI) => {
+              const route = ROUTES[routeKey as keyof typeof ROUTES]
+
+              return routeI !== 0 ? (
+                <Button key={routeKey}>
+                  <Link
+                    href={route}
+                    className="text-2xl font-medium text-white-600 hover:underline"
+                  >
+                    Go to {routeKey}
+                  </Link>
+                </Button>
+              ) : null
+            })}
+          </ButtonGroup>
+        </header>
         <section className="col-start-2">
           <Item>
             <ItemContent>{children}</ItemContent>

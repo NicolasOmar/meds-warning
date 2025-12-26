@@ -4,7 +4,7 @@
 # Usage: ./create-component.sh (interactive prompt for component name)
 
 # Ask user for component name
-read -p "📝 Please, enter the component name: " COMPONENT_NAME
+read -p "Please, enter the component name: " COMPONENT_NAME
 
 if [ -z "$COMPONENT_NAME" ]; then
   echo "Sorry, the provided component name is empty. Please try again."
@@ -20,15 +20,9 @@ if [ -d "$COMPONENT_DIR" ]; then
 fi
 
 # Run the shadcn add command
-if npx shadcn@latest add "$COMPONENT_NAME" -p "$COMPONENT_DIR"; then
+if npx shadcn@latest add "$COMPONENT_NAME"; then
   # Rename the component file to index.tsx
-  COMPONENT_FILE="$COMPONENT_DIR/$COMPONENT_NAME.tsx"
-  if [ -f "$COMPONENT_FILE" ]; then
-    mv "$COMPONENT_FILE" "$COMPONENT_DIR/index.tsx"
-    echo "The component [$COMPONENT_NAME] has been successfully created in '$COMPONENT_DIR' and renamed to [index.tsx]"
-  else
-    echo "The component [$COMPONENT_NAME] has been successfully created in '$COMPONENT_DIR'"
-  fi
+  echo "The component [$COMPONENT_NAME] has been successfully created in '$COMPONENT_DIR'"
 else
   echo "Error trying to create component $COMPONENT_NAME"
   exit 1

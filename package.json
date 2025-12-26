@@ -19,7 +19,7 @@
     "compile": "tsc -b",
     "component": "bash component.sh",
     "build": "npm run compile && next build",
-    "build:db": "npm run compile && prisma migrate dev --name init && prisma generate",
+    "build:db": "npm run compile && prisma generate",
     "test": "vitest",
     "test:ci": "npm run test -- --coverage",
     "lint": "eslint",
@@ -69,7 +69,7 @@
     "vitest": "^4.0.16"
   },
   "lint-staged": {
-    "app/**/*.(ts|tsx)": [
+    "(actions|app|components|prisma|ts)/**/*.(ts|tsx)": [
       "prettier --write",
       "eslint"
     ]

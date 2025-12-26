@@ -24,9 +24,10 @@
     ],
     "paths": {
       "@actions/*": ["actions/*"],
-      "@base-components/*": ["components/base/*"],
+      "@base-components/*": ["components/base/ui/*"],
       "@custom-components/*": ["components/custom/*"],
       "@prisma/*": ["prisma/*"],
+      "@shadcn/*": ["components/base/*"],
       "@ts/*": ["ts/*"]
     }
   },

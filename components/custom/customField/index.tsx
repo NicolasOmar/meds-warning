@@ -1,6 +1,7 @@
-import { FC } from "react";
-import { Field, FieldLabel } from "@base-components/field";
-import { Input } from "@base-components/input";
+import { FC } from 'react'
+// COMPONENTS
+import { Field, FieldLabel } from '@base-components/field'
+import { Input } from '@base-components/input'
 
 interface CustomFieldProps {
   label: string
@@ -12,18 +13,10 @@ interface CustomFieldProps {
 const CustomField: FC<CustomFieldProps> = ({ label, name, type, placeholder }) => {
   return (
     <Field>
-      <FieldLabel htmlFor={name}>
-        {label}
-      </FieldLabel>
-      <Input
-        id={name}
-        name={name}
-        placeholder={placeholder}
-        type={type}
-        required
-      />
+      <FieldLabel htmlFor={name}>{label}</FieldLabel>
+      <Input id={name} name={name} placeholder={placeholder} type={type} required />
     </Field>
   )
 }
 
-export default CustomField;
+export default CustomField
