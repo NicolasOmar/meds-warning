@@ -24,7 +24,8 @@
     ],
     "paths": {
       "@actions/*": ["actions/*"],
-      "@components/*": ["components/*"],
+      "@base-components/*": ["components/base/*"],
+      "@custom-components/*": ["components/custom/*"],
       "@prisma/*": ["prisma/*"],
       "@ts/*": ["ts/*"]
     }

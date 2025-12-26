@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { Field, FieldLabel } from "@components/field";
-import { Input } from "@components/input";
+import { Field, FieldLabel } from "@base-components/field";
+import { Input } from "@base-components/input";
 
 interface CustomFieldProps {
   label: string

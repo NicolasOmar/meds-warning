@@ -3,9 +3,9 @@
 import { FC, useActionState } from 'react'
 import { subscribeUserForm } from '@actions/index'
 import { SignUpActionState } from 'ts/forms'
-import { FieldGroup, FieldLegend, FieldSet } from '@components/field'
-import CustomField from '@components/customField'
-import { Button } from '@components/button'
+import { FieldGroup, FieldLegend, FieldSet } from '@base-components/field'
+import CustomField from '@custom-components/customField'
+import { Button } from '@base-components/button'
 
 const initialState: SignUpActionState = {
   errors: {}

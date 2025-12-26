@@ -13,11 +13,11 @@ export default function Home() {
       <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
         {Object.values(ROUTES).map((route, routeI) => {
           return routeI !== 0 ? (
-            <div key={route} className="mb-4">
+            <section key={route} className="mb-4">
               <Link href={route} className="text-2xl font-medium text-blue-600 hover:underline">
                 Go to {route}
               </Link>
-            </div>
+            </section>
           ) : null
         })}
       </main>
