@@ -18,6 +18,7 @@ export async function subscribeUserForm(
 
   // Handle Failure
   if (!validatedFields.success) {
+    console.warn(validatedFields.error.flatten().fieldErrors)
     return {
       errors: validatedFields.error.flatten().fieldErrors,
       message: 'Missing Fields. Failed to Subscribe.'
@@ -27,7 +28,7 @@ export async function subscribeUserForm(
   const userAlreadyCreated = await prisma.user.findUnique({
     where: { email: validatedFields.data.email as string }
   })
-  
+
   if (userAlreadyCreated === null) {
     await prisma.user.create({
       data: { email: validatedFields.data.email as string }
@@ -49,5 +50,26 @@ export async function subscribeUserForm(
 
   return {
     message: `Sorry, your email [${validatedFields.data.email}] has been already subscribed!`
+  }
+}
+
+export async function subscribeFindUserForm(
+  _: SignUpActionState,
+  formData: FormData
+): Promise<SignUpActionState> {
+  const email = formData.get('search') as string
+
+  const userFound = await prisma.userForm.findFirst({
+    where: { email: email }
+  })
+
+  if (userFound) {
+    return {
+      message: `User found: Name - ${userFound.name}, Last Name - ${userFound.lastName}, Liked Movie - ${userFound.likedMovie}, Email - ${userFound.email}`
+    }
+  } else {
+    return {
+      message: `No user found with the email [${email}].`
+    }
   }
 }

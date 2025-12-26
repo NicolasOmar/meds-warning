@@ -7,14 +7,15 @@ interface CustomFieldProps {
   label: string
   name: string
   type: string
+  value?: string
   placeholder?: string
 }
 
-const CustomField: FC<CustomFieldProps> = ({ label, name, type, placeholder }) => {
+const CustomField: FC<CustomFieldProps> = ({ label, name, type, placeholder, value }) => {
   return (
     <Field>
       <FieldLabel htmlFor={name}>{label}</FieldLabel>
-      <Input id={name} name={name} placeholder={placeholder} type={type} required />
+      <Input id={name} name={name} placeholder={placeholder} type={type} value={value} required />
     </Field>
   )
 }

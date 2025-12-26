@@ -1,7 +1,7 @@
 import { FC } from 'react'
 // COMPONENTS
-import UserForm from '@custom-components/baseForm'
+import UserForm from '@custom-components/UserForm'
 
-const Home: FC = () => <UserForm />
+const CreateUserPage: FC = () => <UserForm />
 
-export default Home
+export default CreateUserPage

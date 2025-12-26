@@ -23,11 +23,12 @@
     "test": "vitest",
     "test:ci": "npm run test -- --coverage",
     "lint": "eslint",
-    "prettier": "prettier app/**/*.tsx --check",
-    "prettier:fix": "prettier app/**/*.tsx --write",
+    "prettier": "prettier {actions,prisma,ts}/**/*.ts {app,components}/**/*.tsx",
+    "prettier:check": "npm run prettier -- --check",
+    "prettier:fix": "npm run prettier -- --write",
     "lint-staged": "lint-staged -v",
     "update": "ncu -i --format group --doctor --doctorTest 'npm run update:doctor'",
-    "update:doctor": "npm run prettier && npm run lint && npm run build && npm run build:db && npm run test"
+    "update:doctor": "npm run prettier:check && npm run lint && npm run build && npm run build:db && npm run test"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.2.0",
