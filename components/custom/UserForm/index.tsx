@@ -6,7 +6,7 @@ import { subscribeUserForm } from '@actions/index'
 // COMPONENTS
 import { FieldGroup, FieldLegend, FieldSet } from '@base-components/field'
 import { Button } from '@base-components/button'
-import CustomField from '@custom-components/TestCustomField'
+import CustomField from '@custom-components/CustomField'
 // TYPES
 import { SignUpActionState } from 'ts/forms'
 
