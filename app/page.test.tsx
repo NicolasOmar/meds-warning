@@ -4,26 +4,21 @@ import '@testing-library/jest-dom'
 import Home from './page'
 
 describe('Home Component', () => {
-  test('renders the main heading', () => {
+  test('renders the welcome message', () => {
     render(<Home />)
-    const heading = screen.getByRole('heading', {
-      name: /to get started, edit the page.tsx file/i
-    })
-    expect(heading).toBeInTheDocument()
+    const welcome = screen.getByText('Welcome to this test')
+    expect(welcome).toBeInTheDocument()
   })
 
-  test('renders the description text', () => {
-    render(<Home />)
-    const description = screen.getByText(/looking for a starting point/i)
-    expect(description).toBeInTheDocument()
+  test('renders nested sections', () => {
+    const { container } = render(<Home />)
+    const sections = container.querySelectorAll('section')
+    expect(sections.length).toBeGreaterThan(0)
   })
 
-  test('renders navigation links', () => {
+  test('has correct styling classes', () => {
     render(<Home />)
-    const deployLink = screen.getByRole('link', { name: /deploy now/i })
-    const docsLink = screen.getByRole('link', { name: /documentation/i })
-
-    expect(deployLink).toBeInTheDocument()
-    expect(docsLink).toBeInTheDocument()
+    const mainSection = screen.getByText('Welcome to this test').parentElement
+    expect(mainSection).toHaveClass('flex', 'min-h-screen')
   })
 })
