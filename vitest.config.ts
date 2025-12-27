@@ -14,6 +14,16 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './'),
+      '@actions': path.resolve(__dirname, './actions'),
+      '@base-components': path.resolve(__dirname, './components/base/ui'),
+      '@custom-components': path.resolve(__dirname, './components/custom'),
+      '@prisma/index': path.resolve(__dirname, './prisma/index.mock.ts'),
+      '@prisma': path.resolve(__dirname, './prisma'),
+      '@shadcn': path.resolve(__dirname, './components/base'),
+      '@ts': path.resolve(__dirname, './ts'),
     },
   },
+  define: {
+    'process.env': process.env
+  }
 });

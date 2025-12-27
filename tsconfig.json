@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
@@ -13,22 +14,33 @@
     "isolatedModules": true,
     "jsx": "react-jsx",
     "incremental": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
     "plugins": [
       {
         "name": "next"
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@actions/*": ["actions/*"],
+      "@base-components/*": ["components/base/ui/*"],
+      "@custom-components/*": ["components/custom/*"],
+      "@prisma/*": ["prisma/*"],
+      "@shadcn/*": ["components/base/*"],
+      "@ts/*": ["ts/*"]
     }
   },
   "include": [
-    "next-env.d.ts",
-    "**/*.ts",
-    "**/*.tsx",
+    "actions/**/*.ts",
+    "app/**/*.tsx",
+    "components/**/*.tsx",
+    "components/**/*.ts",
+    "prisma/**/*.ts",
+    "ts/**/*.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts"
+    "next-env.d.ts",
   ],
   "exclude": ["node_modules"]
 }
