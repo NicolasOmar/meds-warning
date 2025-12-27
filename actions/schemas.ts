@@ -6,3 +6,5 @@ export const signUpFormSchema = z.object({
   likedMovie: z.string().optional(),
   email: z.email('Invalid email address')
 })
+
+export type userFormType = z.infer<typeof signUpFormSchema>

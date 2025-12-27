@@ -4,7 +4,7 @@ import '@testing-library/jest-dom'
 
 // Mock the server action
 vi.mock('@actions/index', () => ({
-  subscribeUserForm: vi.fn()
+  createUserForm: vi.fn()
 }))
 
 // Mock Prisma to prevent import errors

@@ -6,7 +6,7 @@ import { signUpFormSchema } from './schemas'
 // TYPES & ENUMS
 import { FindUserActionState, SignUpActionState } from 'ts/forms'
 
-export async function subscribeUserForm(
+export async function createUserForm(
   _: SignUpActionState,
   formData: FormData
 ): Promise<SignUpActionState> {
@@ -52,6 +52,41 @@ export async function subscribeUserForm(
 
   return {
     message: `Sorry, your email [${validatedFields.data.email}] has been already subscribed!`
+  }
+}
+
+export async function updateUserForm(
+  _: SignUpActionState,
+  formData: FormData
+): Promise<SignUpActionState> {
+  // Validate
+  const validatedFields = signUpFormSchema.safeParse({
+    name: formData.get('name'),
+    lastName: formData.get('lastName'),
+    likedMovie: formData.get('likedMovie'),
+    email: formData.get('email')
+  })
+
+  // Handle Failure
+  if (!validatedFields.success) {
+    console.warn(validatedFields.error.flatten().fieldErrors)
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: 'Missing Fields. Failed to Update User.'
+    }
+  }
+
+  await prisma.userForm.updateMany({
+    where: { email: validatedFields.data.email as string },
+    data: {
+      name: validatedFields.data.name as string,
+      lastName: validatedFields.data.lastName as string,
+      likedMovie: validatedFields.data.likedMovie as string
+    }
+  })
+
+  return {
+    message: `User with email [${validatedFields.data.email}] has been updated successfully!`
   }
 }
 

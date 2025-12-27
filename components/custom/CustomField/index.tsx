@@ -15,7 +15,14 @@ const CustomField: FC<CustomFieldProps> = ({ label, name, type, placeholder, val
   return (
     <Field>
       <FieldLabel htmlFor={name}>{label}</FieldLabel>
-      <Input id={name} name={name} placeholder={placeholder} type={type} value={value} required />
+      <Input
+        id={name}
+        name={name}
+        placeholder={placeholder}
+        type={type}
+        defaultValue={value}
+        required
+      />
     </Field>
   )
 }
