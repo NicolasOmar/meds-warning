@@ -49,13 +49,13 @@ describe('UserForm Component', () => {
 
   test('renders the submit button with subscribe text', () => {
     render(<UserForm />)
-    const button = screen.getByRole('button', { name: /subscribe/i })
+    const button = screen.getByRole('button', { name: /Create User/i })
     expect(button).toBeInTheDocument()
   })
 
   test('submit button is not disabled initially', () => {
     render(<UserForm />)
-    const button = screen.getByRole('button', { name: /subscribe/i })
+    const button = screen.getByRole('button', { name: /Create User/i })
     expect(button).not.toBeDisabled()
   })
 

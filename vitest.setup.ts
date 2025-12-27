@@ -10,3 +10,11 @@ vi.mock('@prisma/client', () => ({
   }
 }), { virtual: true })
 
+// Mock the prisma index file
+vi.mock('@prisma/index', () => ({
+  prisma: {
+    userForm: {
+      findFirst: vi.fn()
+    }
+  }
+}), { virtual: true })
