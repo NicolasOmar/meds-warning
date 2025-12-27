@@ -7,7 +7,7 @@ import { subscribeFindUserForm } from '@actions/index'
 // COMPONENTS
 import { Button } from '@base-components/button'
 import { FieldGroup, FieldLegend, FieldSet } from '@base-components/field'
-import CustomField from '@custom-components/CustomField'
+import CustomField from '@custom-components/TestCustomField'
 // TYPES & ENUMS
 import { ROUTES } from '@ts/enums'
 
