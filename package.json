@@ -18,8 +18,8 @@
     "start:prod": "npm run build && next start",
     "compile": "tsc -b",
     "component": "bash component.sh",
-    "build": "npm run compile && next build",
-    "build:db": "npm run compile && prisma generate",
+    "build": "npm run build:db && npm run compile && next build",
+    "build:db": "prisma generate",
     "test": "vitest",
     "test:ci": "npm run test -- --coverage",
     "lint": "eslint",
@@ -28,7 +28,7 @@
     "prettier:fix": "npm run prettier -- --write",
     "lint-staged": "lint-staged -v",
     "update": "ncu -i --format group --doctor --doctorTest 'npm run update:doctor'",
-    "update:doctor": "npm run prettier:check && npm run lint && npm run build && npm run build:db && npm run test"
+    "update:doctor": "npm run prettier:check && npm run lint && npm run build && npm run test"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.2.0",

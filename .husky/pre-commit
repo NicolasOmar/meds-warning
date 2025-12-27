@@ -1,4 +1,3 @@
 npm run build
-npm run build:db
 npm run lint-staged
 git add prisma/migrations
