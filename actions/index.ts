@@ -1,8 +1,10 @@
 'use server'
-
-import { SignUpActionState } from 'ts/forms'
-import { signUpFormSchema } from './schemas'
+// CORE
 import { prisma } from '@prisma/index'
+// SCHEMAS
+import { signUpFormSchema } from './schemas'
+// TYPES & ENUMS
+import { FindUserActionState, SignUpActionState } from 'ts/forms'
 
 export async function subscribeUserForm(
   _: SignUpActionState,
@@ -54,9 +56,9 @@ export async function subscribeUserForm(
 }
 
 export async function subscribeFindUserForm(
-  _: SignUpActionState,
+  _: FindUserActionState,
   formData: FormData
-): Promise<SignUpActionState> {
+): Promise<FindUserActionState> {
   const email = formData.get('search') as string
 
   const userFound = await prisma.userForm.findFirst({
@@ -65,6 +67,7 @@ export async function subscribeFindUserForm(
 
   if (userFound) {
     return {
+      email: userFound.email,
       message: `User found: Name - ${userFound.name}, Last Name - ${userFound.lastName}, Liked Movie - ${userFound.likedMovie}, Email - ${userFound.email}`
     }
   } else {

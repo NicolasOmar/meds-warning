@@ -7,3 +7,8 @@ export type SignUpActionState = {
   }
   message?: string
 }
+
+export type FindUserActionState = {
+  email?: string
+  message?: string
+}
