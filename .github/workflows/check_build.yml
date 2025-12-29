@@ -18,7 +18,7 @@ jobs:
     - name: 3/6 | Install depedencies
       run: npm ci
     - name: 4/6 | Run code styling check script
-      run: npm run prettier
+      run: npm run prettier:check
     - name: 5/6 | Run static code quality check script
       run: npm run lint
     - name: 6/6 | Run build package script
