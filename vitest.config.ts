@@ -10,6 +10,15 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./vitest.setup.ts'],
+    coverage: {
+      include: [
+        'app/**/*.tsx',
+        'components/custom/**/*.tsx',
+        'actions/**/*.ts'
+      ],
+      reporter: ['html', 'lcov'],
+      reportsDirectory: './coverage'
+    }
   },
   resolve: {
     alias: {
