@@ -25,6 +25,7 @@
     "paths": {
       "@actions/*": ["actions/*"],
       "@base-components/*": ["components/base/ui/*"],
+      "@base-components-lib/*": ["components/base/lib/*"],
       "@custom-components/*": ["components/custom/*"],
       "@prisma/*": ["prisma/*"],
       "@shadcn/*": ["components/base/*"],

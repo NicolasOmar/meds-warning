@@ -1,5 +1,7 @@
+// CORE
 import { FC } from 'react'
-import MedicineForm from '@custom-components/MedcineForm'
+// COMPONENTS
+import MedicineForm from '@custom-components/MedicineForm'
 
 export const MedicinePage: FC = () => <MedicineForm />
 

@@ -1,7 +1,10 @@
+// CORE
 import { FC } from 'react'
 // COMPONENTS
 import { FieldGroup, FieldLegend } from '@base-components/field'
 import CustomField from '@custom-components/CustomField'
+import CustomTextArea from '@custom-components/CustomTextArea'
+import DatePicker from '@custom-components/DatePicker'
 // LIBRARY
 import { MEDICINE_FORM_LABELS } from '@ts/texts'
 
@@ -27,7 +30,6 @@ const generateUserFormStructure = () => ({
   expirationDate: {
     name: 'expirationDate',
     label: MEDICINE_FORM_LABELS.EXPIRATION_DATE,
-    type: 'text',
     placeholder: MEDICINE_FORM_LABELS.EXPIRATION_DATE_PLACEHOLDER
   },
   usedFor: {
@@ -45,7 +47,6 @@ const generateUserFormStructure = () => ({
   comments: {
     name: 'comments',
     label: MEDICINE_FORM_LABELS.COMMENTS,
-    type: 'text',
     placeholder: MEDICINE_FORM_LABELS.COMMENTS_PLACEHOLDER
   }
 })
@@ -58,9 +59,13 @@ const MedicineForm: FC = () => {
       <FieldGroup>
         <FieldLegend>Medicine Information</FieldLegend>
 
-        {Object.values(medicineFormStructure).map(({ name, label, type, placeholder }) => (
-          <CustomField key={name} name={name} label={label} type={type} placeholder={placeholder} />
-        ))}
+        <CustomField {...medicineFormStructure.name} />
+        <CustomField {...medicineFormStructure.laboratory} />
+        <CustomField {...medicineFormStructure.presentation} />
+        <DatePicker {...medicineFormStructure.expirationDate} />
+        <CustomField {...medicineFormStructure.usedFor} />
+        <CustomField {...medicineFormStructure.sideEffects} />
+        <CustomTextArea {...medicineFormStructure.comments} />
       </FieldGroup>
     </form>
   )
