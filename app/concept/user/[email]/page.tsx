@@ -6,7 +6,7 @@ import { prisma } from '@prisma/index'
 // COMPONENTS
 import UserForm from '@custom-components/UserForm'
 // TYPES
-import { userFormType } from '@actions/schemas'
+import { UserFormType } from '@schemas/index'
 
 interface UpdateUserPageProps {
   params: Promise<{ email: string }>
@@ -29,7 +29,7 @@ const UpdateUserPage: FC<UpdateUserPageProps> = async ({ params }) => {
     notFound()
   }
 
-  return <UserForm userUpdate={userResponse as userFormType} />
+  return <UserForm userUpdate={userResponse as UserFormType} />
 }
 
 export default UpdateUserPage

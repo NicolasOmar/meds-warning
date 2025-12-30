@@ -37,9 +37,7 @@ function isValidDate(date: Date | undefined) {
 
 const DatePicker: FC<DatePickerProps> = ({ label, name, value: propValue, placeholder }) => {
   const [open, setOpen] = useState(false)
-  const [date, setDate] = useState<Date | undefined>(
-    propValue ? new Date(propValue) : new Date('2025-06-01')
-  )
+  const [date, setDate] = useState<Date | undefined>(propValue ? new Date(propValue) : new Date())
   const [month, setMonth] = useState<Date | undefined>(date)
   const [value, setValue] = useState(formatDate(date))
 

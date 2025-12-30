@@ -1,13 +1,17 @@
-import { MedicineActionState } from '@ts/forms'
-import { medicineFormSchema } from './schemas'
+'use server'
+// CORE
 import { prisma } from '@prisma/index'
+// SCHEMAS
+import { MedicineSchema } from '@schemas/index'
+// LIBRARY
+import { MedicineActionState } from '@ts/forms'
 
-export async function createUserForm(
+export async function createMedicineAction(
   _: MedicineActionState,
   formData: FormData
 ): Promise<MedicineActionState> {
   // Validate
-  const validatedFields = medicineFormSchema.safeParse({
+  const validatedFields = MedicineSchema.safeParse({
     name: formData.get('name'),
     laboratory: formData.get('laboratory'),
     presentation: formData.get('presentation'),
@@ -16,6 +20,17 @@ export async function createUserForm(
     sideEffects: formData.get('sideEffects'),
     comments: formData.get('comments')
   })
+
+  console.warn(
+    validatedFields.error,
+    formData.get('name'),
+    formData.get('laboratory'),
+    formData.get('presentation'),
+    formData.get('expirationDate'),
+    formData.get('usedFor'),
+    formData.get('sideEffects'),
+    formData.get('comments')
+  )
 
   // Handle Failure
   if (!validatedFields.success) {
@@ -31,16 +46,16 @@ export async function createUserForm(
   })
 
   if (medicineAlreadyCreated === null) {
-    await prisma.medicine.create({
-      data: { name: validatedFields.data.name as string }
-    })
+    const expirationDate = validatedFields.data.expirationDate
+      ? new Date(validatedFields.data.expirationDate)
+      : new Date()
 
     await prisma.medicine.create({
       data: {
         name: validatedFields.data.name as string,
         laboratory: validatedFields.data.laboratory as string,
         presentation: validatedFields.data.presentation as string,
-        expirationDate: validatedFields.data.expirationDate as string,
+        expirationDate,
         usedFor: validatedFields.data.usedFor as string,
         sideEffects: validatedFields.data.sideEffects as string,
         comments: validatedFields.data.comments as string

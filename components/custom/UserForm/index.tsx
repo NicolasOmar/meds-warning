@@ -9,17 +9,17 @@ import { Button } from '@base-components/button'
 import CustomField from '@custom-components/CustomField'
 // TYPES
 import { SignUpActionState } from 'ts/forms'
-import { userFormType } from '@actions/schemas'
+import { UserFormType } from '@schemas/index'
 
 interface UserFormProps {
-  userUpdate?: userFormType
+  userUpdate?: UserFormType
 }
 
 const initialState: SignUpActionState = {
   errors: {}
 }
 
-const generateUserFormStructure = (userUpdate?: userFormType) => ({
+const generateUserFormStructure = (userUpdate?: UserFormType) => ({
   name: {
     name: 'name',
     label: 'Name',

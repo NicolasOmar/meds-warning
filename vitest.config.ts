@@ -28,6 +28,7 @@ export default defineConfig({
       '@custom-components': path.resolve(__dirname, './components/custom'),
       '@prisma/index': path.resolve(__dirname, './prisma/index.mock.ts'),
       '@prisma': path.resolve(__dirname, './prisma'),
+      '@schemas': path.resolve(__dirname, './schemas'),
       '@shadcn': path.resolve(__dirname, './components/base'),
       '@ts': path.resolve(__dirname, './ts'),
     },

@@ -2,8 +2,8 @@
 // CORE
 import { prisma } from '@prisma/index'
 // SCHEMAS
-import { signUpFormSchema } from './schemas'
-// TYPES & ENUMS
+import { UserFormSchema } from '@schemas/index'
+// LIBRARY
 import { FindUserActionState, SignUpActionState } from 'ts/forms'
 
 export async function createUserForm(
@@ -11,7 +11,7 @@ export async function createUserForm(
   formData: FormData
 ): Promise<SignUpActionState> {
   // Validate
-  const validatedFields = signUpFormSchema.safeParse({
+  const validatedFields = UserFormSchema.safeParse({
     name: formData.get('name'),
     lastName: formData.get('lastName'),
     likedMovie: formData.get('likedMovie'),
@@ -60,7 +60,7 @@ export async function updateUserForm(
   formData: FormData
 ): Promise<SignUpActionState> {
   // Validate
-  const validatedFields = signUpFormSchema.safeParse({
+  const validatedFields = UserFormSchema.safeParse({
     name: formData.get('name'),
     lastName: formData.get('lastName'),
     likedMovie: formData.get('likedMovie'),

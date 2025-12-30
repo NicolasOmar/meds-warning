@@ -1,4 +1,5 @@
 export enum MEDICINE_FORM_LABELS {
+  TITLE = 'Medicine Information',
   NAME = 'Name:',
   NAME_PLACEHOLDER = 'Paracetamol',
   LABORATORY = 'Laboratory:',
@@ -12,5 +13,6 @@ export enum MEDICINE_FORM_LABELS {
   SIDE_EFFECTS = 'Side Effects:',
   SIDE_EFFECTS_PLACEHOLDER = 'Nausea, dizziness',
   COMMENTS = 'Additional Comments:',
-  COMMENTS_PLACEHOLDER = 'Take with food'
+  COMMENTS_PLACEHOLDER = 'Take with food',
+  SUBMIT_BUTTON = 'Add Medicine'
 }

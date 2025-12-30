@@ -140,3 +140,4 @@ vite.config.ts.timestamp-*
 
 /generated
 .DS_Store
+/schemas/*.json

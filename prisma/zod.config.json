@@ -1,0 +1,22 @@
+{
+  "mode": "custom",
+  "useMultipleFiles": false,
+  "pureModels": true,
+  "variants": {
+    "pure": {
+      "enabled": true
+    },
+    "input": {
+      "enabled": false
+    },
+    "result": {
+      "enabled": false
+    }
+  },
+  "emit": {
+    "objects": false,
+    "crud": false,
+    "variants": false,
+    "enums": false
+  }
+}

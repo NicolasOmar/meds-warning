@@ -28,6 +28,7 @@
       "@base-components-lib/*": ["components/base/lib/*"],
       "@custom-components/*": ["components/custom/*"],
       "@prisma/*": ["prisma/*"],
+      "@schemas/*": ["schemas/*"],
       "@shadcn/*": ["components/base/*"],
       "@ts/*": ["ts/*"]
     }

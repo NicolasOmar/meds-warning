@@ -15,7 +15,7 @@ const CustomTextArea: FC<CustomTextAreaProps> = ({ label, name, value, placehold
   return (
     <section className="grid w-full gap-3">
       <Label htmlFor={name}>{label}</Label>
-      <Textarea placeholder={placeholder} id={name} value={value} />
+      <Textarea placeholder={placeholder} id={name} name={name} value={value} />
     </section>
   )
 }
