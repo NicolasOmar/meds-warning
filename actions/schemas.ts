@@ -8,3 +8,15 @@ export const signUpFormSchema = z.object({
 })
 
 export type userFormType = z.infer<typeof signUpFormSchema>
+
+export const medicineFormSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  laboratory: z.string().optional(),
+  presentation: z.string().optional(),
+  expirationDate: z.string().optional(),
+  usedFor: z.string().optional(),
+  sideEffects: z.string().optional(),
+  comments: z.string().optional()
+})
+
+export type MedicineFormType = z.infer<typeof medicineFormSchema>

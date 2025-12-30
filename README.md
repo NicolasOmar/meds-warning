@@ -39,11 +39,39 @@ Web system for particulars or families. It helps them manage and track their med
 [badge-github-last-commit]: https://img.shields.io/github/last-commit/nicolasomar/meds-warning?logo=github
 
 ## Dependencies
-TBA
+![nextjs dependency][badge-dependency-next]
+![react dependency][badge-dependency-react]
+![prisma dependency][badge-dependency-prisma]
+![postgres dependency][badge-dependency-postgres]
+![tailwind dependency][badge-dependency-tailwind]
+![zod dependency][badge-dependency-zod]
+![vitest dependency][badge-dependency-vitest]
+![react testing library dependency][badge-dependency-react-testing-library]
+![eslint dependency][badge-dependency-eslint]
+![prettier dependency][badge-dependency-prettier]
+![lint-staged dependency][badge-dependency-lint-staged]
+![husky dependency][badge-dependency-husky]
+![semantic-release dependency][badge-dependency-semantic-release]
+![commitlint dependency][badge-dependency-commitlint]
+
+[badge-dependency-next]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/next/main?logo=next.js
+[badge-dependency-react]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/react/main?logo=react
+[badge-dependency-tailwind]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/tailwindcss/main?logo=tailwindcss
+[badge-dependency-postgres]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/pg/main?logo=postgresql
+[badge-dependency-prisma]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/prisma/main?logo=prisma
+[badge-dependency-zod]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/zod/main?logo=zod
+[badge-dependency-vitest]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/vitest/main?logo=vitest
+[badge-dependency-react-testing-library]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/my-pets/dev/@testing-library/react/main?logo=testinglibrary
+[badge-dependency-eslint]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/eslint/main?logo=eslint
+[badge-dependency-prettier]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/prettier/main?logo=prettier
+[badge-dependency-lint-staged]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/lint-staged/main?logo=lint-staged
+[badge-dependency-husky]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/husky/main?logo=husky
+[badge-dependency-semantic-release]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/semantic-release/main?logo=semantic-release
+[badge-dependency-commitlint]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/@commitlint/cli/main?logo=commitlint
 
 ## What do I need?
 Before cloning this repo, I recommend installing the following software:
-- [Node](https://nodejs.org/en/download/) >=12.16.1 to install packages
+- [Node](https://nodejs.org/en/download/) >= `24.4.0` to install packages
 
 ## Setup
 After cloning the repo, install the node packages in the project's root file.

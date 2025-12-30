@@ -1,5 +1,6 @@
 export enum ROUTES {
   HOME = '/',
-  CREATE = '/user',
-  FIND = '/find'
+  CREATE_USER = '/concept/user',
+  FIND_USER = '/concept/find',
+  MEDICINE = '/medicine'
 }
