@@ -1,0 +1,10 @@
+model Medicine {
+  id              Int      @id @default(autoincrement())
+  name            String
+  laboratory      String?
+  presentation    String?
+  expirationDate  DateTime?
+  usedFor         String?
+  sideEffects     String?
+  comments        String?
+}

@@ -4,7 +4,7 @@
   "description": "A react-based web application for daily activity log of family pets",
   "author": "Nicolás Omar González Passerino",
   "license": "MIT",
-  "private": false,
+  "private": true,
   "homepage": "https://meds-warning-j2hqm1kak.vercel.app",
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
     "build": "npm run build:db && npm run compile && next build",
     "build:db": "prisma generate",
     "test": "vitest",
-    "test:ci": "npm run test -- --coverage",
+    "test:ci": "npm test -- --coverage",
     "semantic-release": "semantic-release",
     "lint": "eslint",
     "prettier": "prettier {actions,prisma,ts}/**/*.ts {app,components}/**/*.tsx",
@@ -48,6 +48,8 @@
     "zod": "^4.2.1"
   },
   "devDependencies": {
+    "@commitlint/cli": "^20.2.0",
+    "@commitlint/config-conventional": "^20.2.0",
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/commit-analyzer": "^13.0.1",
     "@semantic-release/exec": "^7.1.0",

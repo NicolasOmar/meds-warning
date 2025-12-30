@@ -1,0 +1,13 @@
+model User {
+  email String  @id @unique
+  form UserForm[]
+}
+
+model UserForm {
+  id        Int     @id @default(autoincrement())
+  name      String
+  lastName  String?
+  likedMovie String?
+  email     String
+  user      User    @relation(fields: [email], references: [email])
+}
