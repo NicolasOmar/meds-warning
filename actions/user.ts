@@ -2,9 +2,9 @@
 // CORE
 import { prisma } from '@prisma/index'
 // SCHEMAS
-import { UserFormSchema } from '@schemas/index'
+import { UserFormSchema } from '@ts/zod'
 // LIBRARY
-import { FindUserActionState, SignUpActionState } from 'ts/forms'
+import { FindUserActionState, SignUpActionState } from '@ts/states'
 
 export async function createUserForm(
   _: SignUpActionState,

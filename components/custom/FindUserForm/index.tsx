@@ -3,13 +3,13 @@
 import { FC, useActionState } from 'react'
 import { useRouter } from 'next/navigation'
 // ACTIONS
-import { subscribeFindUserForm } from '@actions/index'
+import { subscribeFindUserForm } from '@actions/user'
 // COMPONENTS
 import { Button } from '@base-components/button'
 import { FieldGroup, FieldLegend, FieldSet } from '@base-components/field'
 import CustomField from '@custom-components/CustomField'
 // TYPES & ENUMS
-import { ROUTES } from '@ts/enums'
+import { ROUTES } from '@constants/routes'
 
 const FindUserForm: FC = () => {
   const [state, formAction, isPending] = useActionState(subscribeFindUserForm, {})

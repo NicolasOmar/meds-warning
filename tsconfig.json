@@ -24,13 +24,13 @@
     ],
     "paths": {
       "@actions/*": ["actions/*"],
+      "@constants/*": ["lib/constants/*"],
       "@base-components/*": ["components/base/ui/*"],
       "@base-components-lib/*": ["components/base/lib/*"],
       "@custom-components/*": ["components/custom/*"],
       "@prisma/*": ["prisma/*"],
-      "@schemas/*": ["schemas/*"],
       "@shadcn/*": ["components/base/*"],
-      "@ts/*": ["ts/*"]
+      "@ts/*": ["lib/ts/*"]
     }
   },
   "include": [
@@ -39,10 +39,10 @@
     "components/**/*.tsx",
     "components/**/*.ts",
     "prisma/**/*.ts",
-    "ts/**/*.ts",
+    "lib/ts/**/*.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "next-env.d.ts",
+    "next-env.d.ts"
   ],
   "exclude": ["node_modules"]
 }

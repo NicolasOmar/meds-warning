@@ -5,7 +5,7 @@ import { Item, ItemContent } from '@base-components/item'
 import { ButtonGroup } from '@base-components/button-group'
 import { Button } from '@base-components/button'
 // CONSTANTS
-import { ROUTES_OBJS } from '@ts/constants'
+import { ROUTES_OBJS } from '@constants/routes'
 // STYLES
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'

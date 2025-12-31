@@ -2,14 +2,14 @@
 // CORE
 import { FC, useActionState } from 'react'
 // ACTIONS
-import { createUserForm, updateUserForm } from '@actions/index'
+import { createUserForm, updateUserForm } from '@actions/user'
 // COMPONENTS
 import { FieldGroup, FieldLegend, FieldSet } from '@base-components/field'
 import { Button } from '@base-components/button'
 import CustomField from '@custom-components/CustomField'
 // TYPES
-import { SignUpActionState } from 'ts/forms'
-import { UserFormType } from '@schemas/index'
+import { SignUpActionState } from '@ts/states'
+import { UserFormType } from '@ts/zod'
 
 interface UserFormProps {
   userUpdate?: UserFormType

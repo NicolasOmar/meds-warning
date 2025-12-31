@@ -2,7 +2,7 @@
 // CORE
 import { FC, useActionState } from 'react'
 // FORM
-import { createMedicineAction } from '@actions/medicineForm'
+import { createMedicineAction } from '@actions/medicine'
 // COMPONENTS
 import { FieldGroup, FieldLegend, FieldSet } from '@base-components/field'
 import { Button } from '@base-components/button'
@@ -10,7 +10,7 @@ import CustomField from '@custom-components/CustomField'
 import CustomTextArea from '@custom-components/CustomTextArea'
 import DatePicker from '@custom-components/DatePicker'
 // LIBRARY
-import { MEDICINE_FORM_LABELS } from '@ts/texts'
+import { MEDICINE_FORM_LABELS } from '@constants/texts'
 
 const generateUserFormStructure = () => ({
   name: {
@@ -64,13 +64,15 @@ const MedicineForm: FC = () => {
       <FieldGroup>
         <FieldSet>
           <FieldLegend>{MEDICINE_FORM_LABELS.TITLE}</FieldLegend>
-
-          <CustomField {...medicineFormStructure.name} />
-          <CustomField {...medicineFormStructure.laboratory} />
-          <CustomField {...medicineFormStructure.presentation} />
+          <CustomField {...medicineFormStructure.name} message={state.errors?.name} />
+          <CustomField {...medicineFormStructure.laboratory} message={state.errors?.laboratory} />
+          <CustomField
+            {...medicineFormStructure.presentation}
+            message={state.errors?.presentation}
+          />
           <DatePicker {...medicineFormStructure.expirationDate} />
-          <CustomField {...medicineFormStructure.usedFor} />
-          <CustomField {...medicineFormStructure.sideEffects} />
+          <CustomField {...medicineFormStructure.usedFor} message={state.errors?.usedFor} />
+          <CustomField {...medicineFormStructure.sideEffects} message={state.errors?.sideEffects} />
           <CustomTextArea {...medicineFormStructure.comments} />
         </FieldSet>
       </FieldGroup>

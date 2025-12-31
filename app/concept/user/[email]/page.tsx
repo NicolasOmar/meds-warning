@@ -6,7 +6,7 @@ import { prisma } from '@prisma/index'
 // COMPONENTS
 import UserForm from '@custom-components/UserForm'
 // TYPES
-import { UserFormType } from '@schemas/index'
+import { UserFormType } from '@ts/zod'
 
 interface UpdateUserPageProps {
   params: Promise<{ email: string }>
