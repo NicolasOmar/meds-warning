@@ -1,10 +1,10 @@
 model Medicine {
-  id              Int      @id @default(autoincrement())
-  name            String
-  laboratory      String?
-  presentation    String?
+  id              Int       @id @default(autoincrement())
+  name            String    @db.VarChar(50)
+  laboratory      String?   @db.VarChar(50)
+  presentation    String?   @db.VarChar(50)
   expirationDate  DateTime?
-  usedFor         String?
-  sideEffects     String?
-  comments        String?
+  usedFor         String?   @db.VarChar(75)
+  sideEffects     String?   @db.VarChar(100)
+  comments        String?   @db.VarChar(200)
 }

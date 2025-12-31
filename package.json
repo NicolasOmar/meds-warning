@@ -1,9 +1,9 @@
 {
   "name": "meds-warning",
   "version": "1.0.0",
-  "description": "A react-based web application for daily activity log of family pets",
+  "description": "A web system to help users manage and track their medication expiration dates and remind them to renew them",
   "author": "Nicolás Omar González Passerino",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "private": true,
   "homepage": "https://meds-warning-j2hqm1kak.vercel.app",
   "repository": {
@@ -17,14 +17,14 @@
     "start": "next dev",
     "start:prod": "npm run build && next start",
     "compile": "tsc -b",
-    "component": "bash component.sh",
+    "add:component": "bash component.sh",
     "build": "npm run build:db && npm run compile && next build",
     "build:db": "prisma generate",
     "test": "vitest",
     "test:ci": "npm test -- --coverage",
     "semantic-release": "semantic-release",
     "lint": "eslint",
-    "prettier": "prettier {actions,prisma,lib}/**/*.ts {app,components}/**/*.tsx",
+    "prettier": "prettier {actions,lib,prisma}/**/*.ts {app,components}/**/*.tsx",
     "prettier:check": "npm run prettier -- --check",
     "prettier:fix": "npm run prettier -- --write",
     "lint-staged": "lint-staged -v",
@@ -43,10 +43,12 @@
     "date-fns": "^4.1.0",
     "lucide-react": "^0.562.0",
     "next": "16.1.1",
+    "next-themes": "^0.4.6",
     "pg": "^8.16.3",
     "react": "19.2.3",
     "react-day-picker": "^9.13.0",
     "react-dom": "19.2.3",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.4.0",
     "zod": "^4.2.1"
   },
@@ -85,7 +87,7 @@
     "vitest": "^4.0.16"
   },
   "lint-staged": {
-    "(actions|app|components|prisma|ts)/**/*.(ts|tsx)": [
+    "(actions|app|components|lib|prisma)/**/*.(ts|tsx)": [
       "prettier --write",
       "eslint"
     ]

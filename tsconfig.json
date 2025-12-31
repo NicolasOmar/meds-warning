@@ -38,8 +38,8 @@
     "app/**/*.tsx",
     "components/**/*.tsx",
     "components/**/*.ts",
+    "lib/**/*.ts",
     "prisma/**/*.ts",
-    "lib/ts/**/*.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "next-env.d.ts"

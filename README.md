@@ -1,7 +1,8 @@
 # MedsWarning
-Web system for particulars or families. It helps them manage and track their medication expiration dates and reminds them to renew them.
+A web system to help users manage and track their medication expiration dates and remind them to renew them.
 
 ## Table of contents
+- [Purpose](#purpose)
 - [Status](#status)
 - [Dependencies](#dependencies)
 - [What do I need?](#what-do-i-need)
@@ -11,6 +12,13 @@ Web system for particulars or families. It helps them manage and track their med
 - [Branches and Environments](#branches-and-environments)
 - [Roadmap](#roadmap)
 - [License](#license)
+
+## Purpose
+After developing several React-based applications with a similar tooling stack, I wanted to expand my skills in several concepts (such as `server-side rendering`) and libraries (such as `zod`, `prisma`, and `shadcn`).
+
+Also, I wanted to unify this new stack into a tool, though for a common issue, the expiration date.
+
+The tool's objective is to <u>create notifications across several channels that warn the user which meds are about to expire</u> and avoid unpleasant situations (sometimes we need a pill for a headache, and if it is consumed after that date, its effect can be reduced to zero or provoke side effects).
 
 ## Status
 ![Project version][badge-repo-version]

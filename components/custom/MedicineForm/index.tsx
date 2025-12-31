@@ -1,6 +1,6 @@
 'use client'
 // CORE
-import { FC, useActionState } from 'react'
+import { FC, useActionState, useEffect } from 'react'
 // FORM
 import { createMedicineAction } from '@actions/medicine'
 // COMPONENTS
@@ -9,8 +9,9 @@ import { Button } from '@base-components/button'
 import CustomField from '@custom-components/CustomField'
 import CustomTextArea from '@custom-components/CustomTextArea'
 import DatePicker from '@custom-components/DatePicker'
+import { toast } from 'sonner'
 // LIBRARY
-import { MEDICINE_FORM_LABELS } from '@constants/texts'
+import { MEDICINE_FORM_LABELS } from '@constants/labels'
 
 const generateUserFormStructure = () => ({
   name: {
@@ -59,6 +60,12 @@ const MedicineForm: FC = () => {
   const medicineFormStructure = generateUserFormStructure()
   const [state, formAction, isPending] = useActionState(createMedicineAction, {})
 
+  useEffect(() => {
+    if (state?.message) {
+      state.errors ? toast.error(state.message) : toast.success(state.message)
+    }
+  }, [state.message])
+
   return (
     <form action={formAction} className="flex flex-col gap-4">
       <FieldGroup>
@@ -76,8 +83,6 @@ const MedicineForm: FC = () => {
           <CustomTextArea {...medicineFormStructure.comments} />
         </FieldSet>
       </FieldGroup>
-
-      {state.message ? <p>{state.message}</p> : null}
 
       <Button type="submit" disabled={isPending}>
         {MEDICINE_FORM_LABELS.SUBMIT_BUTTON}
