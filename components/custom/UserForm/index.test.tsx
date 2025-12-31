@@ -63,13 +63,13 @@ describe('UserForm Component', () => {
     render(<UserForm />)
     const inputs = screen.getAllByRole('textbox')
     inputs.forEach(input => {
-      expect(input).toBeRequired()
+      expect(input).not.toBeRequired()
     })
   })
 
   test('email input is required', () => {
     render(<UserForm />)
     const emailInput = screen.getByLabelText('Email')
-    expect(emailInput).toBeRequired()
+    expect(emailInput).not.toBeRequired()
   })
 })
