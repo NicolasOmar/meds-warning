@@ -32,7 +32,7 @@ const FindUserForm: FC = () => {
 
         {state.message ? <p>{state.message}</p> : null}
         {state.email ? (
-          <Button onClick={() => router.push(`${ROUTES.CREATE_USER}/${state.email}`)}>
+          <Button onClick={() => router.push(`${ROUTES.USER_CREATE}/${state.email}`)}>
             Update user with email {state.email}
           </Button>
         ) : null}
