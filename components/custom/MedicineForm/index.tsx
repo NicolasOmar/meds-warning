@@ -62,9 +62,10 @@ const MedicineForm: FC = () => {
 
   useEffect(() => {
     if (state?.message) {
-      state.errors ? toast.error(state.message) : toast.success(state.message)
+      const toastAction = state.errors ? toast.error : toast.success
+      toastAction(state.message)
     }
-  }, [state.message])
+  }, [state.message, state.errors])
 
   return (
     <form action={formAction} className="flex flex-col gap-4">

@@ -23,7 +23,7 @@
     "test": "vitest",
     "test:ci": "npm test -- --coverage",
     "semantic-release": "semantic-release",
-    "lint": "eslint",
+    "lint": "eslint --max-warnings 0",
     "prettier": "prettier {actions,lib,prisma}/**/*.ts {app,components}/**/*.tsx",
     "prettier:check": "npm run prettier -- --check",
     "prettier:fix": "npm run prettier -- --write",
