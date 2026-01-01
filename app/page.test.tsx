@@ -1,24 +1,28 @@
+// CORE
 import { describe, test, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import Home from './page'
+// COMPONENTS
+import HomePage from './page'
+// LIBRARY
+import { ROOT_PAGE_LABELS } from '@constants/labels'
 
-describe('Home Component', () => {
+describe('HomePage Component', () => {
   test('renders the welcome message', () => {
-    render(<Home />)
-    const welcome = screen.getByText('Welcome to this test')
+    render(<HomePage />)
+    const welcome = screen.getByText(ROOT_PAGE_LABELS.WELCOME_MESSAGE)
     expect(welcome).toBeInTheDocument()
   })
 
   test('renders nested sections', () => {
-    const { container } = render(<Home />)
+    const { container } = render(<HomePage />)
     const sections = container.querySelectorAll('section')
     expect(sections.length).toBeGreaterThan(0)
   })
 
   test('has correct styling classes', () => {
-    render(<Home />)
-    const mainSection = screen.getByText('Welcome to this test').parentElement
+    render(<HomePage />)
+    const mainSection = screen.getByText(ROOT_PAGE_LABELS.WELCOME_MESSAGE).parentElement
     expect(mainSection).toHaveClass('flex', 'min-h-screen')
   })
 })
