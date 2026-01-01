@@ -4,6 +4,14 @@ export enum COMMON_FORM_ERRORS {
   FORM_INPUTS_ERROR = 'Sended information has an error. Please read and correct the commented fields.'
 }
 
+export enum ROOT_PAGE_LABELS {
+  WELCOME_MESSAGE = 'Welcome to this Meds Warning. Please navigate to the [Medicine] page to add new medicines or to the [Concept] page to check its base implementation'
+}
+
+export enum CONCEPT_PAGE_LABELS {
+  WELCOME_MESSAGE = 'Welcome to the Concept Page. Please select any of the options above to explore more.'
+}
+
 export enum MEDICINE_FORM_LABELS {
   TITLE = 'Medicine Information',
   NAME = 'Name:',
