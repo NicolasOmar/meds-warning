@@ -4,14 +4,19 @@ import { FC, useActionState, useEffect } from 'react'
 // FORM
 import { createMedicineAction } from '@actions/medicine'
 // COMPONENTS
+import { toast } from 'sonner'
 import { FieldGroup, FieldLegend, FieldSet } from '@base-components/field'
 import { Button } from '@base-components/button'
 import CustomField from '@custom-components/CustomField'
 import CustomTextArea from '@custom-components/CustomTextArea'
 import DatePicker from '@custom-components/DatePicker'
-import { toast } from 'sonner'
+import CustomSelect from '@custom-components/CustomSelect'
 // LIBRARY
 import { MEDICINE_FORM_LABELS } from '@constants/labels'
+
+interface MedicineFormStructure {
+  listOfPresentations?: { id: number; description: string }[]
+}
 
 const generateUserFormStructure = () => ({
   name: {
@@ -56,7 +61,7 @@ const generateUserFormStructure = () => ({
   }
 })
 
-const MedicineForm: FC = () => {
+const MedicineForm: FC<MedicineFormStructure> = ({ listOfPresentations }) => {
   const medicineFormStructure = generateUserFormStructure()
   const [state, formAction, isPending] = useActionState(createMedicineAction, {})
 
@@ -82,6 +87,14 @@ const MedicineForm: FC = () => {
           <CustomField {...medicineFormStructure.usedFor} message={state.errors?.usedFor} />
           <CustomField {...medicineFormStructure.sideEffects} message={state.errors?.sideEffects} />
           <CustomTextArea {...medicineFormStructure.comments} />
+          <CustomSelect
+            options={
+              listOfPresentations?.map(presentation => ({
+                value: presentation.id.toString(),
+                label: presentation.description
+              })) ?? []
+            }
+          />
         </FieldSet>
       </FieldGroup>
 
