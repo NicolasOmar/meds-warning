@@ -36,6 +36,7 @@
   },
   "include": [
     "actions/**/*.ts",
+    "api/**/*.ts",
     "app/**/*.tsx",
     "components/**/*.tsx",
     "components/**/*.ts",
