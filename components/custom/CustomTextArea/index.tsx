@@ -1,22 +1,16 @@
 // CORE
 import { FC } from 'react'
 // COMPONENTS
-import { Label } from '@base-components/label'
 import { Textarea } from '@base-components/textarea'
+import FormFieldStructure from '@custom-components/FormFieldStructure'
+// SHARED
+import { ExtendedFormFieldProps } from '@shared-types/interfaces'
 
-interface CustomTextAreaProps {
-  label: string
-  name: string
-  value?: string
-  placeholder?: string
-}
-
-const CustomTextArea: FC<CustomTextAreaProps> = ({ label, name, value, placeholder }) => {
+const CustomTextArea: FC<ExtendedFormFieldProps> = ({ label, name, value, placeholder }) => {
   return (
-    <section className="grid w-full gap-3">
-      <Label htmlFor={name}>{label}</Label>
+    <FormFieldStructure label={label} name={name} message={undefined}>
       <Textarea placeholder={placeholder} id={name} name={name} value={value} />
-    </section>
+    </FormFieldStructure>
   )
 }
 

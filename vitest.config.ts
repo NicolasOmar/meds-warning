@@ -24,13 +24,14 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './'),
       '@actions': path.resolve(__dirname, './actions'),
-      '@constants': path.resolve(__dirname, './lib/constants'),
       '@base-components': path.resolve(__dirname, './components/base/ui'),
       '@custom-components': path.resolve(__dirname, './components/custom'),
+      '@form-components': path.resolve(__dirname, './components/forms'),
       '@prisma/index': path.resolve(__dirname, './prisma/index.mock.ts'),
       '@prisma': path.resolve(__dirname, './prisma'),
       '@shadcn': path.resolve(__dirname, './components/base'),
-      '@ts': path.resolve(__dirname, './lib/ts'),
+      '@shared-constants': path.resolve(__dirname, './shared/constants'),
+      '@shared-types': path.resolve(__dirname, './shared/ts'),
     },
   },
   define: {

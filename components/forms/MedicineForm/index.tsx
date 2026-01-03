@@ -7,12 +7,12 @@ import { createMedicineAction } from '@actions/medicine'
 import { toast } from 'sonner'
 import { FieldGroup, FieldLegend, FieldSet } from '@base-components/field'
 import { Button } from '@base-components/button'
-import CustomField from '@custom-components/CustomField'
+import CustomInput from '@custom-components/CustomInput'
 import CustomTextArea from '@custom-components/CustomTextArea'
 import DatePicker from '@custom-components/DatePicker'
 import CustomSelect from '@custom-components/CustomSelect'
-// LIBRARY
-import { MEDICINE_FORM_LABELS } from '@constants/labels'
+// SHARED
+import { MEDICINE_FORM_LABELS } from '@shared-constants/labels'
 
 interface MedicineFormStructure {
   listOfPresentations?: { id: number; description: string }[]
@@ -77,22 +77,25 @@ const MedicineForm: FC<MedicineFormStructure> = ({ listOfPresentations }) => {
       <FieldGroup>
         <FieldSet>
           <FieldLegend>{MEDICINE_FORM_LABELS.TITLE}</FieldLegend>
-          <CustomField {...medicineFormStructure.name} message={state.errors?.name} />
-          <CustomField {...medicineFormStructure.laboratory} message={state.errors?.laboratory} />
+          <CustomInput {...medicineFormStructure.name} message={state.errors?.name} />
+          <CustomInput {...medicineFormStructure.laboratory} message={state.errors?.laboratory} />
           <CustomSelect
-            label={medicineFormStructure.presentation.label}
-            name={medicineFormStructure.presentation.name}
+            {...medicineFormStructure.presentation}
             options={
               listOfPresentations?.map(presentation => ({
                 value: presentation.id.toString(),
                 label: presentation.description
               })) ?? []
             }
+            message={state.errors?.presentation}
           />
-          <DatePicker {...medicineFormStructure.expirationDate} />
-          <CustomField {...medicineFormStructure.usedFor} message={state.errors?.usedFor} />
-          <CustomField {...medicineFormStructure.sideEffects} message={state.errors?.sideEffects} />
-          <CustomTextArea {...medicineFormStructure.comments} />
+          <DatePicker
+            {...medicineFormStructure.expirationDate}
+            message={state.errors?.expirationDate}
+          />
+          <CustomInput {...medicineFormStructure.usedFor} message={state.errors?.usedFor} />
+          <CustomInput {...medicineFormStructure.sideEffects} message={state.errors?.sideEffects} />
+          <CustomTextArea {...medicineFormStructure.comments} message={state.errors?.comments} />
         </FieldSet>
       </FieldGroup>
 

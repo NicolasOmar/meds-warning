@@ -1,6 +1,7 @@
+// CORE
 import { FC } from 'react'
 
-const UserNotFoundPage: FC = () => {
+const NotFoundUserPage: FC = () => {
   return (
     <div>
       <h1>User Not Found</h1>
@@ -9,4 +10,4 @@ const UserNotFoundPage: FC = () => {
   )
 }
 
-export default UserNotFoundPage
+export default NotFoundUserPage

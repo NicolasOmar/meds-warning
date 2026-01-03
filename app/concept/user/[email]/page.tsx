@@ -4,9 +4,9 @@ import { notFound } from 'next/navigation'
 // API
 import { prisma } from '@prisma/index'
 // COMPONENTS
-import UserForm from '@custom-components/UserForm'
-// TYPES
-import { UserFormType } from '@ts/zod'
+import UserForm from '@form-components/UserForm'
+// SHARED
+import { UserFormType } from '@shared-types/zod'
 
 interface UpdateUserPageProps {
   params: Promise<{ email: string }>

@@ -2,11 +2,10 @@
 // CORE
 import { prisma } from '@prisma/index'
 import * as z from 'zod'
-// SCHEMAS
-import { MedicineSchema } from '@ts/zod'
-// LIBRARY
-import { MedicineActionState } from '@ts/states'
-import { COMMON_FORM_ERRORS, MEDICINE_FORM_LABELS } from '@constants/labels'
+// SHARED
+import { MedicineSchema } from '@shared-types/zod'
+import { MedicineActionState } from '@shared-types/states'
+import { COMMON_FORM_ERRORS, MEDICINE_FORM_LABELS } from '@shared-constants/labels'
 
 const parseEmptyStringToNull = (value: FormDataEntryValue | null) => {
   return value === '' ? null : value

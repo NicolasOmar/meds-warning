@@ -1,6 +1,6 @@
 import { FC } from 'react'
 // COMPONENTS
-import UserForm from '@custom-components/UserForm'
+import UserForm from '@form-components/UserForm'
 
 const CreateUserPage: FC = () => <UserForm />
 

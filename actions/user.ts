@@ -1,10 +1,9 @@
 'use server'
 // CORE
 import { prisma } from '@prisma/index'
-// SCHEMAS
-import { UserFormSchema } from '@ts/zod'
-// LIBRARY
-import { FindUserActionState, SignUpActionState } from '@ts/states'
+// SHARED
+import { UserFormSchema } from '@shared-types/zod'
+import { FindUserActionState, SignUpActionState } from '@shared-types/states'
 
 export async function createUserForm(
   _: SignUpActionState,

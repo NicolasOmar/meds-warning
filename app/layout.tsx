@@ -1,14 +1,15 @@
 // CORE
-import type { Metadata } from 'next'
+import { FC } from 'react'
 import Link from 'next/link'
+import type { Metadata } from 'next'
 // COMPONENTS
 import { Item, ItemContent } from '@base-components/item'
 import { ButtonGroup } from '@base-components/button-group'
 import { Button } from '@base-components/button'
 import { Toaster } from '@base-components/sonner'
-// LIBRARY
-import { MAIN_ROUTES_OBJS } from '@constants/routes'
-import { LayoutProps } from '@ts/interfaces'
+// SHARED
+import { MAIN_ROUTES_OBJS } from '@shared-constants/routes'
+import { LayoutProps } from '@shared-types/interfaces'
 // STYLES
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
@@ -29,7 +30,7 @@ export const metadata: Metadata = {
     'A web system to help users manage and track their medication expiration dates and remind them to renew them'
 }
 
-export default function RootLayout({ children }: Readonly<LayoutProps>) {
+const HomeLayout: FC<LayoutProps> = ({ children }) => {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased grid grid-cols-6`}>
@@ -56,3 +57,5 @@ export default function RootLayout({ children }: Readonly<LayoutProps>) {
     </html>
   )
 }
+
+export default HomeLayout

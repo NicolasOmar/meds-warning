@@ -10,10 +10,11 @@ import {
   SelectTrigger,
   SelectValue
 } from '@base-components/select'
-import { Field, FieldLabel } from '@base-components/field'
-import { FormFieldProps } from '@ts/interfaces'
+import FormFieldStructure from '@custom-components/FormFieldStructure'
+// SHARED
+import { ExtendedFormFieldProps } from '@shared-types/interfaces'
 
-interface CustomSelectProps extends FormFieldProps {
+interface CustomSelectProps extends ExtendedFormFieldProps {
   selectLabel?: string
   options: { label: string; value: string }[]
 }
@@ -22,19 +23,19 @@ const CustomSelect: FC<CustomSelectProps> = ({
   label,
   name,
   placeholder = 'Select a fruit',
-  selectLabel = 'Fruits',
-  options
+  selectLabel,
+  options,
+  message
 }) => {
   return (
-    <Field>
-      <FieldLabel htmlFor={name}>{label}</FieldLabel>
+    <FormFieldStructure label={label} name={name} message={message}>
       <Select name={name}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            <SelectLabel>{selectLabel}</SelectLabel>
+            {selectLabel ? <SelectLabel>{selectLabel}</SelectLabel> : null}
             {options.map(({ label, value }) => (
               <SelectItem key={value} value={value}>
                 {label}
@@ -43,7 +44,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
           </SelectGroup>
         </SelectContent>
       </Select>
-    </Field>
+    </FormFieldStructure>
   )
 }
 

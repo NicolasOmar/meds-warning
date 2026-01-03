@@ -1,14 +1,14 @@
 // CORE
+import { FC } from 'react'
 import Link from 'next/link'
 // COMPONENTS
 import { Button } from '@base-components/button'
 import { ButtonGroup } from '@base-components/button-group'
-// CONSTANTS
-import { CONCEPT_MAIN_ROUTES_OBJS } from '@constants/routes'
-// LIBRARY
-import { LayoutProps } from '@ts/interfaces'
+// SHARED
+import { CONCEPT_MAIN_ROUTES_OBJS } from '@shared-constants/routes'
+import { LayoutProps } from '@shared-types/interfaces'
 
-export default function ConceptLayout({ children }: Readonly<LayoutProps>) {
+const ConceptLayout: FC<LayoutProps> = ({ children }) => {
   return (
     <section className="flex flex-col justify-center">
       <ButtonGroup className="self-center m-4">
@@ -26,3 +26,5 @@ export default function ConceptLayout({ children }: Readonly<LayoutProps>) {
     </section>
   )
 }
+
+export default ConceptLayout

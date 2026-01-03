@@ -1,7 +1,7 @@
 // CORE
 import * as z from 'zod'
 // CONSTANTS
-import { MEDICINE_FORM_ERRORS } from '@constants/labels'
+import { MEDICINE_FORM_ERRORS } from '@shared-constants/labels'
 
 export const MedicineSchema = z.object({
   id: z.number().int().optional(),

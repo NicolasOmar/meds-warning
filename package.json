@@ -22,7 +22,7 @@
     "test": "vitest",
     "test:ci": "npm test -- --coverage",
     "lint": "eslint --max-warnings 0",
-    "prettier": "prettier {actions,lib,prisma}/**/*.ts {app,components}/**/*.tsx",
+    "prettier": "prettier {actions,prisma,shared}/**/*.ts {app,components}/**/*.tsx",
     "prettier:check": "npm run prettier -- --check",
     "prettier:fix": "npm run prettier -- --write",
     "lint-staged": "lint-staged -v",
@@ -93,7 +93,7 @@
     "vitest": "^4.0.16"
   },
   "lint-staged": {
-    "(actions|app|components|lib|prisma)/**/*.(ts|tsx)": [
+    "(actions|app|components|prisma|shared)/**/*.(ts|tsx)": [
       "prettier --write",
       "eslint"
     ]

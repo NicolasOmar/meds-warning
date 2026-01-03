@@ -6,10 +6,10 @@ import { createUserForm, updateUserForm } from '@actions/user'
 // COMPONENTS
 import { FieldGroup, FieldLegend, FieldSet } from '@base-components/field'
 import { Button } from '@base-components/button'
-import CustomField from '@custom-components/CustomField'
+import CustomField from '@custom-components/CustomInput'
 // TYPES
-import { SignUpActionState } from '@ts/states'
-import { UserFormType } from '@ts/zod'
+import { SignUpActionState } from '@shared-types/states'
+import { UserFormType } from '@shared-types/zod'
 
 interface UserFormProps {
   userUpdate?: UserFormType

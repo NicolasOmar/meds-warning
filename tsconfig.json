@@ -24,13 +24,14 @@
     ],
     "paths": {
       "@actions/*": ["actions/*"],
-      "@constants/*": ["lib/constants/*"],
       "@base-components/*": ["components/base/ui/*"],
-      "@base-components-lib/*": ["components/base/lib/*"],
+      "@base-components-shared/*": ["components/base/shared/*"],
       "@custom-components/*": ["components/custom/*"],
+      "@form-components/*": ["components/forms/*"],
       "@prisma/*": ["prisma/*"],
       "@shadcn/*": ["components/base/*"],
-      "@ts/*": ["lib/ts/*"]
+      "@shared-constants/*": ["shared/constants/*"],
+      "@shared-types/*": ["shared/ts/*"]
     }
   },
   "include": [
@@ -38,7 +39,7 @@
     "app/**/*.tsx",
     "components/**/*.tsx",
     "components/**/*.ts",
-    "lib/**/*.ts",
+    "shared/**/*.ts",
     "prisma/**/*.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",

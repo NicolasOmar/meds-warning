@@ -1,6 +1,6 @@
 import { FC } from 'react'
 // COMPONENTS
-import FindUserForm from '@custom-components/FindUserForm'
+import FindUserForm from '@form-components/FindUserForm'
 
 const FindUserPage: FC = () => <FindUserForm />
 

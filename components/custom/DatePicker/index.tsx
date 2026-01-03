@@ -6,15 +6,10 @@ import { CalendarIcon } from 'lucide-react'
 import { Button } from '@base-components/button'
 import { Calendar } from '@base-components/calendar'
 import { Input } from '@base-components/input'
-import { Label } from '@base-components/label'
 import { Popover, PopoverContent, PopoverTrigger } from '@base-components/popover'
-
-interface DatePickerProps {
-  label: string
-  name: string
-  value?: string
-  placeholder?: string
-}
+import FormFieldStructure from '@custom-components/FormFieldStructure'
+// SHARED
+import { ExtendedFormFieldProps } from '@shared-types/interfaces'
 
 function formatDate(date: Date | undefined) {
   if (!date) {
@@ -35,17 +30,14 @@ function isValidDate(date: Date | undefined) {
   return !isNaN(date.getTime())
 }
 
-const DatePicker: FC<DatePickerProps> = ({ label, name, value: propValue, placeholder }) => {
+const DatePicker: FC<ExtendedFormFieldProps> = ({ label, name, value: propValue, placeholder }) => {
   const [open, setOpen] = useState(false)
   const [date, setDate] = useState<Date | undefined>(propValue ? new Date(propValue) : new Date())
   const [month, setMonth] = useState<Date | undefined>(date)
   const [value, setValue] = useState(formatDate(date))
 
   return (
-    <section className="flex flex-col gap-3">
-      <Label htmlFor={name} className="px-1">
-        {label}
-      </Label>
+    <FormFieldStructure label={label} name={name} message={undefined}>
       <section className="relative flex gap-2">
         <Input
           id={name}
@@ -100,7 +92,7 @@ const DatePicker: FC<DatePickerProps> = ({ label, name, value: propValue, placeh
           </PopoverContent>
         </Popover>
       </section>
-    </section>
+    </FormFieldStructure>
   )
 }
 
