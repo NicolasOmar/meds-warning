@@ -1,14 +1,13 @@
 model Medicine {
-  id                Int       @id @default(autoincrement())
-  name              String    @db.VarChar(50)
-  laboratory        String?   @db.VarChar(50)
-  presentation      String?   @db.VarChar(50)
-  presentationLink  MedicinePresentation? @relation(fields: [presentationId], references: [id])
-  presentationId    Int
-  expirationDate    DateTime?
-  usedFor           String?   @db.VarChar(75)
-  sideEffects       String?   @db.VarChar(100)
-  comments          String?   @db.VarChar(200)
+  id                    Int                   @id @default(autoincrement())
+  name                  String                @db.VarChar(50)
+  laboratory            String?               @db.VarChar(50)
+  presentation          Int
+  expirationDate        DateTime?
+  usedFor               String?               @db.VarChar(75)
+  sideEffects           String?               @db.VarChar(100)
+  comments              String?               @db.VarChar(200)
+  medicinePresentation  MedicinePresentation  @relation(fields: [presentation], references: [id])
 }
 
 model MedicinePresentation {

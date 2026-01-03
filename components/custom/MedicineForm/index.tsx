@@ -79,15 +79,9 @@ const MedicineForm: FC<MedicineFormStructure> = ({ listOfPresentations }) => {
           <FieldLegend>{MEDICINE_FORM_LABELS.TITLE}</FieldLegend>
           <CustomField {...medicineFormStructure.name} message={state.errors?.name} />
           <CustomField {...medicineFormStructure.laboratory} message={state.errors?.laboratory} />
-          <CustomField
-            {...medicineFormStructure.presentation}
-            message={state.errors?.presentation}
-          />
-          <DatePicker {...medicineFormStructure.expirationDate} />
-          <CustomField {...medicineFormStructure.usedFor} message={state.errors?.usedFor} />
-          <CustomField {...medicineFormStructure.sideEffects} message={state.errors?.sideEffects} />
-          <CustomTextArea {...medicineFormStructure.comments} />
           <CustomSelect
+            label={medicineFormStructure.presentation.label}
+            name={medicineFormStructure.presentation.name}
             options={
               listOfPresentations?.map(presentation => ({
                 value: presentation.id.toString(),
@@ -95,6 +89,10 @@ const MedicineForm: FC<MedicineFormStructure> = ({ listOfPresentations }) => {
               })) ?? []
             }
           />
+          <DatePicker {...medicineFormStructure.expirationDate} />
+          <CustomField {...medicineFormStructure.usedFor} message={state.errors?.usedFor} />
+          <CustomField {...medicineFormStructure.sideEffects} message={state.errors?.sideEffects} />
+          <CustomTextArea {...medicineFormStructure.comments} />
         </FieldSet>
       </FieldGroup>
 

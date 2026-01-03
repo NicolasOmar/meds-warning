@@ -42,7 +42,7 @@ export async function createMedicineAction(
     data: {
       name: validatedFields.data.name,
       laboratory: validatedFields.data.laboratory,
-      presentation: validatedFields.data.presentation,
+      presentation: +(validatedFields.data.presentation ?? 1),
       expirationDate,
       usedFor: validatedFields.data.usedFor,
       sideEffects: validatedFields.data.sideEffects,
