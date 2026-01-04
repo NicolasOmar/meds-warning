@@ -4,9 +4,9 @@ import { FC } from 'react'
 import { Textarea } from '@base-components/textarea'
 import FormFieldStructure from '@custom-components/FormFieldStructure'
 // SHARED
-import { ExtendedFormFieldProps } from '@shared-types/interfaces'
+import { CompleteFormFieldPorps } from '@shared-types/interfaces'
 
-const CustomTextArea: FC<ExtendedFormFieldProps> = ({ label, name, value, placeholder }) => {
+const CustomTextArea: FC<CompleteFormFieldPorps> = ({ label, name, value, placeholder }) => {
   return (
     <FormFieldStructure label={label} name={name} message={undefined}>
       <Textarea placeholder={placeholder} id={name} name={name} value={value} />

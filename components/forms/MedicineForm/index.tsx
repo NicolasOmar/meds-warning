@@ -13,9 +13,10 @@ import DatePicker from '@custom-components/DatePicker'
 import CustomSelect from '@custom-components/CustomSelect'
 // SHARED
 import { MEDICINE_FORM_LABELS } from '@shared-constants/labels'
+import { MedicinePresentationType } from '@shared-types/zod'
 
 interface MedicineFormStructure {
-  listOfPresentations?: { id: number; description: string }[]
+  presentationsList: MedicinePresentationType[]
 }
 
 const generateUserFormStructure = () => ({
@@ -34,7 +35,6 @@ const generateUserFormStructure = () => ({
   presentation: {
     name: 'presentation',
     label: MEDICINE_FORM_LABELS.PRESENTATION,
-    type: 'text',
     placeholder: MEDICINE_FORM_LABELS.PRESENTATION_PLACEHOLDER
   },
   expirationDate: {
@@ -61,7 +61,7 @@ const generateUserFormStructure = () => ({
   }
 })
 
-const MedicineForm: FC<MedicineFormStructure> = ({ listOfPresentations }) => {
+const MedicineForm: FC<MedicineFormStructure> = ({ presentationsList }) => {
   const medicineFormStructure = generateUserFormStructure()
   const [state, formAction, isPending] = useActionState(createMedicineAction, {})
 
@@ -82,7 +82,7 @@ const MedicineForm: FC<MedicineFormStructure> = ({ listOfPresentations }) => {
           <CustomSelect
             {...medicineFormStructure.presentation}
             options={
-              listOfPresentations?.map(presentation => ({
+              presentationsList?.map(presentation => ({
                 value: presentation.id.toString(),
                 label: presentation.description
               })) ?? []

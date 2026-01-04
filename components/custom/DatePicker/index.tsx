@@ -9,7 +9,7 @@ import { Input } from '@base-components/input'
 import { Popover, PopoverContent, PopoverTrigger } from '@base-components/popover'
 import FormFieldStructure from '@custom-components/FormFieldStructure'
 // SHARED
-import { ExtendedFormFieldProps } from '@shared-types/interfaces'
+import { CompleteFormFieldPorps } from '@shared-types/interfaces'
 
 function formatDate(date: Date | undefined) {
   if (!date) {
@@ -30,7 +30,7 @@ function isValidDate(date: Date | undefined) {
   return !isNaN(date.getTime())
 }
 
-const DatePicker: FC<ExtendedFormFieldProps> = ({ label, name, value: propValue, placeholder }) => {
+const DatePicker: FC<CompleteFormFieldPorps> = ({ label, name, value: propValue, placeholder }) => {
   const [open, setOpen] = useState(false)
   const [date, setDate] = useState<Date | undefined>(propValue ? new Date(propValue) : new Date())
   const [month, setMonth] = useState<Date | undefined>(date)

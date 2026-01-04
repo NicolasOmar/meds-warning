@@ -3,9 +3,9 @@ import { FC } from 'react'
 import { Input } from '@base-components/input'
 import FormFieldStructure from '@custom-components/FormFieldStructure'
 // SHARED
-import { ExtendedFormFieldProps } from '@shared-types/interfaces'
+import { CompleteFormFieldPorps } from '@shared-types/interfaces'
 
-interface CustomFieldProps extends ExtendedFormFieldProps {
+interface CustomFieldProps extends CompleteFormFieldPorps {
   type: string
 }
 

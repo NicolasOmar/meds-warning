@@ -1,11 +1,10 @@
 // CORE
-// import { prisma } from '@prisma/index'
-import { getAllMedicinePresentations } from 'api/medicine'
+import { prisma } from '@prisma/index'
 // COMPONENTS
 import MedicineForm from '@form-components/MedicineForm'
 
 export default async function MedicinePage() {
-  const listOfData = await getAllMedicinePresentations()
+  const presentationsList = await prisma.medicinePresentation.findMany({})
 
-  return <MedicineForm listOfPresentations={listOfData ?? []} />
+  return <MedicineForm presentationsList={presentationsList} />
 }

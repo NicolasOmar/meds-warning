@@ -7,7 +7,7 @@ import { MedicineSchema } from '@shared-types/zod'
 import { MedicineActionState } from '@shared-types/states'
 import { COMMON_FORM_ERRORS, MEDICINE_FORM_LABELS } from '@shared-constants/labels'
 
-const parseEmptyStringToNull = (value: FormDataEntryValue | null) => {
+const parseEmptyFormValueToNull = (value: FormDataEntryValue | null) => {
   return value === '' ? null : value
 }
 
@@ -20,13 +20,15 @@ export async function createMedicineAction(
     : null
 
   const validatedFields = MedicineSchema.safeParse({
-    name: parseEmptyStringToNull(formData.get('name')),
-    laboratory: parseEmptyStringToNull(formData.get('laboratory')),
-    presentation: parseEmptyStringToNull(formData.get('presentation')),
+    name: parseEmptyFormValueToNull(formData.get('name')),
+    laboratory: parseEmptyFormValueToNull(formData.get('laboratory')),
+    presentation: parseEmptyFormValueToNull(formData.get('presentation'))
+      ? +(formData.get('presentation') as string)
+      : null,
     expirationDate,
-    usedFor: parseEmptyStringToNull(formData.get('usedFor')),
-    sideEffects: parseEmptyStringToNull(formData.get('sideEffects')),
-    comments: parseEmptyStringToNull(formData.get('comments'))
+    usedFor: parseEmptyFormValueToNull(formData.get('usedFor')),
+    sideEffects: parseEmptyFormValueToNull(formData.get('sideEffects')),
+    comments: parseEmptyFormValueToNull(formData.get('comments'))
   })
 
   // Handle Failure
@@ -41,7 +43,7 @@ export async function createMedicineAction(
     data: {
       name: validatedFields.data.name,
       laboratory: validatedFields.data.laboratory,
-      presentation: +(validatedFields.data.presentation ?? 1),
+      presentation: validatedFields.data.presentation,
       expirationDate,
       usedFor: validatedFields.data.usedFor,
       sideEffects: validatedFields.data.sideEffects,

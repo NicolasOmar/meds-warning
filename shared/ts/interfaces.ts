@@ -10,9 +10,7 @@ export interface BaseFormFieldProps {
   message?: string | string[]
 }
 
-export interface FormFieldStructureProps extends LayoutProps, BaseFormFieldProps {}
-
-export interface ExtendedFormFieldProps extends BaseFormFieldProps {
+export interface CompleteFormFieldPorps extends BaseFormFieldProps {
   placeholder?: string
   value?: string
 }

@@ -2,7 +2,9 @@ import { FC, Fragment } from 'react'
 // COMPONENTS
 import { Field, FieldDescription, FieldLabel } from '@base-components/field'
 // SHARED
-import { FormFieldStructureProps } from '@shared-types/interfaces'
+import { LayoutProps, BaseFormFieldProps } from '@shared-types/interfaces'
+
+interface FormFieldStructureProps extends LayoutProps, BaseFormFieldProps {}
 
 const FormFieldStructure: FC<FormFieldStructureProps> = ({ label, name, message, children }) => {
   return (

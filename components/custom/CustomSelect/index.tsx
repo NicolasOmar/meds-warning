@@ -12,9 +12,9 @@ import {
 } from '@base-components/select'
 import FormFieldStructure from '@custom-components/FormFieldStructure'
 // SHARED
-import { ExtendedFormFieldProps } from '@shared-types/interfaces'
+import { CompleteFormFieldPorps } from '@shared-types/interfaces'
 
-interface CustomSelectProps extends ExtendedFormFieldProps {
+interface CustomSelectProps extends CompleteFormFieldPorps {
   selectLabel?: string
   options: { label: string; value: string }[]
 }
@@ -22,7 +22,7 @@ interface CustomSelectProps extends ExtendedFormFieldProps {
 const CustomSelect: FC<CustomSelectProps> = ({
   label,
   name,
-  placeholder = 'Select a fruit',
+  placeholder,
   selectLabel,
   options,
   message

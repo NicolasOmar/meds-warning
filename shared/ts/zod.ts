@@ -10,7 +10,7 @@ export const MedicineSchema = z.object({
     .min(1, MEDICINE_FORM_ERRORS.NAME_MIN)
     .max(50, MEDICINE_FORM_ERRORS.NAME_MAX),
   laboratory: z.string().max(50, MEDICINE_FORM_ERRORS.LABORATORY_MAX).nullable(),
-  presentation: z.string().max(50, MEDICINE_FORM_ERRORS.PRESENTATION_MAX).nullable(),
+  presentation: z.number(MEDICINE_FORM_ERRORS.PRESENTATION_REQUIRED).int(),
   expirationDate: z.date().nullable(),
   usedFor: z.string().max(75, MEDICINE_FORM_ERRORS.USED_FOR_MAX).nullable(),
   sideEffects: z.string().max(100, MEDICINE_FORM_ERRORS.SIDE_EFFECTS_MAX).nullable(),
@@ -18,6 +18,13 @@ export const MedicineSchema = z.object({
 })
 
 export type MedicineType = z.infer<typeof MedicineSchema>
+
+export const MedicinePresentationSchema = z.object({
+  id: z.number().int(),
+  description: z.string().min(1).max(50)
+})
+
+export type MedicinePresentationType = z.infer<typeof MedicinePresentationSchema>
 
 export const UserSchema = z.object({
   email: z.string()
