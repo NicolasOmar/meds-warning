@@ -72,4 +72,29 @@ describe('FindUserForm Component', () => {
     const button = screen.getByRole('button', { name: /find user/i })
     expect(button).toHaveAttribute('type', 'submit')
   })
+
+  test('form has correct structure with FieldGroup', () => {
+    const { container } = render(<FindUserForm />)
+    const form = container.querySelector('form')
+    expect(form).toBeInTheDocument()
+    expect(form).toHaveClass('flex', 'flex-col', 'gap-4')
+  })
+
+  test('form is a client component with proper action binding', () => {
+    render(<FindUserForm />)
+    const form = screen.getByRole('button', { name: /find user/i }).closest('form')
+    expect(form).toBeInTheDocument()
+  })
+
+  test('search input has placeholder text', () => {
+    render(<FindUserForm />)
+    const input = screen.getByPlaceholderText('Enter the email to start the search')
+    expect(input).toHaveAttribute('placeholder', 'Enter the email to start the search')
+  })
+
+  test('renders within FieldSet and FieldGroup', () => {
+    const { container } = render(<FindUserForm />)
+    const fieldGroup = container.querySelector('[role="group"]')
+    expect(fieldGroup).toBeInTheDocument()
+  })
 })

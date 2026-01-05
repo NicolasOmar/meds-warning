@@ -12,6 +12,21 @@ export enum CONCEPT_PAGE_LABELS {
   WELCOME_MESSAGE = 'Welcome to the Concept Page. Please select any of the options above to explore more.'
 }
 
+export enum USER_FORM_LABELS {
+  CREATE_TITLE = 'Create an user',
+  UPDATE_TITLE = 'Update your profile',
+  NAME = 'Name',
+  NAME_PLACEHOLDER = 'John',
+  LAST_NAME = 'Last Name',
+  LAST_NAME_PLACEHOLDER = 'Doe',
+  EMAIL = 'Email',
+  EMAIL_PLACEHOLDER = 'john.doe@example.com',
+  LIKED_MOVIE = 'Liked Movie',
+  LIKED_MOVIE_PLACEHOLDER = 'Avatar',
+  CREATE_BUTTON = 'Create User',
+  UPDATE_BUTTON = 'Update User'
+}
+
 export enum MEDICINE_FORM_LABELS {
   TITLE = 'Medicine Information',
   NAME = 'Name:',
