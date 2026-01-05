@@ -25,22 +25,26 @@
     "paths": {
       "@actions/*": ["actions/*"],
       "@base-components/*": ["components/base/ui/*"],
+      "@base-components-shared/*": ["components/base/shared/*"],
       "@custom-components/*": ["components/custom/*"],
+      "@form-components/*": ["components/forms/*"],
       "@prisma/*": ["prisma/*"],
       "@shadcn/*": ["components/base/*"],
-      "@ts/*": ["ts/*"]
+      "@shared-constants/*": ["shared/constants/*"],
+      "@shared-types/*": ["shared/ts/*"]
     }
   },
   "include": [
     "actions/**/*.ts",
+    "api/**/*.ts",
     "app/**/*.tsx",
     "components/**/*.tsx",
     "components/**/*.ts",
+    "shared/**/*.ts",
     "prisma/**/*.ts",
-    "ts/**/*.ts",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "next-env.d.ts",
+    "next-env.d.ts"
   ],
   "exclude": ["node_modules"]
 }

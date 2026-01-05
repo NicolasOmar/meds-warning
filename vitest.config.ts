@@ -12,9 +12,10 @@ export default defineConfig({
     setupFiles: ['./vitest.setup.ts'],
     coverage: {
       include: [
+        'actions/**/*.ts',
         'app/**/*.tsx',
         'components/custom/**/*.tsx',
-        'actions/**/*.ts'
+        'components/forms/**/*.tsx'
       ],
       reporter: ['html', 'lcov'],
       reportsDirectory: './coverage'
@@ -26,10 +27,12 @@ export default defineConfig({
       '@actions': path.resolve(__dirname, './actions'),
       '@base-components': path.resolve(__dirname, './components/base/ui'),
       '@custom-components': path.resolve(__dirname, './components/custom'),
+      '@form-components': path.resolve(__dirname, './components/forms'),
       '@prisma/index': path.resolve(__dirname, './prisma/index.mock.ts'),
       '@prisma': path.resolve(__dirname, './prisma'),
       '@shadcn': path.resolve(__dirname, './components/base'),
-      '@ts': path.resolve(__dirname, './ts'),
+      '@shared-constants': path.resolve(__dirname, './shared/constants'),
+      '@shared-types': path.resolve(__dirname, './shared/ts'),
     },
   },
   define: {
