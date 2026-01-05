@@ -12,9 +12,10 @@ export default defineConfig({
     setupFiles: ['./vitest.setup.ts'],
     coverage: {
       include: [
+        'actions/**/*.ts',
         'app/**/*.tsx',
         'components/custom/**/*.tsx',
-        'actions/**/*.ts'
+        'components/forms/**/*.tsx'
       ],
       reporter: ['html', 'lcov'],
       reportsDirectory: './coverage'

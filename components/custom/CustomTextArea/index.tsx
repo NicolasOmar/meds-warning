@@ -9,7 +9,7 @@ import { CompleteFormFieldPorps } from '@shared-types/interfaces'
 const CustomTextArea: FC<CompleteFormFieldPorps> = ({ label, name, value, placeholder }) => {
   return (
     <FormFieldStructure label={label} name={name} message={undefined}>
-      <Textarea placeholder={placeholder} id={name} name={name} value={value} />
+      <Textarea placeholder={placeholder} id={name} name={name} defaultValue={value} />
     </FormFieldStructure>
   )
 }
