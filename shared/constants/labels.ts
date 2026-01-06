@@ -12,6 +12,10 @@ export enum CONCEPT_PAGE_LABELS {
   WELCOME_MESSAGE = 'Welcome to the Concept Page. Please select any of the options above to explore more.'
 }
 
+export enum MEDICINE_PAGE_LABELS {
+  WELCOME_MESSAGE = 'Welcome to the Medicine Page. Please select any of the options above to explore more.'
+}
+
 export enum USER_FORM_LABELS {
   CREATE_TITLE = 'Create an user',
   UPDATE_TITLE = 'Update your profile',
