@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 // COMPONENTS
 import HomePage from './page'
-// LIBRARY
+// SHARED
 import { ROOT_PAGE_LABELS } from '@shared-constants/labels'
 
 describe('HomePage Component', () => {
