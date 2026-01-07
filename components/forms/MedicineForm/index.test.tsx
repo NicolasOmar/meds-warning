@@ -1,6 +1,9 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
+// COMPONENTS
+import MedicineForm from './index'
+// SHARED
 import { MEDICINE_FORM_LABELS } from '@shared-constants/labels'
 
 // Mock the server action
@@ -21,9 +24,7 @@ vi.mock('sonner', () => ({
   }
 }))
 
-import MedicineForm from './index'
-
-describe('MedicineForm Component', () => {
+describe('[MedicineForm]', () => {
   const mockPresentations = [
     { id: 1, description: 'Tablet' },
     { id: 2, description: 'Syrup' },

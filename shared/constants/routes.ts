@@ -3,7 +3,9 @@ export enum ROUTES {
   USER_MAIN = '/concept',
   USER_CREATE = '/concept/user',
   USER_FIND = '/concept/find',
-  MEDICINE_MAIN = '/medicine'
+  MEDICINE_MAIN = '/medicine',
+  MEDICINE_CREATE = '/medicine/create',
+  MEDICINE_LIST = '/medicine/list'
 }
 
 export const MAIN_ROUTES_OBJS = [
@@ -15,4 +17,9 @@ export const MAIN_ROUTES_OBJS = [
 export const CONCEPT_MAIN_ROUTES_OBJS = [
   { name: 'Create User', path: ROUTES.USER_CREATE },
   { name: 'Find and Update User', path: ROUTES.USER_FIND }
+]
+
+export const MEDICINE_MAIN_ROUTES_OBJS = [
+  { name: 'Add a new medicine', path: ROUTES.MEDICINE_CREATE },
+  { name: 'See all created ones', path: ROUTES.MEDICINE_LIST }
 ]

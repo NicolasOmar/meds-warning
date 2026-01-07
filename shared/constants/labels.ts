@@ -4,12 +4,20 @@ export enum COMMON_FORM_ERRORS {
   FORM_INPUTS_ERROR = 'Sended information has an error. Please read and correct the commented fields.'
 }
 
+export enum COMMON_TABLE_ERRORS {
+  NO_DATA = 'No data available'
+}
+
 export enum ROOT_PAGE_LABELS {
   WELCOME_MESSAGE = 'Welcome to this Meds Warning. Please navigate to the [Medicine] page to add new medicines or to the [Concept] page to check its base implementation'
 }
 
 export enum CONCEPT_PAGE_LABELS {
   WELCOME_MESSAGE = 'Welcome to the Concept Page. Please select any of the options above to explore more.'
+}
+
+export enum MEDICINE_PAGE_LABELS {
+  WELCOME_MESSAGE = 'Welcome to the Medicine Page. Please select any of the options above to explore more.'
 }
 
 export enum USER_FORM_LABELS {
@@ -56,4 +64,9 @@ export enum MEDICINE_FORM_ERRORS {
   USED_FOR_MAX = 'Used For must be at most 75 characters',
   SIDE_EFFECTS_MAX = 'Side Effects must be at most 100 characters',
   COMMENTS_MAX = 'Comments must be at most 200 characters'
+}
+
+export enum MEDICINE_TABLE_LABELS {
+  TITLE = 'Medicine List',
+  HEADERS = 'ID,Name,Laboratory,Presentation,Expiration Date,Used For,Side Effects,Comments'
 }

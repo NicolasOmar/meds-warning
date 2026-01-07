@@ -2,9 +2,10 @@ import { describe, test, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom'
+// COMPONENTS
 import DatePicker from './index'
 
-describe('DatePicker Component', () => {
+describe('[DatePicker]', () => {
   const defaultProps = {
     label: 'Select Date',
     name: 'date',

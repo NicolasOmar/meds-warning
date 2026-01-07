@@ -1,5 +1,7 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { notFound } from 'next/navigation'
+// COMPONENTS
+import UpdateUserPage from './page'
 
 // Mock next/navigation
 vi.mock('next/navigation', () => ({
@@ -11,10 +13,7 @@ vi.mock('@custom-components/UserForm', () => ({
   default: () => <div>UserForm</div>
 }))
 
-// Import after mocks are defined
-import UpdateUserPage from './page'
-
-describe('UpdateUserPage Component', () => {
+describe('[UpdateUserPage]', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })

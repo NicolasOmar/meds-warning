@@ -1,9 +1,10 @@
 import { describe, test, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
+// COMPONENTS
 import FormFieldStructure from './index'
 
-describe('FormFieldStructure Component', () => {
+describe('[FormFieldStructure]', () => {
   const defaultProps = {
     label: 'Email',
     name: 'email'

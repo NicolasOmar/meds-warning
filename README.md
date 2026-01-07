@@ -1,5 +1,5 @@
 # MedsWarning
-A web system to help users manage and track their medication expiration dates and remind them to renew them.
+A web system to help users manage and track their medication expiration dates and send reminders to renew those that have expired.
 
 ## Table of contents
 - [Purpose](#purpose)
@@ -31,6 +31,7 @@ The tool's objective is to <u>create notifications across several channels that 
 ![GitHub Repo stars][badge-github-repo-stars]
 ![GitHub commit activity][badge-github-commits]
 ![GitHub last commit][badge-github-last-commit]
+[![Semantic Commits][badge-semantic-commits]][link-semantic-commits]
 
 [badge-repo-version]: https://img.shields.io/github/package-json/v/nicolasomar/meds-warning?label=version&logo=npm&color=success
 [badge-code-coverage]: https://img.shields.io/codecov/c/github/nicolasomar/meds-warning?label=coverage&logo=codecov
@@ -45,6 +46,8 @@ The tool's objective is to <u>create notifications across several channels that 
 [badge-github-repo-stars]: https://img.shields.io/github/stars/nicolasomar/meds-warning?label=stars&logo=github&labelColor=535353&style=flat
 [badge-github-commits]: https://img.shields.io/github/commit-activity/m/nicolasomar/meds-warning?logo=github
 [badge-github-last-commit]: https://img.shields.io/github/last-commit/nicolasomar/meds-warning?logo=github
+[badge-semantic-commits]: https://img.shields.io/badge/using-conventional%20commits-e10079?logo=conventional-commits
+[link-semantic-commits]: https://github.com/semantic-release/semantic-release
 
 ## Dependencies
 ![nextjs dependency][badge-dependency-next]
@@ -79,14 +82,20 @@ The tool's objective is to <u>create notifications across several channels that 
 
 ## What do I need?
 Before cloning this repo, I recommend installing the following software:
-- [Node](https://nodejs.org/en/download/) >= `24.4.0` to install packages
+- [Node](https://nodejs.org/en/download/) >= `24.4.0` to install packages.
+- A [PostgreSQL database](https://www.postgresql.org/download/) on your local machine or in a cloud service.
 
 ## Setup
 After cloning the repo, install the node packages in the project's root file.
 ```sh
 git clone https://github.com/NicolasOmar/meds-warning.git
 cd meds-warning
-npm install
+npm run setup
+```
+
+At last, create an `.env` file at your project's root with the following content.
+```
+DATABASE_URL=HERE_GOES_YOUR_DATABASE_CONNECTION_STRING
 ```
 
 ## How to run it
@@ -100,20 +109,44 @@ npm start:prod
 ```
 
 ## Folder structure
-TBA
+In case you have cloned the repo, it will show you the following folders:
+- `.github:` [Github Actions](https://github.com/features/actions/) files used to run post-merge commits like unit test coverage collection.
+- `.husky:` Dedicated to [Husky](https://typicode.github.io/husky/) configuration files.
+- `actions:` Dedicated to [React's Server Functions](https://nextjs.org/docs/app/getting-started/updating-data). Organized by entity.
+- `app:` Location of system's routes structure based on [NextJs App Router](https://nextjs.org/docs/app/getting-started/layouts-and-pages).
+- `components:` Location of all used components:
+  - `base:` Those installed from [shadcn](https://ui.shadcn.com/).
+  - `custom:` Implementations of base components with logic included to handle specific tasks.
+  - `forms:` Form components with their own input structure and action call. Those are client components due to the [useActionState](https://react.dev/reference/react/useActionState) hook.
+- `prisma:` Location of prisma implementation with its `models/entities` and migrations to mirror the entities relationship in the database.
+- `shared`: Location of shared pieces of reusable code to be used across the system.
+  - `constants:`: Dedicated to labels, strings, regular expressions, and configuration objects.
+  - `ts:` Dedicated to typescript interfaces, types, enums, and other features.
 
 ## Branches and Environments
-TBA
+After my previous experience with [semantic-release](https://semantic-release.gitbook.io/semantic-release/) in [other projects](https://github.com/NicolasOmar/reactive-bulma/issues/3), I decided to give the following meaning to the project's versions after `v4.0.0`:
+- Major versions (`5.0.0`, `6.0.0`, and beyond) will refer to milestone achievements and significant changes that will need extra attention before the update.
+- Minor versions (`4.1.0`, `4.2.0`, and so on) will refer to specific new features.
+- Patch versions (`4.0.1`, `4.0.2`, and so on) will refer to bug fixes or weekly dependency updates.
+
+To check the current project's status, go to the [Roadmap](#roadmap) section.
+
+### Branching
+
+Given the mentioned release logic, `main` is the only static branch, and each developed feature or fix will have a unique branch with its PR and a merge commit following [semantic versioning](https://semver.org/) and [semantic commits](https://github.com/semantic-release/semantic-release#commit-message-format) specifications.
 
 ## Roadmap
-At this moment, I am organizing the main features into several stories that will give shape to at least 3 main versions.
+The first version/release ([`v1.0`](https://github.com/NicolasOmar/meds-warning/milestone/1)) was created to investigate, pick, and integrate several libraries as project technical foundations, which took the shape of a proof of concept that you can review [here](https://meds-warning.vercel.app/).
 
-Aside from thinking about objectives, I have the following first steps.
-- I already created the main scaffolding using NextJS with TypeScript and am deploying the starter pack to Vercel (the link will be available in the near future).
-- My next step will be to look for the toolset to be used in my day-to-day (I will create an issue for that also) and implement it.
-- From that point, I will be integrating some third-party services for code quality control and dependency health (among other services to be used).
+Right now, I have listed the first series of features related to the project's objective. which will be shipped as part of [release `v2.0`](https://github.com/NicolasOmar/meds-warning/milestone/2)
 
-Will keep you posted on any updates, which will be forthcoming shortly.
+Right before delivering the last feature, I will work on at least a third series of improvements in order to create a solid solution for any user.
+
+I will keep you posted on any updates, which will be forthcoming shortly.
+
+Nowadays, I am updating the rest of the dependencies every week, creating a PR alongside its related branch and PR to maintain track of those updates.
+
+If you want the actual short-term status, go to the [project board](https://github.com/users/NicolasOmar/projects/4) (powered by `GitHub Projects`).
 
 ## License
 **GPL 3.0**
