@@ -61,3 +61,14 @@ export enum MEDICINE_FORM_ERRORS {
   SIDE_EFFECTS_MAX = 'Side Effects must be at most 100 characters',
   COMMENTS_MAX = 'Comments must be at most 200 characters'
 }
+
+export const MEDICINE_TABLE_HEADERS = [
+  'ID',
+  'Name',
+  'Laboratory',
+  'Presentation',
+  'Expiration Date',
+  'Used For',
+  'Side Effects',
+  'Comments'
+]
