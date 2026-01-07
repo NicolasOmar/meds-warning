@@ -4,7 +4,7 @@ import { prisma } from '@prisma/index'
 // COMPONENTS
 import DataTable from '@custom-components/DataTable'
 // SHARED
-import { MEDICINE_TABLE_HEADERS } from '@shared-constants/labels'
+import { MEDICINE_TABLE_LABELS } from '@shared-constants/labels'
 
 interface MedicineDataItem {
   id: number
@@ -35,7 +35,13 @@ const ListMedicinePage: FC = async () => {
     comments: medicineItem.comments
   }))
 
-  return <DataTable headers={MEDICINE_TABLE_HEADERS} data={createdMedicineList} />
+  return (
+    <DataTable
+      title={MEDICINE_TABLE_LABELS.TITLE}
+      headers={MEDICINE_TABLE_LABELS.HEADERS.split(',')}
+      data={createdMedicineList}
+    />
+  )
 }
 
 export default ListMedicinePage
