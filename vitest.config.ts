@@ -17,6 +17,7 @@ export default defineConfig({
         'components/custom/**/*.tsx',
         'components/forms/**/*.tsx'
       ],
+      exclude: ['app/concept/**'],
       reporter: ['html', 'lcov'],
       reportsDirectory: './coverage'
     }
