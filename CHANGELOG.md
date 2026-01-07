@@ -1,3 +1,18 @@
+# [1.2.0](https://github.com/NicolasOmar/meds-warning/compare/v1.1.0...v1.2.0) (2026-01-07)
+
+
+### Bug Fixes
+
+* adding a new base and custom components for data table. wip ([48c7f79](https://github.com/NicolasOmar/meds-warning/commit/48c7f795559a9a4f3c075b93b42b47d15cd94aba))
+* adding first set of unit tests for data table and its first page that implements it ([fdd6f4f](https://github.com/NicolasOmar/meds-warning/commit/fdd6f4f1c4d8a0dd1e3a4c7ec94ced46c4bdaba4))
+* first implementation of medicine list page. wip ([81f8455](https://github.com/NicolasOmar/meds-warning/commit/81f8455c81be599ecfa1fd60f0aa66fac3515c52))
+* improving readme with more detailed information. adding missing depdendencies ([ae47e2c](https://github.com/NicolasOmar/meds-warning/commit/ae47e2c316492d10bb90acc448ecef68119645c7))
+
+
+### Features
+
+* Merge pull request [#20](https://github.com/NicolasOmar/meds-warning/issues/20)/[#13](https://github.com/NicolasOmar/meds-warning/issues/13) from NicolasOmar/feature/list-all-created-medicines ([27c33c7](https://github.com/NicolasOmar/meds-warning/commit/27c33c7d2269305c0401b8ecece97cea77eb7f12))
+
 # [1.1.0](https://github.com/NicolasOmar/meds-warning/compare/v1.0.0...v1.1.0) (2026-01-05)
 
 
