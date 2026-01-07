@@ -1,6 +1,9 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
+// COMPONENTS
+import UserForm from './index'
+// SHARED
 import { USER_FORM_LABELS } from '@shared-constants/labels'
 
 // Mock the server action
@@ -13,9 +16,7 @@ vi.mock('@prisma/index', () => ({
   prisma: {}
 }))
 
-import UserForm from './index'
-
-describe('UserForm Component', () => {
+describe('[UserForm]', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })

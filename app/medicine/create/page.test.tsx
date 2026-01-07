@@ -12,7 +12,7 @@ vi.mock('@prisma/index', () => ({
   }
 }))
 
-describe('MedicinePage Component', () => {
+describe('[MedicinePage]', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })

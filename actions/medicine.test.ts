@@ -41,7 +41,7 @@ describe('Medicine Actions', () => {
     vi.clearAllMocks()
   })
 
-  describe('createMedicineAction', () => {
+  describe('[createMedicineAction]', () => {
     test('creates medicine with valid data', async () => {
       const { prisma } = await import('@prisma/index')
       vi.mocked(prisma.medicine.create).mockResolvedValue({

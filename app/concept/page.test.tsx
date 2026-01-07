@@ -6,7 +6,7 @@ import ConceptPage from './page'
 // SHARED
 import { CONCEPT_PAGE_LABELS } from '@shared-constants/labels'
 
-describe('ConceptPage Component', () => {
+describe('[ConceptPage]', () => {
   test('renders the concept page', () => {
     const { container } = render(<ConceptPage />)
     const sections = container.querySelectorAll('section')

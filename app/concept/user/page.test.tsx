@@ -9,7 +9,7 @@ vi.mock('@form-components/UserForm', () => ({
   default: () => <div data-testid="user-form">User Form Component</div>
 }))
 
-describe('CreateUserPage Component', () => {
+describe('[CreateUserPage]', () => {
   test('renders the create user page', () => {
     render(<CreateUserPage />)
     expect(screen.getByTestId('user-form')).toBeInTheDocument()

@@ -1,7 +1,7 @@
 import { describe, test } from 'vitest'
 import '@testing-library/jest-dom'
 
-describe('FindUserPage Component', () => {
+describe('[FindUserPage]', () => {
   test.skip('renders the FindUserForm component - requires Prisma setup', async () => {
     // This test is skipped because the page component imports Prisma
     // which is a server-side dependency and cannot be loaded in jsdom environment

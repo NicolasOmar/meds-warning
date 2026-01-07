@@ -7,7 +7,7 @@ import HomePage from './page'
 // SHARED
 import { ROOT_PAGE_LABELS } from '@shared-constants/labels'
 
-describe('HomePage Component', () => {
+describe('[HomePage]', () => {
   test('renders the welcome message', () => {
     render(<HomePage />)
     const welcome = screen.getByText(ROOT_PAGE_LABELS.WELCOME_MESSAGE)

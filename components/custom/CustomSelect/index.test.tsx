@@ -1,9 +1,10 @@
 import { describe, test, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
+// COMPONENTS
 import CustomSelect from './index'
 
-describe('CustomSelect Component', () => {
+describe('[CustomSelect]', () => {
   const defaultProps = {
     label: 'Select an option',
     name: 'options',

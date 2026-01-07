@@ -1,6 +1,10 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
+import { useRouter } from 'next/navigation'
+import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
+// COMPONENTS
+import FindUserForm from './index'
 
 // Mock next/navigation
 vi.mock('next/navigation', () => ({
@@ -17,11 +21,7 @@ vi.mock('@prisma/index', () => ({
   prisma: {}
 }))
 
-import { useRouter } from 'next/navigation'
-import type { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
-import FindUserForm from './index'
-
-describe('FindUserForm Component', () => {
+describe('[FindUserForm]', () => {
   const mockPush = vi.fn()
 
   beforeEach(() => {

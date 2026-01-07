@@ -1,9 +1,10 @@
 import { describe, test, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
+// COMPONENTS
 import UserNotFoundPage from './not-found'
 
-describe('UserNotFoundPage Component', () => {
+describe('[UserNotFoundPage]', () => {
   test('renders the not found heading', () => {
     render(<UserNotFoundPage />)
     const heading = screen.getByRole('heading', { name: /user not found/i })
