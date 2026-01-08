@@ -1,10 +1,13 @@
 import { prisma } from '.'
 
 async function main() {
-  await prisma.medicinePresentation.create({
-    data: {
-      description: 'Pills'
-    }
+  await prisma.medicinePresentation.createMany({
+    data: [
+      { description: 'Pills' },
+      { description: 'Injection' },
+      { description: 'Topical' },
+      { description: 'Inhalation' }
+    ]
   })
 }
 main()

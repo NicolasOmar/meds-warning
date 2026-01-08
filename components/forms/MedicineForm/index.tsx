@@ -13,10 +13,11 @@ import DatePicker from '@custom-components/DatePicker'
 import CustomSelect from '@custom-components/CustomSelect'
 // SHARED
 import { MEDICINE_FORM_LABELS } from '@shared-constants/labels'
-import { MedicinePresentationType } from '@shared-types/zod'
+import { MedicinePresentationType, MedicineType } from '@shared-types/zod'
 
 interface MedicineFormStructure {
   presentationsList: MedicinePresentationType[]
+  medicineData?: MedicineType
 }
 
 const generateUserFormStructure = () => ({
@@ -61,7 +62,7 @@ const generateUserFormStructure = () => ({
   }
 })
 
-const MedicineForm: FC<MedicineFormStructure> = ({ presentationsList }) => {
+const MedicineForm: FC<MedicineFormStructure> = ({ presentationsList, medicineData }) => {
   const medicineFormStructure = generateUserFormStructure()
   const [state, formAction, isPending] = useActionState(createMedicineAction, {})
 
@@ -77,8 +78,16 @@ const MedicineForm: FC<MedicineFormStructure> = ({ presentationsList }) => {
       <FieldGroup>
         <FieldSet>
           <FieldLegend>{MEDICINE_FORM_LABELS.TITLE}</FieldLegend>
-          <CustomInput {...medicineFormStructure.name} message={state.errors?.name} />
-          <CustomInput {...medicineFormStructure.laboratory} message={state.errors?.laboratory} />
+          <CustomInput
+            {...medicineFormStructure.name}
+            message={state.errors?.name}
+            value={medicineData?.name ?? ''}
+          />
+          <CustomInput
+            {...medicineFormStructure.laboratory}
+            message={state.errors?.laboratory}
+            value={medicineData?.laboratory ?? ''}
+          />
           <CustomSelect
             {...medicineFormStructure.presentation}
             options={
@@ -87,15 +96,29 @@ const MedicineForm: FC<MedicineFormStructure> = ({ presentationsList }) => {
                 label: presentation.description
               })) ?? []
             }
+            value={medicineData?.presentation?.toString() ?? undefined}
             message={state.errors?.presentation}
           />
           <DatePicker
             {...medicineFormStructure.expirationDate}
             message={state.errors?.expirationDate}
+            value={medicineData?.expirationDate?.toDateString() ?? undefined}
           />
-          <CustomInput {...medicineFormStructure.usedFor} message={state.errors?.usedFor} />
-          <CustomInput {...medicineFormStructure.sideEffects} message={state.errors?.sideEffects} />
-          <CustomTextArea {...medicineFormStructure.comments} message={state.errors?.comments} />
+          <CustomInput
+            {...medicineFormStructure.usedFor}
+            message={state.errors?.usedFor}
+            value={medicineData?.usedFor ?? ''}
+          />
+          <CustomInput
+            {...medicineFormStructure.sideEffects}
+            message={state.errors?.sideEffects}
+            value={medicineData?.sideEffects ?? ''}
+          />
+          <CustomTextArea
+            {...medicineFormStructure.comments}
+            message={state.errors?.comments}
+            value={medicineData?.comments ?? ''}
+          />
         </FieldSet>
       </FieldGroup>
 

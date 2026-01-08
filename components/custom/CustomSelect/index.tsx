@@ -17,6 +17,7 @@ import { CompleteFormFieldPorps } from '@shared-types/interfaces'
 interface CustomSelectProps extends CompleteFormFieldPorps {
   selectLabel?: string
   options: { label: string; value: string }[]
+  value?: string
 }
 
 const CustomSelect: FC<CustomSelectProps> = ({
@@ -25,11 +26,12 @@ const CustomSelect: FC<CustomSelectProps> = ({
   placeholder,
   selectLabel,
   options,
+  value,
   message
 }) => {
   return (
     <FormFieldStructure label={label} name={name} message={message}>
-      <Select name={name}>
+      <Select name={name} defaultValue={value}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder={placeholder} />
         </SelectTrigger>
