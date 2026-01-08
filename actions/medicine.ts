@@ -53,7 +53,7 @@ export async function createMedicineAction(
   try {
     if (id) {
       await prisma.medicine.update({
-        where: { id: parseInt(id, 10) },
+        where: { id: +id },
         data: medicineData
       })
     } else {

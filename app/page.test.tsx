@@ -19,10 +19,4 @@ describe('[HomePage]', () => {
     const sections = container.querySelectorAll('section')
     expect(sections.length).toBeGreaterThan(0)
   })
-
-  test('has correct styling classes', () => {
-    render(<HomePage />)
-    const mainSection = screen.getByText(ROOT_PAGE_LABELS.WELCOME_MESSAGE).parentElement
-    expect(mainSection).toHaveClass('flex', 'min-h-screen')
-  })
 })

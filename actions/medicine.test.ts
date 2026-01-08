@@ -245,4 +245,80 @@ describe('Medicine Actions', () => {
       expect(callArgs.data).toHaveProperty('presentation')
     })
   })
+
+  describe('[createMedicineAction] - Error Handling', () => {
+    test('handles database error on medicine creation', async () => {
+      const { prisma } = await import('@prisma/index')
+
+      const dbError = new Error('Database connection failed')
+      vi.mocked(prisma.medicine.create).mockRejectedValueOnce(dbError)
+
+      const formData = populateFormData(medicineCreationResponse, ['id'])
+      const result = await createMedicineAction({}, formData)
+
+      expect(result.message).toBe('Database connection failed')
+      expect(result.errors).toBeUndefined()
+    })
+
+    test('handles database error on medicine update', async () => {
+      const { prisma } = await import('@prisma/index')
+
+      const dbError = new Error('Record not found')
+      vi.mocked(prisma.medicine.update).mockRejectedValueOnce(dbError)
+
+      const formData = populateFormData(medicineUpdateResponse, ['id'])
+      const result = await createMedicineAction({}, formData, '999')
+
+      expect(result.message).toBe('Record not found')
+      expect(result.errors).toBeUndefined()
+    })
+
+    test('handles Prisma unique constraint error on create', async () => {
+      const { prisma } = await import('@prisma/index')
+
+      const constraintError = new Error('Unique constraint failed on the fields: (`name`)')
+      vi.mocked(prisma.medicine.create).mockRejectedValueOnce(constraintError)
+
+      const formData = populateFormData(medicineCreationResponse, ['id'])
+      const result = await createMedicineAction({}, formData)
+
+      expect(result.message).toBe('Unique constraint failed on the fields: (`name`)')
+    })
+
+    test('handles Prisma unique constraint error on update', async () => {
+      const { prisma } = await import('@prisma/index')
+
+      const constraintError = new Error('Unique constraint failed on the fields: (`name`)')
+      vi.mocked(prisma.medicine.update).mockRejectedValueOnce(constraintError)
+
+      const formData = populateFormData(medicineUpdateResponse, ['id'])
+      const result = await createMedicineAction({}, formData, '1')
+
+      expect(result.message).toBe('Unique constraint failed on the fields: (`name`)')
+    })
+
+    test('handles generic runtime error on create', async () => {
+      const { prisma } = await import('@prisma/index')
+
+      const runtimeError = new Error('Invalid input data format')
+      vi.mocked(prisma.medicine.create).mockRejectedValueOnce(runtimeError)
+
+      const formData = populateFormData(medicineCreationResponse, ['id'])
+      const result = await createMedicineAction({}, formData)
+
+      expect(result.message).toBe('Invalid input data format')
+    })
+
+    test('handles generic runtime error on update', async () => {
+      const { prisma } = await import('@prisma/index')
+
+      const runtimeError = new Error('Transaction timeout')
+      vi.mocked(prisma.medicine.update).mockRejectedValueOnce(runtimeError)
+
+      const formData = populateFormData(medicineUpdateResponse, ['id'])
+      const result = await createMedicineAction({}, formData, '2')
+
+      expect(result.message).toBe('Transaction timeout')
+    })
+  })
 })
