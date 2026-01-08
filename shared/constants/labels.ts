@@ -12,10 +12,6 @@ export enum ROOT_PAGE_LABELS {
   WELCOME_MESSAGE = 'Welcome to this Meds Warning. Please navigate to the [Medicine] page to add new medicines or to the [Concept] page to check its base implementation'
 }
 
-export enum CONCEPT_PAGE_LABELS {
-  WELCOME_MESSAGE = 'Welcome to the Concept Page. Please select any of the options above to explore more.'
-}
-
 export enum MEDICINE_PAGE_LABELS {
   WELCOME_MESSAGE = 'Welcome to the Medicine Page. Please select any of the options above to explore more.'
 }
@@ -68,5 +64,5 @@ export enum MEDICINE_FORM_ERRORS {
 
 export enum MEDICINE_TABLE_LABELS {
   TITLE = 'Medicine List',
-  HEADERS = 'ID,Name,Laboratory,Presentation,Expiration Date,Used For,Side Effects,Comments'
+  HEADERS = 'ID,Name,Laboratory,Presentation,Expiration Date,Used For,Side Effects,Comments,Actions'
 }
