@@ -8,12 +8,13 @@ import { MedicineActionState } from '@shared-types/states'
 import { COMMON_FORM_ERRORS, MEDICINE_FORM_LABELS } from '@shared-constants/labels'
 
 const parseEmptyFormValueToNull = (value: FormDataEntryValue | null) => {
-  return value === '' ? null : value
+  return value === '' || value === null ? null : value
 }
 
 export async function createMedicineAction(
   _: MedicineActionState,
-  formData: FormData
+  formData: FormData,
+  id?: string
 ): Promise<MedicineActionState> {
   const expirationDate = formData.get('expirationDate')
     ? new Date(formData.get('expirationDate') as string)
@@ -39,19 +40,36 @@ export async function createMedicineAction(
     }
   }
 
-  await prisma.medicine.create({
-    data: {
-      name: validatedFields.data.name,
-      laboratory: validatedFields.data.laboratory,
-      presentation: validatedFields.data.presentation,
-      expirationDate,
-      usedFor: validatedFields.data.usedFor,
-      sideEffects: validatedFields.data.sideEffects,
-      comments: validatedFields.data.comments
-    }
-  })
+  const medicineData = {
+    name: validatedFields.data.name,
+    laboratory: validatedFields.data.laboratory,
+    presentation: validatedFields.data.presentation,
+    expirationDate,
+    usedFor: validatedFields.data.usedFor,
+    sideEffects: validatedFields.data.sideEffects,
+    comments: validatedFields.data.comments
+  }
 
-  return {
-    message: MEDICINE_FORM_LABELS.SUCCESS
+  try {
+    if (id) {
+      await prisma.medicine.update({
+        where: { id: +id },
+        data: medicineData
+      })
+    } else {
+      await prisma.medicine.create({
+        data: medicineData
+      })
+    }
+
+    return {
+      message: id ? MEDICINE_FORM_LABELS.UPDATE_SUCCESS : MEDICINE_FORM_LABELS.CREATE_SUCCESS
+    }
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error)
+
+    return {
+      message: errorMessage || COMMON_FORM_ERRORS.SUBMISSION_ERROR
+    }
   }
 }

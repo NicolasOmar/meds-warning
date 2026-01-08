@@ -13,7 +13,7 @@ vi.mock('@shared-constants/routes', () => ({
   ]
 }))
 
-describe('MedicineLayout Component', () => {
+describe('[MedicineLayout]', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })

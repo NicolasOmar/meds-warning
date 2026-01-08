@@ -3,22 +3,19 @@ import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 // COMPONENTS
 import CustomSelect from './index'
+// MOCKS
+import {
+  defaultProps,
+  animalOptions,
+  propsWithLabel,
+  propsWithMessage,
+  propsWithMessages
+} from './mocks.json'
 
 describe('[CustomSelect]', () => {
-  const defaultProps = {
-    label: 'Select an option',
-    name: 'options',
-    placeholder: 'Choose one...',
-    options: [
-      { label: 'Option 1', value: 'opt1' },
-      { label: 'Option 2', value: 'opt2' },
-      { label: 'Option 3', value: 'opt3' }
-    ]
-  }
-
   test('renders the field label', () => {
     render(<CustomSelect {...defaultProps} />)
-    const label = screen.getByText('Select an option')
+    const label = screen.getByText(defaultProps.label)
     expect(label).toBeInTheDocument()
   })
 
@@ -35,23 +32,15 @@ describe('[CustomSelect]', () => {
   })
 
   test('renders with select label when provided', () => {
-    const propsWithLabel = {
-      ...defaultProps,
-      selectLabel: 'Available Options'
-    }
     const { container } = render(<CustomSelect {...propsWithLabel} />)
     const field = container.querySelector('[role="group"]')
     expect(field).toBeInTheDocument()
   })
 
   test('includes options in component props', () => {
-    const optionsList = [
-      { label: 'Cat', value: 'cat' },
-      { label: 'Dog', value: 'dog' }
-    ]
     const propsWithOptions = {
       ...defaultProps,
-      options: optionsList
+      options: animalOptions
     }
     render(<CustomSelect {...propsWithOptions} />)
     const trigger = screen.getByRole('combobox')
@@ -59,24 +48,18 @@ describe('[CustomSelect]', () => {
   })
 
   test('renders with message prop', () => {
-    const propsWithMessage = {
-      ...defaultProps,
-      message: 'This is a helpful message'
-    }
     const { container } = render(<CustomSelect {...propsWithMessage} />)
     const description = container.querySelector('[data-slot="field-description"]')
-    expect(description).toHaveTextContent('This is a helpful message')
+    expect(description).toHaveTextContent(propsWithMessage.message)
   })
 
   test('renders with array of messages', () => {
-    const propsWithMessages = {
-      ...defaultProps,
-      message: ['Error 1', 'Error 2']
-    }
     const { container } = render(<CustomSelect {...propsWithMessages} />)
     const description = container.querySelector('[data-slot="field-description"]')
-    expect(description).toHaveTextContent('Error 1')
-    expect(description).toHaveTextContent('Error 2')
+
+    propsWithMessages.message.forEach(msg => {
+      expect(description).toHaveTextContent(msg)
+    })
   })
 
   test('has correct select name attribute', () => {

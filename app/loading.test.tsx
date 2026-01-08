@@ -5,7 +5,7 @@ import '@testing-library/jest-dom'
 // COMPONENTS
 import HomeLoading from './loading'
 
-describe('HomeLoading Component', () => {
+describe('[HomeLoading]', () => {
   test('renders loading component with spinner element', () => {
     const { container } = render(<HomeLoading />)
 

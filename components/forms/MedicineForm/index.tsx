@@ -1,6 +1,7 @@
 'use client'
 // CORE
 import { FC, useActionState, useEffect } from 'react'
+import { redirect } from 'next/navigation'
 // FORM
 import { createMedicineAction } from '@actions/medicine'
 // COMPONENTS
@@ -13,10 +14,13 @@ import DatePicker from '@custom-components/DatePicker'
 import CustomSelect from '@custom-components/CustomSelect'
 // SHARED
 import { MEDICINE_FORM_LABELS } from '@shared-constants/labels'
-import { MedicinePresentationType } from '@shared-types/zod'
+import { MedicinePresentationType, MedicineType } from '@shared-types/zod'
+import { MedicineActionState } from '@shared-types/states'
+import { ROUTES } from '@shared-constants/routes'
 
 interface MedicineFormStructure {
   presentationsList: MedicinePresentationType[]
+  medicineData?: MedicineType
 }
 
 const generateUserFormStructure = () => ({
@@ -61,24 +65,36 @@ const generateUserFormStructure = () => ({
   }
 })
 
-const MedicineForm: FC<MedicineFormStructure> = ({ presentationsList }) => {
+const MedicineForm: FC<MedicineFormStructure> = ({ presentationsList, medicineData }) => {
   const medicineFormStructure = generateUserFormStructure()
-  const [state, formAction, isPending] = useActionState(createMedicineAction, {})
+  const formAction = (state: MedicineActionState, formData: FormData) =>
+    createMedicineAction(state, formData, medicineData?.id?.toString())
+  const [state, boundFormAction, isPending] = useActionState(formAction, {})
 
   useEffect(() => {
     if (state?.message) {
       const toastAction = state.errors ? toast.error : toast.success
+
       toastAction(state.message)
+      redirect(ROUTES.MEDICINE_LIST)
     }
   }, [state.message, state.errors])
 
   return (
-    <form action={formAction} className="flex flex-col gap-4">
+    <form action={boundFormAction} className="flex flex-col gap-4">
       <FieldGroup>
         <FieldSet>
           <FieldLegend>{MEDICINE_FORM_LABELS.TITLE}</FieldLegend>
-          <CustomInput {...medicineFormStructure.name} message={state.errors?.name} />
-          <CustomInput {...medicineFormStructure.laboratory} message={state.errors?.laboratory} />
+          <CustomInput
+            {...medicineFormStructure.name}
+            message={state.errors?.name}
+            value={medicineData?.name ?? ''}
+          />
+          <CustomInput
+            {...medicineFormStructure.laboratory}
+            message={state.errors?.laboratory}
+            value={medicineData?.laboratory ?? ''}
+          />
           <CustomSelect
             {...medicineFormStructure.presentation}
             options={
@@ -87,15 +103,29 @@ const MedicineForm: FC<MedicineFormStructure> = ({ presentationsList }) => {
                 label: presentation.description
               })) ?? []
             }
+            value={medicineData?.presentation?.toString() ?? undefined}
             message={state.errors?.presentation}
           />
           <DatePicker
             {...medicineFormStructure.expirationDate}
             message={state.errors?.expirationDate}
+            value={medicineData?.expirationDate?.toISOString() ?? undefined}
           />
-          <CustomInput {...medicineFormStructure.usedFor} message={state.errors?.usedFor} />
-          <CustomInput {...medicineFormStructure.sideEffects} message={state.errors?.sideEffects} />
-          <CustomTextArea {...medicineFormStructure.comments} message={state.errors?.comments} />
+          <CustomInput
+            {...medicineFormStructure.usedFor}
+            message={state.errors?.usedFor}
+            value={medicineData?.usedFor ?? ''}
+          />
+          <CustomInput
+            {...medicineFormStructure.sideEffects}
+            message={state.errors?.sideEffects}
+            value={medicineData?.sideEffects ?? ''}
+          />
+          <CustomTextArea
+            {...medicineFormStructure.comments}
+            message={state.errors?.comments}
+            value={medicineData?.comments ?? ''}
+          />
         </FieldSet>
       </FieldGroup>
 

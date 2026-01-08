@@ -1,0 +1,25 @@
+{
+  "defaultProps": {
+    "label": "Description",
+    "name": "description",
+    "placeholder": "Enter your description here..."
+  },
+  "propsWithValue": {
+    "label": "Description",
+    "name": "description",
+    "placeholder": "Enter your description here...",
+    "value": "Some existing text"
+  },
+  "customPlaceholder": {
+    "label": "Description",
+    "name": "description",
+    "placeholder": "Write your notes here"
+  },
+  "customNameAndLabel": {
+    "label": "Comments",
+    "name": "comments",
+    "placeholder": "Add comments...",
+    "value": ""
+  },
+  "longTextValue": "This is a very long text that spans multiple lines and contains lots of content for testing purposes."
+}

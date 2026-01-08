@@ -1,0 +1,58 @@
+{
+  "medicineCreationResponse": {
+    "id": 1,
+    "name": "Aspirin",
+    "laboratory": "Bayer",
+    "presentation": 1,
+    "expirationDate": "2025-12-31",
+    "usedFor": "Pain relief",
+    "sideEffects": "None",
+    "comments": "Take with water"
+  },
+  "missingRequiredFieldsData": {
+    "name": "",
+    "laboratory": "Bayer"
+  },
+  "emptyNullFormValues": {
+    "name": "Paracetamol",
+    "presentation": "1"
+  },
+  "presentationStringToNumber": {
+    "name": "Medicine",
+    "presentation": "5"
+  },
+  "convertsDateStringToDateObj": {
+    "name": "Medicine",
+    "presentation": "1",
+    "expirationDate": "2025-11-20"
+  },
+  "minimalFormData": {
+    "name": "Aspirin",
+    "presentation": "1"
+  },
+  "medicineUpdateResponse": {
+    "id": 2,
+    "name": "Ibuprofen",
+    "laboratory": "Reckitt",
+    "presentation": 2,
+    "expirationDate": "2026-06-15",
+    "usedFor": "Fever and pain",
+    "sideEffects": "Stomach upset",
+    "comments": "Take after meals"
+  },
+  "medicineUpdateWithNullFields": {
+    "id": 3,
+    "name": "Paracetamol",
+    "laboratory": null,
+    "presentation": 1,
+    "expirationDate": null,
+    "usedFor": null,
+    "sideEffects": null,
+    "comments": null
+  },
+  "medicineUpdateOnlyName": {
+    "id": 4,
+    "name": "Updated Medicine Name",
+    "presentation": "1"
+  }
+}

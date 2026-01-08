@@ -25,19 +25,3 @@ export const MedicinePresentationSchema = z.object({
 })
 
 export type MedicinePresentationType = z.infer<typeof MedicinePresentationSchema>
-
-export const UserSchema = z.object({
-  email: z.string()
-})
-
-export type UserType = z.infer<typeof UserSchema>
-
-export const UserFormSchema = z.object({
-  id: z.number().int().optional(),
-  name: z.string(),
-  lastName: z.string().optional(),
-  likedMovie: z.string().optional(),
-  email: z.string()
-})
-
-export type UserFormType = z.infer<typeof UserFormSchema>

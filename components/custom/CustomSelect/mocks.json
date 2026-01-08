@@ -1,0 +1,49 @@
+{
+  "defaultProps": {
+    "label": "Select an option",
+    "name": "options",
+    "placeholder": "Choose one...",
+    "options": [
+      { "label": "Option 1", "value": "opt1" },
+      { "label": "Option 2", "value": "opt2" },
+      { "label": "Option 3", "value": "opt3" }
+    ]
+  },
+  "animalOptions": [
+    { "label": "Cat", "value": "cat" },
+    { "label": "Dog", "value": "dog" }
+  ],
+  "propsWithLabel": {
+    "label": "Select an option",
+    "name": "options",
+    "placeholder": "Choose one...",
+    "options": [
+      { "label": "Option 1", "value": "opt1" },
+      { "label": "Option 2", "value": "opt2" },
+      { "label": "Option 3", "value": "opt3" }
+    ],
+    "selectLabel": "Available Options"
+  },
+  "propsWithMessage": {
+    "label": "Select an option",
+    "name": "options",
+    "placeholder": "Choose one...",
+    "options": [
+      { "label": "Option 1", "value": "opt1" },
+      { "label": "Option 2", "value": "opt2" },
+      { "label": "Option 3", "value": "opt3" }
+    ],
+    "message": "This is a helpful message"
+  },
+  "propsWithMessages": {
+    "label": "Select an option",
+    "name": "options",
+    "placeholder": "Choose one...",
+    "options": [
+      { "label": "Option 1", "value": "opt1" },
+      { "label": "Option 2", "value": "opt2" },
+      { "label": "Option 3", "value": "opt3" }
+    ],
+    "message": ["Error 1", "Error 2"]
+  }
+}

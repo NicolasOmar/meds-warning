@@ -1,0 +1,14 @@
+{
+  "defaultProps": {
+    "label": "Email",
+    "name": "email",
+    "type": "email",
+    "placeholder": "john@example.com"
+  },
+  "textFieldProps": {
+    "label": "Name",
+    "name": "textField",
+    "type": "text",
+    "placeholder": "john@example.com"
+  }
+}

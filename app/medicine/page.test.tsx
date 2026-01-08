@@ -7,7 +7,7 @@ import MedicineHomePage from './page'
 // SHARED
 import { MEDICINE_PAGE_LABELS } from '@shared-constants/labels'
 
-describe('MedicineHomePage Component', () => {
+describe('[MedicineHomePage]', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })

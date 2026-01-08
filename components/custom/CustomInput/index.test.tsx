@@ -3,41 +3,36 @@ import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 // COMPONENTS
 import CustomField from './index'
+// MOCKS
+import { defaultProps, textFieldProps } from './mocks.json'
 
 describe('[CustomField]', () => {
-  const defaultProps = {
-    label: 'Email',
-    name: 'email',
-    type: 'email',
-    placeholder: 'john@example.com'
-  }
-
   test('renders the field label', () => {
     render(<CustomField {...defaultProps} />)
-    const label = screen.getByLabelText('Email')
+    const label = screen.getByLabelText(defaultProps.label)
     expect(label).toBeInTheDocument()
   })
 
   test('renders the input with correct attributes', () => {
     render(<CustomField {...defaultProps} />)
     const input = screen.getByRole('textbox')
-    expect(input).toHaveAttribute('name', 'email')
-    expect(input).toHaveAttribute('type', 'email')
-    expect(input).toHaveAttribute('placeholder', 'john@example.com')
+    expect(input).toHaveAttribute('name', defaultProps.name)
+    expect(input).toHaveAttribute('type', defaultProps.type)
+    expect(input).toHaveAttribute('placeholder', defaultProps.placeholder)
     expect(input).not.toBeRequired()
   })
 
   test('renders with value prop', () => {
-    render(<CustomField {...defaultProps} value="existing@example.com" />)
+    const customValue = 'existing@example.com'
+    render(<CustomField {...defaultProps} value={customValue} />)
     const input = screen.getByRole('textbox')
-    expect(input).toHaveValue('existing@example.com')
+    expect(input).toHaveValue(customValue)
   })
 
   test('renders with text type input', () => {
-    const textFieldProps = { ...defaultProps, type: 'text', label: 'Name' }
     render(<CustomField {...textFieldProps} />)
-    const input = screen.getByPlaceholderText('john@example.com')
-    expect(input).toHaveAttribute('type', 'text')
+    const input = screen.getByPlaceholderText(textFieldProps.placeholder)
+    expect(input).toHaveAttribute('type', textFieldProps.type)
   })
 
   test('input is marked as required', () => {
