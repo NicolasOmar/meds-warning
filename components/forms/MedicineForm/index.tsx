@@ -1,6 +1,7 @@
 'use client'
 // CORE
 import { FC, useActionState, useEffect } from 'react'
+import { redirect } from 'next/navigation'
 // FORM
 import { createMedicineAction } from '@actions/medicine'
 // COMPONENTS
@@ -14,6 +15,8 @@ import CustomSelect from '@custom-components/CustomSelect'
 // SHARED
 import { MEDICINE_FORM_LABELS } from '@shared-constants/labels'
 import { MedicinePresentationType, MedicineType } from '@shared-types/zod'
+import { MedicineActionState } from '@shared-types/states'
+import { ROUTES } from '@shared-constants/routes'
 
 interface MedicineFormStructure {
   presentationsList: MedicinePresentationType[]
@@ -64,17 +67,21 @@ const generateUserFormStructure = () => ({
 
 const MedicineForm: FC<MedicineFormStructure> = ({ presentationsList, medicineData }) => {
   const medicineFormStructure = generateUserFormStructure()
-  const [state, formAction, isPending] = useActionState(createMedicineAction, {})
+  const formAction = (state: MedicineActionState, formData: FormData) =>
+    createMedicineAction(state, formData, medicineData?.id)
+  const [state, boundFormAction, isPending] = useActionState(formAction, {})
 
   useEffect(() => {
     if (state?.message) {
       const toastAction = state.errors ? toast.error : toast.success
+
       toastAction(state.message)
+      redirect(ROUTES.MEDICINE_LIST)
     }
   }, [state.message, state.errors])
 
   return (
-    <form action={formAction} className="flex flex-col gap-4">
+    <form action={boundFormAction} className="flex flex-col gap-4">
       <FieldGroup>
         <FieldSet>
           <FieldLegend>{MEDICINE_FORM_LABELS.TITLE}</FieldLegend>
@@ -102,7 +109,7 @@ const MedicineForm: FC<MedicineFormStructure> = ({ presentationsList, medicineDa
           <DatePicker
             {...medicineFormStructure.expirationDate}
             message={state.errors?.expirationDate}
-            value={medicineData?.expirationDate?.toDateString() ?? undefined}
+            value={medicineData?.expirationDate?.toISOString() ?? undefined}
           />
           <CustomInput
             {...medicineFormStructure.usedFor}

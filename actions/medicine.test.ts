@@ -66,7 +66,7 @@ describe('Medicine Actions', () => {
 
       const result = await createMedicineAction({}, formData)
 
-      expect(result.message).toBe(MEDICINE_FORM_LABELS.SUCCESS)
+      expect(result.message).toBe(MEDICINE_FORM_LABELS.CREATE_SUCCESS)
       expect(result.errors).toBeUndefined()
     })
 
@@ -91,7 +91,7 @@ describe('Medicine Actions', () => {
       const result = await createMedicineAction({}, formData)
 
       // Should succeed because required fields are provided
-      expect(result.message).toBe(MEDICINE_FORM_LABELS.SUCCESS)
+      expect(result.message).toBe(MEDICINE_FORM_LABELS.CREATE_SUCCESS)
     })
 
     test('converts presentation string to number', async () => {
@@ -103,7 +103,7 @@ describe('Medicine Actions', () => {
       const result = await createMedicineAction({}, formData)
 
       // Should succeed when presentation is a valid number string
-      expect(result.message).toBe(MEDICINE_FORM_LABELS.SUCCESS)
+      expect(result.message).toBe(MEDICINE_FORM_LABELS.CREATE_SUCCESS)
     })
 
     test('converts date string to Date object', async () => {
@@ -116,7 +116,7 @@ describe('Medicine Actions', () => {
       const result = await createMedicineAction({}, formData)
 
       // Should succeed when date is valid
-      expect(result.message).toBe(MEDICINE_FORM_LABELS.SUCCESS)
+      expect(result.message).toBe(MEDICINE_FORM_LABELS.CREATE_SUCCESS)
     })
 
     test('returns error for name exceeding max length', async () => {
@@ -139,7 +139,7 @@ describe('Medicine Actions', () => {
       const result = await createMedicineAction({}, formData)
 
       // Should succeed with just name and presentation (required fields)
-      expect(result.message).toBe(MEDICINE_FORM_LABELS.SUCCESS)
+      expect(result.message).toBe(MEDICINE_FORM_LABELS.CREATE_SUCCESS)
     })
 
     test('calls prisma.medicine.create with correct data', async () => {

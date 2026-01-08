@@ -1,7 +1,8 @@
 export enum COMMON_FORM_LABELS {}
 
 export enum COMMON_FORM_ERRORS {
-  FORM_INPUTS_ERROR = 'Sended information has an error. Please read and correct the commented fields.'
+  FORM_INPUTS_ERROR = 'Sended information has an error. Please read and correct the commented fields.',
+  SUBMISSION_ERROR = 'An error occurred while submitting the form. Please try again later.'
 }
 
 export enum COMMON_TABLE_ERRORS {
@@ -48,7 +49,8 @@ export enum MEDICINE_FORM_LABELS {
   COMMENTS = 'Additional Comments:',
   COMMENTS_PLACEHOLDER = 'Take with food',
   SUBMIT_BUTTON = 'Add Medicine',
-  SUCCESS = 'Medicine added successfully!'
+  CREATE_SUCCESS = 'Medicine added successfully!',
+  UPDATE_SUCCESS = 'Medicine updated successfully!'
 }
 
 export enum MEDICINE_FORM_ERRORS {

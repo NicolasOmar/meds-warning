@@ -13,9 +13,6 @@ const UpdateMedicinePage: FC<UpdateMedicinePageProps> = async ({ params }) => {
   const { id } = await params
   const presentationsList = await prisma.medicinePresentation.findMany({})
 
-  console.warn(presentationsList)
-  console.warn('Updating medicine with ID:', id)
-
   if (!id || Number.isNaN(+id)) {
     notFound()
   }
