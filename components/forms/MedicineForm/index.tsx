@@ -68,7 +68,7 @@ const generateUserFormStructure = () => ({
 const MedicineForm: FC<MedicineFormStructure> = ({ presentationsList, medicineData }) => {
   const medicineFormStructure = generateUserFormStructure()
   const formAction = (state: MedicineActionState, formData: FormData) =>
-    createMedicineAction(state, formData, medicineData?.id)
+    createMedicineAction(state, formData, medicineData?.id?.toString())
   const [state, boundFormAction, isPending] = useActionState(formAction, {})
 
   useEffect(() => {

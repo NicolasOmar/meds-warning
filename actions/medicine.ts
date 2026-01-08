@@ -14,7 +14,7 @@ const parseEmptyFormValueToNull = (value: FormDataEntryValue | null) => {
 export async function createMedicineAction(
   _: MedicineActionState,
   formData: FormData,
-  id?: number
+  id?: string
 ): Promise<MedicineActionState> {
   const expirationDate = formData.get('expirationDate')
     ? new Date(formData.get('expirationDate') as string)
@@ -53,7 +53,7 @@ export async function createMedicineAction(
   try {
     if (id) {
       await prisma.medicine.update({
-        where: { id },
+        where: { id: parseInt(id, 10) },
         data: medicineData
       })
     } else {
