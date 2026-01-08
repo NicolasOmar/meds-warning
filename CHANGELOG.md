@@ -1,3 +1,19 @@
+# [1.3.0](https://github.com/NicolasOmar/meds-warning/compare/v1.2.0...v1.3.0) (2026-01-08)
+
+
+### Bug Fixes
+
+* adding a new unit test file to improve coverage in the new page ([ea6b2a1](https://github.com/NicolasOmar/meds-warning/commit/ea6b2a16d908fb0aaa0f3d7424e1e19405496b41))
+* adding an update button to medicine table and first implementation of edit form ([469a4f6](https://github.com/NicolasOmar/meds-warning/commit/469a4f6fd9ffbcefe64624a6e6ef9f698a317c5d))
+* adding unit tests for medicine new form action ([dece5d7](https://github.com/NicolasOmar/meds-warning/commit/dece5d7d68d10734bfe823778d730a6f5d261144))
+* readjusting form action to handle medicine creation and update ([10ffde5](https://github.com/NicolasOmar/meds-warning/commit/10ffde5650f809295fe3fa052abf22017f15caeb))
+* removing all references to concept feature ([0ade10b](https://github.com/NicolasOmar/meds-warning/commit/0ade10b85c7319e98b0c3d4894bde25db4860e12))
+
+
+### Features
+
+* Merge pull request [#22](https://github.com/NicolasOmar/meds-warning/issues/22)/[#21](https://github.com/NicolasOmar/meds-warning/issues/21) from NicolasOmar/feature/edit-a-created-medicines-data ([e9aabb2](https://github.com/NicolasOmar/meds-warning/commit/e9aabb21487cb016ca0e330bfaa43bcff756ba85))
+
 # [1.2.0](https://github.com/NicolasOmar/meds-warning/compare/v1.1.0...v1.2.0) (2026-01-07)
 
 
