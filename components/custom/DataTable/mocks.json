@@ -1,0 +1,27 @@
+{
+  "baseHeaders": ["ID", "Name", "Description"],
+  "baseTestData": [
+    { "id": 1, "name": "Item 1", "description": "Description 1" },
+    { "id": 2, "name": "Item 2", "description": "Description 2" }
+  ],
+  "customNoDataMessage": "No items available",
+  "customTableTitle": "Custom Data Table Title",
+  "complexHeaders": ["ID", "First Name", "Last Name", "Email"],
+  "complexTestData": [
+    { "id": 1, "firstName": "John", "lastName": "Doe", "email": "john@example.com" },
+    { "id": 2, "firstName": "Jane", "lastName": "Smith", "email": "jane@example.com" },
+    { "id": 3, "firstName": "Bob", "lastName": "Johnson", "email": "bob@example.com" }
+  ],
+  "mixedHeaders": ["ID", "Name", "Age", "City"],
+  "mixedData": [
+    { "id": 1, "name": "Alice", "age": 30, "city": null },
+    { "id": 2, "name": null, "age": 25, "city": "NYC" },
+    { "id": 3, "name": "Bob", "age": null, "city": "LA" }
+  ],
+  "numericHeaders": ["ID", "Count", "Price"],
+  "numericData": [
+    { "id": 1, "count": 100, "price": 99.99 },
+    { "id": 2, "count": 200, "price": 149.99 },
+    { "id": 3, "count": 300, "price": 199.99 }
+  ]
+}

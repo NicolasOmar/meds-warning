@@ -41,12 +41,22 @@ describe('[MedicineForm]', () => {
     expect(legend).toBeInTheDocument()
   })
 
-  test('renders all required input fields', () => {
+  test('renders medicine inputs with correct label', () => {
+    const labels = [
+      MEDICINE_FORM_LABELS.NAME,
+      MEDICINE_FORM_LABELS.LABORATORY,
+      MEDICINE_FORM_LABELS.EXPIRATION_DATE,
+      MEDICINE_FORM_LABELS.USED_FOR,
+      MEDICINE_FORM_LABELS.SIDE_EFFECTS,
+      MEDICINE_FORM_LABELS.COMMENTS
+    ]
+
     render(<MedicineForm presentationsList={mockPresentations} />)
-    expect(screen.getByLabelText(MEDICINE_FORM_LABELS.NAME)).toBeInTheDocument()
-    expect(screen.getByLabelText(MEDICINE_FORM_LABELS.LABORATORY)).toBeInTheDocument()
-    expect(screen.getByLabelText(MEDICINE_FORM_LABELS.USED_FOR)).toBeInTheDocument()
-    expect(screen.getByLabelText(MEDICINE_FORM_LABELS.SIDE_EFFECTS)).toBeInTheDocument()
+
+    labels.forEach(label => {
+      const input = screen.getByLabelText(label)
+      expect(input).toBeInTheDocument()
+    })
   })
 
   test('renders presentation select field', () => {
@@ -55,28 +65,17 @@ describe('[MedicineForm]', () => {
     expect(select).toBeInTheDocument()
   })
 
-  test('renders date picker field for expiration date', () => {
-    render(<MedicineForm presentationsList={mockPresentations} />)
-    const label = screen.getByText(MEDICINE_FORM_LABELS.EXPIRATION_DATE)
-    expect(label).toBeInTheDocument()
-  })
-
-  test('renders comments textarea field', () => {
-    render(<MedicineForm presentationsList={mockPresentations} />)
-    const label = screen.getByText(MEDICINE_FORM_LABELS.COMMENTS)
-    expect(label).toBeInTheDocument()
-  })
-
   test('renders submit button', () => {
     render(<MedicineForm presentationsList={mockPresentations} />)
     const button = screen.getByRole('button', { name: MEDICINE_FORM_LABELS.SUBMIT_BUTTON })
     expect(button).toBeInTheDocument()
+    expect(button).toHaveAttribute('type', 'submit')
   })
 
-  test('submit button has type submit', () => {
+  test('renders button in disabled state conditionally', () => {
     render(<MedicineForm presentationsList={mockPresentations} />)
     const button = screen.getByRole('button', { name: MEDICINE_FORM_LABELS.SUBMIT_BUTTON })
-    expect(button).toHaveAttribute('type', 'submit')
+    expect(button).not.toBeDisabled()
   })
 
   test('renders form with correct structure', () => {
@@ -92,34 +91,21 @@ describe('[MedicineForm]', () => {
     expect(fieldGroup).toBeInTheDocument()
   })
 
-  test('medicine name input has correct placeholder', () => {
-    render(<MedicineForm presentationsList={mockPresentations} />)
-    const input = screen.getByPlaceholderText(MEDICINE_FORM_LABELS.NAME_PLACEHOLDER)
-    expect(input).toBeInTheDocument()
-  })
+  test('renders medicine inputs with correct placeholders', () => {
+    const placeholders = [
+      MEDICINE_FORM_LABELS.NAME_PLACEHOLDER,
+      MEDICINE_FORM_LABELS.LABORATORY_PLACEHOLDER,
+      MEDICINE_FORM_LABELS.USED_FOR_PLACEHOLDER,
+      MEDICINE_FORM_LABELS.SIDE_EFFECTS_PLACEHOLDER,
+      MEDICINE_FORM_LABELS.COMMENTS_PLACEHOLDER
+    ]
 
-  test('laboratory input has correct placeholder', () => {
     render(<MedicineForm presentationsList={mockPresentations} />)
-    const input = screen.getByPlaceholderText(MEDICINE_FORM_LABELS.LABORATORY_PLACEHOLDER)
-    expect(input).toBeInTheDocument()
-  })
 
-  test('used for input has correct placeholder', () => {
-    render(<MedicineForm presentationsList={mockPresentations} />)
-    const input = screen.getByPlaceholderText(MEDICINE_FORM_LABELS.USED_FOR_PLACEHOLDER)
-    expect(input).toBeInTheDocument()
-  })
-
-  test('side effects input has correct placeholder', () => {
-    render(<MedicineForm presentationsList={mockPresentations} />)
-    const input = screen.getByPlaceholderText(MEDICINE_FORM_LABELS.SIDE_EFFECTS_PLACEHOLDER)
-    expect(input).toBeInTheDocument()
-  })
-
-  test('comments textarea has correct placeholder', () => {
-    render(<MedicineForm presentationsList={mockPresentations} />)
-    const textarea = screen.getByPlaceholderText(MEDICINE_FORM_LABELS.COMMENTS_PLACEHOLDER)
-    expect(textarea).toBeInTheDocument()
+    placeholders.forEach(placeholder => {
+      const input = screen.getByPlaceholderText(placeholder)
+      expect(input).toBeInTheDocument()
+    })
   })
 
   test('renders with empty presentations list', () => {
@@ -128,26 +114,9 @@ describe('[MedicineForm]', () => {
     expect(legend).toBeInTheDocument()
   })
 
-  test('all text input fields are present', () => {
-    render(<MedicineForm presentationsList={mockPresentations} />)
-    const inputs = screen.getAllByRole('textbox')
-    expect(inputs.length).toBeGreaterThan(0)
-  })
-
-  test('presentation select receives correct options from props', () => {
-    render(<MedicineForm presentationsList={mockPresentations} />)
-    expect(screen.getByRole('combobox')).toBeInTheDocument()
-  })
-
   test('form is properly client-side rendered', () => {
     const { container } = render(<MedicineForm presentationsList={mockPresentations} />)
     const form = container.querySelector('form')
     expect(form).toHaveAttribute('class')
-  })
-
-  test('renders button in disabled state conditionally', () => {
-    render(<MedicineForm presentationsList={mockPresentations} />)
-    const button = screen.getByRole('button', { name: MEDICINE_FORM_LABELS.SUBMIT_BUTTON })
-    expect(button).not.toBeDisabled()
   })
 })

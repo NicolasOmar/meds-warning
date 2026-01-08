@@ -16,7 +16,7 @@ describe('[FormFieldStructure]', () => {
         <input type="text" />
       </FormFieldStructure>
     )
-    const label = screen.getByText('Email')
+    const label = screen.getByText(defaultProps.label)
     expect(label).toBeInTheDocument()
   })
 
@@ -26,8 +26,8 @@ describe('[FormFieldStructure]', () => {
         <input type="text" />
       </FormFieldStructure>
     )
-    const label = screen.getByText('Email')
-    expect(label).toHaveAttribute('for', 'email')
+    const label = screen.getByText(defaultProps.label)
+    expect(label).toHaveAttribute('for', defaultProps.name)
   })
 
   test('renders the children', () => {
@@ -41,16 +41,17 @@ describe('[FormFieldStructure]', () => {
   })
 
   test('renders with message string', () => {
+    const helpfulMessage = 'This is a helpful message'
     const propsWithMessage = {
       ...defaultProps,
-      message: 'This is a helpful message'
+      message: helpfulMessage
     }
     render(
       <FormFieldStructure {...propsWithMessage}>
         <input type="text" />
       </FormFieldStructure>
     )
-    expect(screen.getByText('This is a helpful message')).toBeInTheDocument()
+    expect(screen.getByText(helpfulMessage)).toBeInTheDocument()
   })
 
   test('renders without message when not provided', () => {
@@ -59,14 +60,15 @@ describe('[FormFieldStructure]', () => {
         <input type="text" />
       </FormFieldStructure>
     )
-    const label = screen.getByText('Email')
+    const label = screen.getByText(defaultProps.label)
     expect(label).toBeInTheDocument()
   })
 
   test('renders with array of messages', () => {
+    const errorMessages = ['Error 1', 'Error 2', 'Error 3']
     const propsWithMessages = {
       ...defaultProps,
-      message: ['Error 1', 'Error 2', 'Error 3']
+      message: errorMessages
     }
     const { container } = render(
       <FormFieldStructure {...propsWithMessages}>
@@ -74,9 +76,10 @@ describe('[FormFieldStructure]', () => {
       </FormFieldStructure>
     )
     const description = container.querySelector('[data-slot="field-description"]')
-    expect(description).toHaveTextContent('Error 1')
-    expect(description).toHaveTextContent('Error 2')
-    expect(description).toHaveTextContent('Error 3')
+
+    errorMessages.forEach(msg => {
+      expect(description).toHaveTextContent(msg)
+    })
   })
 
   test('renders with single item in message array', () => {
@@ -126,39 +129,29 @@ describe('[FormFieldStructure]', () => {
         <input type="password" />
       </FormFieldStructure>
     )
-    const label = screen.getByText('Password')
-    expect(label).toHaveAttribute('for', 'password')
+    const label = screen.getByText(customProps.label)
+    expect(label).toHaveAttribute('for', customProps.name)
   })
 
   test('renders complex children components', () => {
+    const complexFieldConfig = {
+      label: 'Complex Field',
+      name: 'complex',
+      text: 'Helper text'
+    }
     const complexChildren = (
       <div>
         <input type="text" />
-        <span>Helper text</span>
+        <span>{complexFieldConfig.text}</span>
       </div>
     )
     render(
-      <FormFieldStructure label="Complex Field" name="complex">
+      <FormFieldStructure label={complexFieldConfig.label} name={complexFieldConfig.name}>
         {complexChildren}
       </FormFieldStructure>
     )
-    expect(screen.getByText('Complex Field')).toBeInTheDocument()
-    expect(screen.getByText('Helper text')).toBeInTheDocument()
-  })
-
-  test('message array items render correctly', () => {
-    const propsWithMessages = {
-      ...defaultProps,
-      message: ['Message A', 'Message B']
-    }
-    const { container } = render(
-      <FormFieldStructure {...propsWithMessages}>
-        <input type="text" />
-      </FormFieldStructure>
-    )
-    const description = container.querySelector('[data-slot="field-description"]')
-    expect(description).toHaveTextContent('Message A')
-    expect(description).toHaveTextContent('Message B')
+    expect(screen.getByText(complexFieldConfig.label)).toBeInTheDocument()
+    expect(screen.getByText(complexFieldConfig.text)).toBeInTheDocument()
   })
 
   test('handles undefined message gracefully', () => {
