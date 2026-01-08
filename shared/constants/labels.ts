@@ -1,3 +1,4 @@
+// COMMON LABELS
 export enum COMMON_FORM_LABELS {}
 
 export enum COMMON_FORM_ERRORS {
@@ -9,29 +10,21 @@ export enum COMMON_TABLE_ERRORS {
   NO_DATA = 'No data available'
 }
 
+// PAGE LEVEL LABELS
 export enum ROOT_PAGE_LABELS {
   WELCOME_MESSAGE = 'Welcome to this Meds Warning. Please navigate to the [Medicine] page to add new medicines or to the [Concept] page to check its base implementation'
+}
+
+export enum ROOT_LAYOUT_LABELS {
+  METADATA_TITLE = 'Meds Warning',
+  METADATA_DESCRIPTION = 'A web system to help users manage and track their medication expiration dates and remind them to renew them'
 }
 
 export enum MEDICINE_PAGE_LABELS {
   WELCOME_MESSAGE = 'Welcome to the Medicine Page. Please select any of the options above to explore more.'
 }
 
-export enum USER_FORM_LABELS {
-  CREATE_TITLE = 'Create an user',
-  UPDATE_TITLE = 'Update your profile',
-  NAME = 'Name',
-  NAME_PLACEHOLDER = 'John',
-  LAST_NAME = 'Last Name',
-  LAST_NAME_PLACEHOLDER = 'Doe',
-  EMAIL = 'Email',
-  EMAIL_PLACEHOLDER = 'john.doe@example.com',
-  LIKED_MOVIE = 'Liked Movie',
-  LIKED_MOVIE_PLACEHOLDER = 'Avatar',
-  CREATE_BUTTON = 'Create User',
-  UPDATE_BUTTON = 'Update User'
-}
-
+// FORM LEVEL LABELS
 export enum MEDICINE_FORM_LABELS {
   TITLE = 'Medicine Information',
   NAME = 'Name:',
@@ -64,6 +57,7 @@ export enum MEDICINE_FORM_ERRORS {
   COMMENTS_MAX = 'Comments must be at most 200 characters'
 }
 
+// TABLE LEVEL LABELS
 export enum MEDICINE_TABLE_LABELS {
   TITLE = 'Medicine List',
   HEADERS = 'ID,Name,Laboratory,Presentation,Expiration Date,Used For,Side Effects,Comments,Actions'

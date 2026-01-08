@@ -1,0 +1,26 @@
+{
+  "presentationList": [
+    { "id": 1, "description": "Tablet" },
+    { "id": 2, "description": "Capsule" }
+  ],
+  "firstMedicineResponse": {
+    "id": 1,
+    "name": "Aspirin",
+    "laboratory": "Bayer",
+    "presentation": 1,
+    "expirationDate": "2025-12-31",
+    "usedFor": "Pain relief",
+    "sideEffects": "Dizziness",
+    "comments": "Take with food"
+  },
+  "nullMedicineResponse": {
+    "id": 5,
+    "name": "Medicine Name",
+    "laboratory": null,
+    "presentation": 1,
+    "expirationDate": null,
+    "usedFor": null,
+    "sideEffects": null,
+    "comments": null
+  }
+}

@@ -1,4 +1,5 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
+import { prisma } from '@prisma/index'
 // ACTIONS
 import { createMedicineAction } from './medicine'
 // SHARED
@@ -48,8 +49,6 @@ describe('Medicine Actions', () => {
 
   describe('[createMedicineAction]', () => {
     test('creates medicine with valid data and calls prisma.medicine.create', async () => {
-      const { prisma } = await import('@prisma/index')
-
       vi.mocked(prisma.medicine.create).mockResolvedValue({
         ...medicineCreationResponse,
         expirationDate: new Date(medicineCreationResponse.expirationDate)
@@ -111,8 +110,6 @@ describe('Medicine Actions', () => {
     })
 
     test('calls prisma.medicine.create without id parameter', async () => {
-      const { prisma } = await import('@prisma/index')
-
       vi.mocked(prisma.medicine.create).mockResolvedValue({
         ...medicineCreationResponse,
         expirationDate: new Date(medicineCreationResponse.expirationDate)
@@ -131,8 +128,6 @@ describe('Medicine Actions', () => {
 
   describe('[createMedicineAction] - Update Mode', () => {
     test('updates medicine with valid data and calls prisma.medicine.update', async () => {
-      const { prisma } = await import('@prisma/index')
-
       vi.mocked(prisma.medicine.update).mockResolvedValue({
         ...medicineUpdateResponse,
         expirationDate: new Date(medicineUpdateResponse.expirationDate)
@@ -147,8 +142,6 @@ describe('Medicine Actions', () => {
     })
 
     test('converts string id to number for update query', async () => {
-      const { prisma } = await import('@prisma/index')
-
       vi.mocked(prisma.medicine.update).mockResolvedValue({
         ...medicineUpdateResponse,
         expirationDate: new Date(medicineUpdateResponse.expirationDate)
@@ -166,8 +159,6 @@ describe('Medicine Actions', () => {
     })
 
     test('updates medicine with null optional fields', async () => {
-      const { prisma } = await import('@prisma/index')
-
       vi.mocked(prisma.medicine.update).mockResolvedValue({
         ...medicineUpdateWithNullFields,
         expirationDate: null
@@ -193,8 +184,6 @@ describe('Medicine Actions', () => {
     })
 
     test('updates medicine with only name and presentation field', async () => {
-      const { prisma } = await import('@prisma/index')
-
       vi.mocked(prisma.medicine.update).mockResolvedValue({
         id: medicineUpdateOnlyName.id,
         name: medicineUpdateOnlyName.name,
@@ -214,8 +203,6 @@ describe('Medicine Actions', () => {
     })
 
     test('does not call prisma.medicine.update when id is undefined', async () => {
-      const { prisma } = await import('@prisma/index')
-
       vi.mocked(prisma.medicine.create).mockResolvedValue({
         ...medicineUpdateResponse,
         expirationDate: new Date(medicineUpdateResponse.expirationDate)
@@ -229,8 +216,6 @@ describe('Medicine Actions', () => {
     })
 
     test('calls prisma.medicine.update with correct data structure', async () => {
-      const { prisma } = await import('@prisma/index')
-
       vi.mocked(prisma.medicine.update).mockResolvedValue({
         ...medicineUpdateResponse,
         expirationDate: new Date(medicineUpdateResponse.expirationDate)
@@ -248,8 +233,6 @@ describe('Medicine Actions', () => {
 
   describe('[createMedicineAction] - Error Handling', () => {
     test('handles database error on medicine creation', async () => {
-      const { prisma } = await import('@prisma/index')
-
       const dbError = new Error('Database connection failed')
       vi.mocked(prisma.medicine.create).mockRejectedValueOnce(dbError)
 
@@ -261,8 +244,6 @@ describe('Medicine Actions', () => {
     })
 
     test('handles database error on medicine update', async () => {
-      const { prisma } = await import('@prisma/index')
-
       const dbError = new Error('Record not found')
       vi.mocked(prisma.medicine.update).mockRejectedValueOnce(dbError)
 
@@ -274,8 +255,6 @@ describe('Medicine Actions', () => {
     })
 
     test('handles Prisma unique constraint error on create', async () => {
-      const { prisma } = await import('@prisma/index')
-
       const constraintError = new Error('Unique constraint failed on the fields: (`name`)')
       vi.mocked(prisma.medicine.create).mockRejectedValueOnce(constraintError)
 
@@ -286,8 +265,6 @@ describe('Medicine Actions', () => {
     })
 
     test('handles Prisma unique constraint error on update', async () => {
-      const { prisma } = await import('@prisma/index')
-
       const constraintError = new Error('Unique constraint failed on the fields: (`name`)')
       vi.mocked(prisma.medicine.update).mockRejectedValueOnce(constraintError)
 
@@ -298,8 +275,6 @@ describe('Medicine Actions', () => {
     })
 
     test('handles generic runtime error on create', async () => {
-      const { prisma } = await import('@prisma/index')
-
       const runtimeError = new Error('Invalid input data format')
       vi.mocked(prisma.medicine.create).mockRejectedValueOnce(runtimeError)
 
@@ -310,8 +285,6 @@ describe('Medicine Actions', () => {
     })
 
     test('handles generic runtime error on update', async () => {
-      const { prisma } = await import('@prisma/index')
-
       const runtimeError = new Error('Transaction timeout')
       vi.mocked(prisma.medicine.update).mockRejectedValueOnce(runtimeError)
 

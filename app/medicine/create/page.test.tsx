@@ -1,5 +1,6 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
 import '@testing-library/jest-dom'
+import { prisma } from '@prisma/index'
 // COMPONENT
 import MedicinePage from './page'
 
@@ -28,7 +29,6 @@ describe('[MedicinePage]', () => {
   })
 
   test('calls prisma to fetch presentations', async () => {
-    const { prisma } = await import('@prisma/index')
     await MedicinePage({})
     expect(prisma.medicinePresentation.findMany).toHaveBeenCalled()
   })

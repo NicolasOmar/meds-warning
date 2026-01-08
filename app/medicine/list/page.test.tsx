@@ -2,10 +2,17 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
+import { prisma } from '@prisma/index'
 // COMPONENTS
 import ListMedicinePage from './page'
 // SHARED
-import { MEDICINE_TABLE_LABELS } from '@shared-constants/labels'
+import { COMMON_TABLE_ERRORS, MEDICINE_TABLE_LABELS } from '@shared-constants/labels'
+// MOCKS
+import {
+  medicineListResponse,
+  secondMedicineListResponse,
+  nullMedicineListResponse
+} from './mocks.json'
 
 // Mock prisma
 vi.mock('@prisma/index', () => ({
@@ -16,30 +23,17 @@ vi.mock('@prisma/index', () => ({
   }
 }))
 
-// Import the mocked prisma
-import { prisma } from '@prisma/index'
-
 describe('[ListMedicinePage]', () => {
+  const avoidProps = new Set(['id', 'presentation', 'medicinePresentation'])
+
   beforeEach(() => {
     vi.clearAllMocks()
   })
 
   test('renders the medicine list page with title', async () => {
-    // Mock the findMany to return one medicine
-    const mockMedicines = [
-      {
-        id: 1,
-        name: 'Test Medicine',
-        laboratory: 'Test Lab',
-        presentation: 1,
-        medicinePresentation: { description: 'Tablet' },
-        expirationDate: new Date('2025-12-31'),
-        usedFor: 'Test',
-        sideEffects: 'None',
-        comments: 'Test'
-      }
-    ]
-    vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(mockMedicines)
+    vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(
+      medicineListResponse.map(med => ({ ...med, expirationDate: new Date(med.expirationDate) }))
+    )
 
     const component = await ListMedicinePage({})
     render(component)
@@ -49,21 +43,12 @@ describe('[ListMedicinePage]', () => {
   })
 
   test('renders table headers correctly', async () => {
-    const mockMedicines = [
-      {
-        id: 1,
-        name: 'Aspirin',
-        laboratory: 'Bayer',
-        presentation: 1,
-        medicinePresentation: { description: 'Tablet' },
-        expirationDate: new Date('2025-12-31'),
-        usedFor: 'Pain relief',
-        sideEffects: 'None',
-        comments: 'Take with food'
-      }
-    ]
-
-    vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(mockMedicines)
+    vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(
+      secondMedicineListResponse.map(med => ({
+        ...med,
+        expirationDate: new Date(med.expirationDate)
+      }))
+    )
 
     const component = await ListMedicinePage({})
     render(component)
@@ -75,118 +60,70 @@ describe('[ListMedicinePage]', () => {
   })
 
   test('renders medicine data in table rows', async () => {
-    const mockMedicines = [
-      {
-        id: 1,
-        name: 'Aspirin',
-        laboratory: 'Bayer',
-        presentation: 1,
-        medicinePresentation: { description: 'Tablet' },
-        expirationDate: new Date('2025-12-31'),
-        usedFor: 'Pain relief',
-        sideEffects: 'Dizziness',
-        comments: 'Take with food'
-      }
-    ]
-
-    vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(mockMedicines)
+    vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(
+      secondMedicineListResponse.map(med => ({
+        ...med,
+        expirationDate: new Date(med.expirationDate)
+      }))
+    )
 
     const component = await ListMedicinePage({})
     render(component)
 
-    expect(screen.getByText('Aspirin')).toBeInTheDocument()
-    expect(screen.getByText('Bayer')).toBeInTheDocument()
-    expect(screen.getByText('Tablet')).toBeInTheDocument()
-    expect(screen.getByText('Pain relief')).toBeInTheDocument()
-    expect(screen.getByText('Dizziness')).toBeInTheDocument()
-    expect(screen.getByText('Take with food')).toBeInTheDocument()
+    Object.entries(secondMedicineListResponse[0]).forEach(([key, value]) => {
+      if (!avoidProps.has(key) && value !== null) {
+        expect(screen.getByText(value.toString())).toBeInTheDocument()
+      }
+    })
   })
 
   test('handles null values in medicine data', async () => {
-    const mockMedicines = [
-      {
-        id: 2,
-        name: 'Ibuprofen',
-        laboratory: null,
-        presentation: 1,
-        medicinePresentation: { description: 'Capsule' },
-        expirationDate: null,
-        usedFor: null,
-        sideEffects: null,
-        comments: null
-      }
-    ]
-
-    vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(mockMedicines)
+    vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(nullMedicineListResponse)
 
     const component = await ListMedicinePage({})
     render(component)
 
-    expect(screen.getByText('Ibuprofen')).toBeInTheDocument()
-    expect(screen.getByText('Capsule')).toBeInTheDocument()
-    // Null values should be displayed as '-'
+    Object.entries(nullMedicineListResponse[0]).forEach(([key, value]) => {
+      if (!avoidProps.has(key) && value !== null) {
+        expect(screen.getByText(value.toString())).toBeInTheDocument()
+      }
+    })
+
     const dashElements = screen.getAllByText('-')
-    expect(dashElements.length).toBeGreaterThan(0)
+    expect(dashElements.length).toBe(5)
   })
 
   test('formats expiration date correctly', async () => {
-    const mockMedicines = [
-      {
-        id: 3,
-        name: 'Vitamin C',
-        laboratory: 'Generic',
-        presentation: 1,
-        medicinePresentation: { description: 'Powder' },
-        expirationDate: new Date('2026-06-15'),
-        usedFor: 'Immune support',
-        sideEffects: 'None',
-        comments: ''
-      }
-    ]
-
-    vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(mockMedicines)
+    vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(
+      secondMedicineListResponse.map(med => ({
+        ...med,
+        expirationDate: new Date(med.expirationDate)
+      }))
+    )
 
     const component = await ListMedicinePage({})
     render(component)
 
-    expect(screen.getByText('2026-06-15')).toBeInTheDocument()
+    expect(screen.getByText(secondMedicineListResponse[0].expirationDate)).toBeInTheDocument()
   })
 
   test('renders multiple medicines in the table', async () => {
-    const mockMedicines = [
-      {
-        id: 1,
-        name: 'Aspirin',
-        laboratory: 'Bayer',
-        presentation: 1,
-        medicinePresentation: { description: 'Tablet' },
-        expirationDate: new Date('2025-12-31'),
-        usedFor: 'Pain relief',
-        sideEffects: 'Dizziness',
-        comments: 'Take with food'
-      },
-      {
-        id: 2,
-        name: 'Ibuprofen',
-        laboratory: 'Generic',
-        presentation: 1,
-        medicinePresentation: { description: 'Capsule' },
-        expirationDate: new Date('2026-01-15'),
-        usedFor: 'Inflammation',
-        sideEffects: 'Nausea',
-        comments: 'Take after meals'
-      }
-    ]
+    const mockMedicines = [...medicineListResponse, ...secondMedicineListResponse]
 
-    vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(mockMedicines)
+    vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(
+      mockMedicines.map(med => ({ ...med, expirationDate: new Date(med.expirationDate) }))
+    )
 
     const component = await ListMedicinePage({})
     render(component)
 
-    expect(screen.getByText('Aspirin')).toBeInTheDocument()
-    expect(screen.getByText('Ibuprofen')).toBeInTheDocument()
-    expect(screen.getByText('Pain relief')).toBeInTheDocument()
-    expect(screen.getByText('Inflammation')).toBeInTheDocument()
+    mockMedicines.forEach(medObj => {
+      Object.entries(medObj).forEach(([key, value]) => {
+        if (!avoidProps.has(key) && value !== null) {
+          expect(screen.getByText(value.toString())).toBeInTheDocument()
+        }
+      })
+    })
   })
 
   test('calls prisma.medicine.findMany with correct parameters', async () => {
@@ -207,7 +144,7 @@ describe('[ListMedicinePage]', () => {
     const component = await ListMedicinePage({})
     render(component)
 
-    const noDataMessage = screen.getByText('No data available')
+    const noDataMessage = screen.getByText(COMMON_TABLE_ERRORS.NO_DATA)
     expect(noDataMessage).toBeInTheDocument()
   })
 })

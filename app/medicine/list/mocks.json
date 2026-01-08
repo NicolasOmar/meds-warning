@@ -1,0 +1,47 @@
+{
+  "medicineListResponse": [
+    {
+        "id": 1,
+        "name": "Test Medicine",
+        "laboratory": "Test Lab",
+        "presentation": 1,
+        "medicinePresentation": {
+          "description": "Tablet"
+        },
+        "expirationDate": "2025-12-31",
+        "usedFor": "Test",
+        "sideEffects": "None",
+        "comments": "First one"
+    }
+  ],
+  "secondMedicineListResponse": [
+    {
+        "id": 1,
+        "name": "Aspirin",
+        "laboratory": "Bayer",
+        "presentation": 1,
+        "medicinePresentation": {
+          "description": "Capsule"
+        },
+        "expirationDate": "2025-12-30",
+        "usedFor": "Pain relief",
+        "sideEffects": "Headache",
+        "comments": "Take with food"
+    }
+  ],
+  "nullMedicineListResponse": [
+    {
+      "id": 2,
+      "name": "Ibuprofen",
+      "laboratory": null,
+      "presentation": 1,
+      "medicinePresentation": {
+        "description": "Capsule"
+      },
+      "expirationDate": null,
+      "usedFor": null,
+      "sideEffects": null,
+      "comments": null
+    }
+  ]
+}
