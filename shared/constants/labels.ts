@@ -1,5 +1,11 @@
 // COMMON LABELS
-export enum COMMON_FORM_LABELS {}
+export enum COMMON_LABELS {
+  DELETE = 'Delete',
+  EDIT = 'Edit',
+  SAVE = 'Save',
+  CANCEL = 'Cancel',
+  CONFIRM_DELETE = 'Confirm Deletion'
+}
 
 export enum COMMON_FORM_ERRORS {
   FORM_INPUTS_ERROR = 'Sended information has an error. Please read and correct the commented fields.',

@@ -8,8 +8,9 @@ import { toast } from 'sonner'
 import { Button } from '@base-components/button'
 import DataTable from '@custom-components/DataTable'
 // SHARED
-import { MEDICINE_TABLE_LABELS } from '@shared-constants/labels'
+import { COMMON_LABELS, MEDICINE_TABLE_LABELS } from '@shared-constants/labels'
 import { ROUTES } from '@shared-constants/routes'
+import CustomDialog from '@custom-components/CustomModal'
 
 interface MedicineDataItem {
   id: number
@@ -46,7 +47,14 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
             <Link href={`${ROUTES.MEDICINE_MAIN}/${medicineItem.id}`}>
               <Button variant="secondary">Edit</Button>
             </Link>
-            <Button onClick={() => handleDeleteClick(medicineItem.id)}>Delete</Button>
+            <CustomDialog
+              buttonText={COMMON_LABELS.DELETE}
+              title={COMMON_LABELS.CONFIRM_DELETE}
+              description={`Are you sure you want to delete the medicine "${medicineItem.name}"? This action cannot be undone.`}
+              confirmText={COMMON_LABELS.DELETE}
+              onConfirm={() => handleDeleteClick(medicineItem.id)}
+              cancelText={COMMON_LABELS.CANCEL}
+            />
           </>
         )
       })),
