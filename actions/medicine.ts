@@ -6,7 +6,11 @@ import { revalidatePath } from 'next/cache'
 // SHARED
 import { MedicineSchema } from '@shared-types/zod'
 import { MedicineActionState } from '@shared-types/states'
-import { COMMON_FORM_ERRORS, MEDICINE_FORM_LABELS } from '@shared-constants/labels'
+import {
+  COMMON_FORM_ERRORS,
+  MEDICINE_FORM_LABELS,
+  MEDICINE_TABLE_LABELS
+} from '@shared-constants/labels'
 import { ROUTES } from '@shared-constants/routes'
 
 const parseEmptyFormValueToNull = (value: FormDataEntryValue | null) => {
@@ -70,11 +74,15 @@ export async function createMedicineAction(
       message: id ? MEDICINE_FORM_LABELS.UPDATE_SUCCESS : MEDICINE_FORM_LABELS.CREATE_SUCCESS
     }
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : String(error)
+    let errorMessage = null
 
-    return {
-      message: errorMessage || COMMON_FORM_ERRORS.SUBMISSION_ERROR
+    if (error instanceof Error) {
+      errorMessage = error.message.length > 0 ? error.message : COMMON_FORM_ERRORS.SUBMISSION_ERROR
+    } else {
+      errorMessage = COMMON_FORM_ERRORS.SUBMISSION_ERROR
     }
+
+    return { message: errorMessage }
   }
 }
 
@@ -86,15 +94,17 @@ export async function deleteMedicine(id: number): Promise<MedicineActionState> {
 
     revalidatePath(ROUTES.MEDICINE_LIST)
 
-    return {
-      message: 'Good'
-    }
+    return { message: MEDICINE_TABLE_LABELS.DELETE_SUCCESS }
   } catch (error: unknown) {
-    const errorMessage = error instanceof Error ? error.message : String(error)
+    let errorMessage = null
 
-    return {
-      message: errorMessage || 'Bad'
+    if (error instanceof Error) {
+      errorMessage = error.message.length > 0 ? error.message : MEDICINE_TABLE_LABELS.DELETE_ERROR
+    } else {
+      errorMessage = MEDICINE_TABLE_LABELS.DELETE_ERROR
     }
+
+    return { message: errorMessage }
   }
 }
 

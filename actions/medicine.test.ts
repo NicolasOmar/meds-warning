@@ -3,7 +3,11 @@ import { prisma } from '@prisma/index'
 // ACTIONS
 import { createMedicineAction, deleteMedicine, getMedicines } from './medicine'
 // SHARED
-import { COMMON_FORM_ERRORS, MEDICINE_FORM_LABELS } from '@shared-constants/labels'
+import {
+  COMMON_FORM_ERRORS,
+  MEDICINE_FORM_LABELS,
+  MEDICINE_TABLE_LABELS
+} from '@shared-constants/labels'
 
 // Mock next/cache
 vi.mock('next/cache', () => ({
@@ -304,6 +308,16 @@ describe('Medicine Actions', () => {
 
       expect(result.message).toBe('Transaction timeout')
     })
+
+    test('handles error with no message on update', async () => {
+      const runtimeError = new Error()
+      vi.mocked(prisma.medicine.update).mockRejectedValueOnce(runtimeError)
+
+      const formData = populateFormData(medicineUpdateResponse, ['id'])
+      const result = await createMedicineAction({}, formData, '2')
+
+      expect(result.message).toBe(COMMON_FORM_ERRORS.SUBMISSION_ERROR)
+    })
   })
 
   describe('[deleteMedicine]', () => {
@@ -315,7 +329,7 @@ describe('Medicine Actions', () => {
 
       const result = await deleteMedicine(deleteableMedicineId)
 
-      expect(result.message).toBe('Good')
+      expect(result.message).toBe(MEDICINE_TABLE_LABELS.DELETE_SUCCESS)
       expect(prisma.medicine.delete).toHaveBeenCalledWith({
         where: { id: deleteableMedicineId }
       })
@@ -359,6 +373,15 @@ describe('Medicine Actions', () => {
       const result = await deleteMedicine(deleteableMedicineId)
 
       expect(result.message).toBe('Database connection timeout')
+    })
+
+    test('handles error with no message on delete', async () => {
+      const error = new Error()
+      vi.mocked(prisma.medicine.delete).mockRejectedValueOnce(error)
+
+      const result = await deleteMedicine(deleteableMedicineId)
+
+      expect(result.message).toBe(MEDICINE_TABLE_LABELS.DELETE_ERROR)
     })
   })
 

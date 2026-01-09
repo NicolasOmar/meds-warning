@@ -4,6 +4,7 @@ import { FC, useMemo } from 'react'
 import { deleteMedicine } from '@actions/medicine'
 import Link from 'next/link'
 // COMPONENTS
+import { toast } from 'sonner'
 import { Button } from '@base-components/button'
 import DataTable from '@custom-components/DataTable'
 // SHARED
@@ -27,6 +28,15 @@ interface MedicineTableProps {
 }
 
 const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
+  const handleDeleteClick = async (id: number) => {
+    const response = await deleteMedicine(id)
+    if (response.message) {
+      const toastAction = response.errors ? toast.error : toast.success
+
+      toastAction(response.message)
+    }
+  }
+
   const memoizedMedicineList = useMemo(
     () =>
       medicineList.map(medicineItem => ({
@@ -36,7 +46,7 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
             <Link href={`${ROUTES.MEDICINE_MAIN}/${medicineItem.id}`}>
               <Button variant="secondary">Edit</Button>
             </Link>
-            <Button onClick={() => deleteMedicine(medicineItem.id)}>Delete</Button>
+            <Button onClick={() => handleDeleteClick(medicineItem.id)}>Delete</Button>
           </>
         )
       })),
