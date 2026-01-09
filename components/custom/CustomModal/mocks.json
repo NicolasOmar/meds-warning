@@ -1,0 +1,38 @@
+{
+  "defaultProps": {
+    "buttonText": "Open Dialog",
+    "title": "Confirm Action",
+    "description": "Are you sure you want to proceed?",
+    "confirmText": "Confirm"
+  },
+  "withBodyProps": {
+    "buttonText": "Delete Item",
+    "title": "Delete Item",
+    "description": "This action cannot be undone.",
+    "body": "<p>Please confirm that you want to delete this item.</p>",
+    "confirmText": "Delete"
+  },
+  "withoutTitleProps": {
+    "buttonText": "Continue",
+    "description": "Do you want to continue?",
+    "confirmText": "Yes"
+  },
+  "withCustomCancelProps": {
+    "buttonText": "Proceed",
+    "title": "Warning",
+    "description": "This is a warning message",
+    "confirmText": "OK",
+    "cancelText": "Dismiss"
+  },
+  "withLongDescriptionProps": {
+    "buttonText": "Show Terms",
+    "title": "Terms and Conditions",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+    "confirmText": "Accept"
+  },
+  "minimalProps": {
+    "buttonText": "Click Me",
+    "description": "Simple dialog",
+    "confirmText": "OK"
+  }
+}

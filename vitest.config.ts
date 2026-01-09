@@ -15,7 +15,8 @@ export default defineConfig({
         'actions/**/*.ts',
         'app/**/*.tsx',
         'components/custom/**/*.tsx',
-        'components/forms/**/*.tsx'
+        'components/forms/**/*.tsx',
+        'components/tables/**/*.tsx'
       ],
       reporter: ['html', 'lcov'],
       reportsDirectory: './coverage'
@@ -33,6 +34,7 @@ export default defineConfig({
       '@shadcn': path.resolve(__dirname, './components/base'),
       '@shared-constants': path.resolve(__dirname, './shared/constants'),
       '@shared-types': path.resolve(__dirname, './shared/ts'),
+      '@table-components': path.resolve(__dirname, './components/tables')
     },
   },
   define: {

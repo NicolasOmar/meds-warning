@@ -1,9 +1,19 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { prisma } from '@prisma/index'
 // ACTIONS
-import { createMedicineAction } from './medicine'
+import { createMedicineAction, deleteMedicine, getMedicines } from './medicine'
 // SHARED
-import { COMMON_FORM_ERRORS, MEDICINE_FORM_LABELS } from '@shared-constants/labels'
+import {
+  COMMON_FORM_ERRORS,
+  MEDICINE_FORM_LABELS,
+  MEDICINE_TABLE_LABELS
+} from '@shared-constants/labels'
+
+// Mock next/cache
+vi.mock('next/cache', () => ({
+  revalidatePath: vi.fn()
+}))
+
 // MOCKS
 import {
   medicineCreationResponse,
@@ -14,7 +24,10 @@ import {
   minimalFormData,
   medicineUpdateResponse,
   medicineUpdateWithNullFields,
-  medicineUpdateOnlyName
+  medicineUpdateOnlyName,
+  deleteableMedicineId,
+  medicinesListResponse,
+  emptyMedicinesListResponse
 } from './mocks.json'
 
 const populateFormData = (
@@ -37,7 +50,9 @@ vi.mock('@prisma/index', () => ({
   prisma: {
     medicine: {
       create: vi.fn(),
-      update: vi.fn()
+      update: vi.fn(),
+      delete: vi.fn(),
+      findMany: vi.fn()
     }
   }
 }))
@@ -292,6 +307,189 @@ describe('Medicine Actions', () => {
       const result = await createMedicineAction({}, formData, '2')
 
       expect(result.message).toBe('Transaction timeout')
+    })
+
+    test('handles error with no message on update', async () => {
+      const runtimeError = new Error()
+      vi.mocked(prisma.medicine.update).mockRejectedValueOnce(runtimeError)
+
+      const formData = populateFormData(medicineUpdateResponse, ['id'])
+      const result = await createMedicineAction({}, formData, '2')
+
+      expect(result.message).toBe(COMMON_FORM_ERRORS.SUBMISSION_ERROR)
+    })
+  })
+
+  describe('[deleteMedicine]', () => {
+    test('deletes medicine with valid id', async () => {
+      vi.mocked(prisma.medicine.delete).mockResolvedValueOnce({
+        ...medicineCreationResponse,
+        expirationDate: new Date(medicineCreationResponse.expirationDate)
+      })
+
+      const result = await deleteMedicine(deleteableMedicineId)
+
+      expect(result.message).toBe(MEDICINE_TABLE_LABELS.DELETE_SUCCESS)
+      expect(prisma.medicine.delete).toHaveBeenCalledWith({
+        where: { id: deleteableMedicineId }
+      })
+    })
+
+    test('calls prisma.medicine.delete with correct id parameter', async () => {
+      vi.mocked(prisma.medicine.delete).mockResolvedValueOnce({
+        ...medicineCreationResponse,
+        expirationDate: new Date(medicineCreationResponse.expirationDate)
+      })
+
+      await deleteMedicine(deleteableMedicineId)
+
+      expect(prisma.medicine.delete).toHaveBeenCalledWith({
+        where: { id: deleteableMedicineId }
+      })
+    })
+
+    test('handles database error on delete', async () => {
+      const dbError = new Error('Record not found')
+      vi.mocked(prisma.medicine.delete).mockRejectedValueOnce(dbError)
+
+      const result = await deleteMedicine(999)
+
+      expect(result.message).toBe('Record not found')
+    })
+
+    test('handles delete with non-existent medicine id', async () => {
+      const dbError = new Error('No Medicine found')
+      vi.mocked(prisma.medicine.delete).mockRejectedValueOnce(dbError)
+
+      const result = await deleteMedicine(9999)
+
+      expect(result.message).toBe('No Medicine found')
+    })
+
+    test('handles generic error on delete', async () => {
+      const error = new Error('Database connection timeout')
+      vi.mocked(prisma.medicine.delete).mockRejectedValueOnce(error)
+
+      const result = await deleteMedicine(deleteableMedicineId)
+
+      expect(result.message).toBe('Database connection timeout')
+    })
+
+    test('handles error with no message on delete', async () => {
+      const error = new Error()
+      vi.mocked(prisma.medicine.delete).mockRejectedValueOnce(error)
+
+      const result = await deleteMedicine(deleteableMedicineId)
+
+      expect(result.message).toBe(MEDICINE_TABLE_LABELS.DELETE_ERROR)
+    })
+  })
+
+  describe('[getMedicines]', () => {
+    test('returns list of medicines with presentations', async () => {
+      const medicinesWithDates = medicinesListResponse.map(med => ({
+        ...med,
+        expirationDate: new Date(med.expirationDate)
+      }))
+      vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(medicinesWithDates)
+
+      const result = await getMedicines()
+
+      expect(result).toHaveLength(2)
+      expect(prisma.medicine.findMany).toHaveBeenCalledWith({
+        include: {
+          medicinePresentation: true
+        }
+      })
+    })
+
+    test('calls prisma.medicine.findMany with correct parameters', async () => {
+      const medicinesWithDates = medicinesListResponse.map(med => ({
+        ...med,
+        expirationDate: new Date(med.expirationDate)
+      }))
+      vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(medicinesWithDates)
+
+      await getMedicines()
+
+      expect(prisma.medicine.findMany).toHaveBeenCalledWith({
+        include: {
+          medicinePresentation: true
+        }
+      })
+    })
+
+    test('returns empty array when no medicines exist', async () => {
+      vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(emptyMedicinesListResponse)
+
+      const result = await getMedicines()
+
+      expect(result).toEqual([])
+      expect(result).toHaveLength(0)
+    })
+
+    test('returns medicines with all fields populated', async () => {
+      const medicinesWithDates = medicinesListResponse.map(med => ({
+        ...med,
+        expirationDate: new Date(med.expirationDate)
+      }))
+      vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(medicinesWithDates)
+
+      const result = await getMedicines()
+
+      const firstMedicine = result[0]
+      expect(firstMedicine).toHaveProperty('id')
+      expect(firstMedicine).toHaveProperty('name')
+      expect(firstMedicine).toHaveProperty('laboratory')
+      expect(firstMedicine).toHaveProperty('presentation')
+      expect(firstMedicine).toHaveProperty('expirationDate')
+      expect(firstMedicine).toHaveProperty('usedFor')
+      expect(firstMedicine).toHaveProperty('sideEffects')
+      expect(firstMedicine).toHaveProperty('comments')
+      expect(firstMedicine).toHaveProperty('medicinePresentation')
+    })
+
+    test('returns medicines with included medicinePresentation data', async () => {
+      const medicinesWithDates = medicinesListResponse.map(med => ({
+        ...med,
+        expirationDate: new Date(med.expirationDate)
+      }))
+      vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(medicinesWithDates)
+
+      const result = await getMedicines()
+
+      result.forEach(medicine => {
+        expect(medicine.medicinePresentation).toBeDefined()
+        expect(medicine.medicinePresentation).toHaveProperty('id')
+        expect(medicine.medicinePresentation).toHaveProperty('description')
+      })
+    })
+
+    test('handles database error on getMedicines', async () => {
+      const dbError = new Error('Database connection failed')
+      vi.mocked(prisma.medicine.findMany).mockRejectedValueOnce(dbError)
+
+      expect(getMedicines()).rejects.toThrow('Database connection failed')
+    })
+
+    test('handles timeout error on getMedicines', async () => {
+      const timeoutError = new Error('Query timeout')
+      vi.mocked(prisma.medicine.findMany).mockRejectedValueOnce(timeoutError)
+
+      expect(getMedicines()).rejects.toThrow('Query timeout')
+    })
+
+    test('returns multiple medicines in correct order', async () => {
+      const medicinesWithDates = medicinesListResponse.map(med => ({
+        ...med,
+        expirationDate: new Date(med.expirationDate)
+      }))
+      vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(medicinesWithDates)
+
+      const result = await getMedicines()
+
+      expect(result[0].name).toBe('Aspirin')
+      expect(result[1].name).toBe('Ibuprofen')
     })
   })
 })

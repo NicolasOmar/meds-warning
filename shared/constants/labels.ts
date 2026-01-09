@@ -1,5 +1,11 @@
 // COMMON LABELS
-export enum COMMON_FORM_LABELS {}
+export enum COMMON_LABELS {
+  DELETE = 'Delete',
+  EDIT = 'Edit',
+  SAVE = 'Save',
+  CANCEL = 'Cancel',
+  CONFIRM_DELETE = 'Confirm Deletion'
+}
 
 export enum COMMON_FORM_ERRORS {
   FORM_INPUTS_ERROR = 'Sended information has an error. Please read and correct the commented fields.',
@@ -60,5 +66,7 @@ export enum MEDICINE_FORM_ERRORS {
 // TABLE LEVEL LABELS
 export enum MEDICINE_TABLE_LABELS {
   TITLE = 'Medicine List',
-  HEADERS = 'ID,Name,Laboratory,Presentation,Expiration Date,Used For,Side Effects,Comments,Actions'
+  HEADERS = 'ID,Name,Laboratory,Presentation,Expiration Date,Used For,Side Effects,Comments,Actions',
+  DELETE_SUCCESS = 'Medicine deleted successfully!',
+  DELETE_ERROR = 'An error occurred while deleting the medicine. Please try again later.'
 }
