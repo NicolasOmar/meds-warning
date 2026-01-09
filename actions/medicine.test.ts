@@ -4,6 +4,12 @@ import { prisma } from '@prisma/index'
 import { createMedicineAction } from './medicine'
 // SHARED
 import { COMMON_FORM_ERRORS, MEDICINE_FORM_LABELS } from '@shared-constants/labels'
+
+// Mock next/cache
+vi.mock('next/cache', () => ({
+  revalidatePath: vi.fn()
+}))
+
 // MOCKS
 import {
   medicineCreationResponse,
