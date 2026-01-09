@@ -1,11 +1,14 @@
 'use client'
+// CORE
+import { FC, useMemo } from 'react'
 import { deleteMedicine } from '@actions/medicine'
+import Link from 'next/link'
+// COMPONENTS
 import { Button } from '@base-components/button'
 import DataTable from '@custom-components/DataTable'
+// SHARED
 import { MEDICINE_TABLE_LABELS } from '@shared-constants/labels'
 import { ROUTES } from '@shared-constants/routes'
-import Link from 'next/link'
-import { FC, useMemo } from 'react'
 
 interface MedicineDataItem {
   id: number
