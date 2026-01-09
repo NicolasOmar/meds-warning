@@ -31,7 +31,8 @@
       "@prisma/*": ["prisma/*"],
       "@shadcn/*": ["components/base/*"],
       "@shared-constants/*": ["shared/constants/*"],
-      "@shared-types/*": ["shared/ts/*"]
+      "@shared-types/*": ["shared/ts/*"],
+      "@table-components/*": ["components/tables/*"]
     }
   },
   "include": [

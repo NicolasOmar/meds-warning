@@ -1,11 +1,13 @@
 'use server'
 // CORE
-import { prisma } from '@prisma/index'
 import * as z from 'zod'
+import { prisma } from '@prisma/index'
+import { revalidatePath } from 'next/cache'
 // SHARED
 import { MedicineSchema } from '@shared-types/zod'
 import { MedicineActionState } from '@shared-types/states'
 import { COMMON_FORM_ERRORS, MEDICINE_FORM_LABELS } from '@shared-constants/labels'
+import { ROUTES } from '@shared-constants/routes'
 
 const parseEmptyFormValueToNull = (value: FormDataEntryValue | null) => {
   return value === '' || value === null ? null : value
@@ -62,6 +64,8 @@ export async function createMedicineAction(
       })
     }
 
+    revalidatePath(ROUTES.MEDICINE_LIST)
+
     return {
       message: id ? MEDICINE_FORM_LABELS.UPDATE_SUCCESS : MEDICINE_FORM_LABELS.CREATE_SUCCESS
     }
@@ -72,4 +76,32 @@ export async function createMedicineAction(
       message: errorMessage || COMMON_FORM_ERRORS.SUBMISSION_ERROR
     }
   }
+}
+
+export async function deleteMedicine(id: number): Promise<MedicineActionState> {
+  try {
+    await prisma.medicine.delete({
+      where: { id }
+    })
+
+    revalidatePath(ROUTES.MEDICINE_LIST)
+
+    return {
+      message: 'Good'
+    }
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error)
+
+    return {
+      message: errorMessage || 'Bad'
+    }
+  }
+}
+
+export async function getMedicines() {
+  return await prisma.medicine.findMany({
+    include: {
+      medicinePresentation: true
+    }
+  })
 }
