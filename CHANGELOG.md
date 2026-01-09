@@ -1,3 +1,17 @@
+# [1.4.0](https://github.com/NicolasOmar/meds-warning/compare/v1.3.0...v1.4.0) (2026-01-09)
+
+
+### Bug Fixes
+
+* dialog component added. tests have been added and improved ([4a74f7d](https://github.com/NicolasOmar/meds-warning/commit/4a74f7d45f8246c4f717586ac05c9e61ddf448d5))
+* first approach to interactive table. delete added. wip ([8c9ff0a](https://github.com/NicolasOmar/meds-warning/commit/8c9ff0afbfd2e67d5348995847313dc7aca1f5b8))
+* improving toast usage for user feedback. improving error and success messages in code and tests ([415e6d3](https://github.com/NicolasOmar/meds-warning/commit/415e6d3a880a1cae1cc26072c49372a28b767595))
+
+
+### Features
+
+* Merge pull request [#24](https://github.com/NicolasOmar/meds-warning/issues/24)/[#23](https://github.com/NicolasOmar/meds-warning/issues/23) from NicolasOmar/feature/delete-a-created-medicine ([358b58e](https://github.com/NicolasOmar/meds-warning/commit/358b58e7bc7b62d745592407cbd45398e8868663))
+
 # [1.3.0](https://github.com/NicolasOmar/meds-warning/compare/v1.2.0...v1.3.0) (2026-01-08)
 
 
