@@ -1,7 +1,7 @@
 // CORE
 import * as z from 'zod'
 // CONSTANTS
-import { MEDICINE_FORM_ERRORS } from '@shared-constants/labels'
+import { MEDICINE_FORM_ERRORS, PRESENTATION_FORM_ERRORS } from '@shared-constants/forms'
 
 export const MedicineSchema = z.object({
   id: z.number().int().optional(),
@@ -20,8 +20,11 @@ export const MedicineSchema = z.object({
 export type MedicineType = z.infer<typeof MedicineSchema>
 
 export const MedicinePresentationSchema = z.object({
-  id: z.number().int(),
-  description: z.string().min(1).max(50)
+  id: z.number().int().optional(),
+  description: z
+    .string()
+    .min(1, PRESENTATION_FORM_ERRORS.DESCRIPTION_MIN)
+    .max(50, PRESENTATION_FORM_ERRORS.DESCRIPTION_MAX)
 })
 
 export type MedicinePresentationType = z.infer<typeof MedicinePresentationSchema>

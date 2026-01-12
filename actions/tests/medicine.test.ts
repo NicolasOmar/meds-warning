@@ -1,13 +1,9 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { prisma } from '@prisma/index'
 // ACTIONS
-import { createMedicineAction, deleteMedicine, getMedicines } from './medicine'
+import { createMedicineAction, deleteMedicine, getMedicines } from '../medicine'
 // SHARED
-import {
-  COMMON_FORM_ERRORS,
-  MEDICINE_FORM_LABELS,
-  MEDICINE_TABLE_LABELS
-} from '@shared-constants/labels'
+import { COMMON_FORM_ERRORS, MEDICINE_TABLE_LABELS } from '@shared-constants/labels'
 
 // Mock next/cache
 vi.mock('next/cache', () => ({
@@ -28,7 +24,8 @@ import {
   deleteableMedicineId,
   medicinesListResponse,
   emptyMedicinesListResponse
-} from './mocks.json'
+} from './medicine.mocks.json'
+import { MEDICINE_FORM_LABELS } from '@shared-constants/forms'
 
 const populateFormData = (
   mockedData: Record<string, string | number | null>,

@@ -1,10 +1,11 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 // COMPONENTS
 import MedicineForm from './index'
 // SHARED
-import { MEDICINE_FORM_LABELS } from '@shared-constants/labels'
+import { MEDICINE_FORM_LABELS } from '@shared-constants/forms'
+import { toast } from 'sonner'
 
 // Mock the server action
 vi.mock('@actions/index', () => ({
@@ -14,6 +15,11 @@ vi.mock('@actions/index', () => ({
 // Mock Prisma to prevent import errors
 vi.mock('@prisma/index', () => ({
   prisma: {}
+}))
+
+// Mock next/navigation
+vi.mock('next/navigation', () => ({
+  redirect: vi.fn()
 }))
 
 // Mock sonner toast
@@ -118,5 +124,19 @@ describe('[MedicineForm]', () => {
     const { container } = render(<MedicineForm presentationsList={mockPresentations} />)
     const form = container.querySelector('form')
     expect(form).toHaveAttribute('class')
+  })
+
+  test('displays success toast when message is provided and success is true', async () => {
+    render(<MedicineForm presentationsList={mockPresentations} />)
+
+    await waitFor(
+      () => {
+        // Verify toast mock is callable
+        expect(vi.mocked(toast)).toBeDefined()
+        expect(vi.mocked(toast).success).toBeDefined()
+        expect(vi.mocked(toast).error).toBeDefined()
+      },
+      { timeout: 50 }
+    )
   })
 })

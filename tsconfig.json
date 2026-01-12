@@ -31,6 +31,7 @@
       "@prisma/*": ["prisma/*"],
       "@shadcn/*": ["components/base/*"],
       "@shared-constants/*": ["shared/constants/*"],
+      "@shared-functions/*": ["shared/functions/*"],
       "@shared-types/*": ["shared/ts/*"],
       "@table-components/*": ["components/tables/*"]
     }
