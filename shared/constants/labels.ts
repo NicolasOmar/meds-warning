@@ -30,6 +30,10 @@ export enum MEDICINE_PAGE_LABELS {
   WELCOME_MESSAGE = 'Welcome to the Medicine Page. Please select any of the options above to explore more.'
 }
 
+export enum PRESENTATION_PAGE_LABELS {
+  WELCOME_MESSAGE = 'Welcome to the Presentation Page. Please select any of the options above to explore more.'
+}
+
 // FORM LEVEL LABELS
 export enum MEDICINE_FORM_LABELS {
   TITLE = 'Medicine Information',
