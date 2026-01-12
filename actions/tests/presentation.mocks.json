@@ -1,0 +1,47 @@
+{
+  "presentationCreationResponse": {
+    "id": 1,
+    "description": "Tablet"
+  },
+  "presentationCreationResponse2": {
+    "id": 2,
+    "description": "Capsule"
+  },
+  "presentationCreationResponse3": {
+    "id": 3,
+    "description": "Syrup"
+  },
+  "missingRequiredFieldsData": {
+    "description": ""
+  },
+  "emptyNullFormValues": {
+    "description": null
+  },
+  "minimalFormData": {
+    "description": "Tablet"
+  },
+  "duplicateDescriptionData": {
+    "description": "Tablet"
+  },
+  "presentationsListResponse": [
+    {
+      "id": 1,
+      "description": "Tablet"
+    },
+    {
+      "id": 2,
+      "description": "Capsule"
+    },
+    {
+      "id": 3,
+      "description": "Syrup"
+    }
+  ],
+  "emptyPresentationsListResponse": [],
+  "presentationWithLongDescription": {
+    "description": "Extended Release Tablet with Enteric Coating"
+  },
+  "presentationWithSpecialCharacters": {
+    "description": "Tablet (500mg)"
+  }
+}
