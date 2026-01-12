@@ -1,3 +1,16 @@
+# [1.5.0](https://github.com/NicolasOmar/meds-warning/compare/v1.4.0...v1.5.0) (2026-01-12)
+
+
+### Bug Fixes
+
+* first version of medicine presentation form. wip ([89e47f6](https://github.com/NicolasOmar/meds-warning/commit/89e47f6e09d4c861b1db40911ece6dd2b1e71721))
+* updating dependencies ([a773e1c](https://github.com/NicolasOmar/meds-warning/commit/a773e1cb8925dbaec4d01897a99dd8299fbd36b0))
+
+
+### Features
+
+* Merge pull request [#31](https://github.com/NicolasOmar/meds-warning/issues/31)/[#25](https://github.com/NicolasOmar/meds-warning/issues/25) from NicolasOmar/feature/create-a-medicine-type ([56598d7](https://github.com/NicolasOmar/meds-warning/commit/56598d7f467192b44e4144168fc563a1a1921be0))
+
 # [1.4.0](https://github.com/NicolasOmar/meds-warning/compare/v1.3.0...v1.4.0) (2026-01-09)
 
 
