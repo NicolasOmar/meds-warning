@@ -73,12 +73,12 @@ const MedicineForm: FC<MedicineFormStructure> = ({ presentationsList, medicineDa
 
   useEffect(() => {
     if (state?.message) {
-      const toastAction = state.errors ? toast.error : toast.success
+      const toastAction = state.success ? toast.success : toast.error
 
       toastAction(state.message)
       redirect(ROUTES.MEDICINE_LIST)
     }
-  }, [state.message, state.errors])
+  }, [state.message, state.success])
 
   return (
     <form action={boundFormAction} className="flex flex-col gap-4">
@@ -99,7 +99,7 @@ const MedicineForm: FC<MedicineFormStructure> = ({ presentationsList, medicineDa
             {...medicineFormStructure.presentation}
             options={
               presentationsList?.map(presentation => ({
-                value: presentation.id.toString(),
+                value: presentation.id!.toString(),
                 label: presentation.description
               })) ?? []
             }

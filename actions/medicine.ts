@@ -12,10 +12,7 @@ import {
   MEDICINE_TABLE_LABELS
 } from '@shared-constants/labels'
 import { ROUTES } from '@shared-constants/routes'
-
-const parseEmptyFormValueToNull = (value: FormDataEntryValue | null) => {
-  return value === '' || value === null ? null : value
-}
+import { parseEmptyFormValueToNull } from '@shared-functions/helpers'
 
 export async function createMedicineAction(
   _: MedicineActionState,
@@ -26,7 +23,7 @@ export async function createMedicineAction(
     ? new Date(formData.get('expirationDate') as string)
     : null
 
-  const validatedFields = MedicineSchema.safeParse({
+  const validatedMedicineObject = MedicineSchema.safeParse({
     name: parseEmptyFormValueToNull(formData.get('name')),
     laboratory: parseEmptyFormValueToNull(formData.get('laboratory')),
     presentation: parseEmptyFormValueToNull(formData.get('presentation'))
@@ -39,21 +36,22 @@ export async function createMedicineAction(
   })
 
   // Handle Failure
-  if (!validatedFields.success) {
+  if (!validatedMedicineObject.success) {
     return {
-      errors: z.flattenError(validatedFields.error).fieldErrors,
-      message: COMMON_FORM_ERRORS.FORM_INPUTS_ERROR
+      errors: z.flattenError(validatedMedicineObject.error).fieldErrors,
+      message: COMMON_FORM_ERRORS.FORM_INPUTS_ERROR,
+      success: false
     }
   }
 
   const medicineData = {
-    name: validatedFields.data.name,
-    laboratory: validatedFields.data.laboratory,
-    presentation: validatedFields.data.presentation,
+    name: validatedMedicineObject.data.name,
+    laboratory: validatedMedicineObject.data.laboratory,
+    presentation: validatedMedicineObject.data.presentation,
     expirationDate,
-    usedFor: validatedFields.data.usedFor,
-    sideEffects: validatedFields.data.sideEffects,
-    comments: validatedFields.data.comments
+    usedFor: validatedMedicineObject.data.usedFor,
+    sideEffects: validatedMedicineObject.data.sideEffects,
+    comments: validatedMedicineObject.data.comments
   }
 
   try {
@@ -71,7 +69,8 @@ export async function createMedicineAction(
     revalidatePath(ROUTES.MEDICINE_LIST)
 
     return {
-      message: id ? MEDICINE_FORM_LABELS.UPDATE_SUCCESS : MEDICINE_FORM_LABELS.CREATE_SUCCESS
+      message: id ? MEDICINE_FORM_LABELS.UPDATE_SUCCESS : MEDICINE_FORM_LABELS.CREATE_SUCCESS,
+      success: true
     }
   } catch (error: unknown) {
     let errorMessage = null
@@ -82,7 +81,7 @@ export async function createMedicineAction(
       errorMessage = COMMON_FORM_ERRORS.SUBMISSION_ERROR
     }
 
-    return { message: errorMessage }
+    return { message: errorMessage, success: false }
   }
 }
 
@@ -94,7 +93,7 @@ export async function deleteMedicine(id: number): Promise<MedicineActionState> {
 
     revalidatePath(ROUTES.MEDICINE_LIST)
 
-    return { message: MEDICINE_TABLE_LABELS.DELETE_SUCCESS }
+    return { message: MEDICINE_TABLE_LABELS.DELETE_SUCCESS, success: true }
   } catch (error: unknown) {
     let errorMessage = null
 
@@ -104,7 +103,7 @@ export async function deleteMedicine(id: number): Promise<MedicineActionState> {
       errorMessage = MEDICINE_TABLE_LABELS.DELETE_ERROR
     }
 
-    return { message: errorMessage }
+    return { message: errorMessage, success: false }
   }
 }
 

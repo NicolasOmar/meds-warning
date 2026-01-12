@@ -1,4 +1,9 @@
-export type MedicineActionState = {
+type BaseActionState = {
+  message?: string
+  success?: boolean
+}
+
+export type MedicineActionState = BaseActionState & {
   errors?: {
     name?: string[]
     laboratory?: string[]
@@ -8,5 +13,10 @@ export type MedicineActionState = {
     sideEffects?: string[]
     comments?: string[]
   }
-  message?: string
+}
+
+export type PresentationActionState = BaseActionState & {
+  errors?: {
+    description?: string[]
+  }
 }
