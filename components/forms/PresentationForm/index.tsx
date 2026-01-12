@@ -10,13 +10,14 @@ import { FieldGroup, FieldLegend } from '@base-components/field'
 import CustomInput from '@custom-components/CustomInput'
 // SHARED
 import { PresentationActionState } from '@shared-types/states'
+import { PRESENTATION_FORM_LABELS } from '@shared-constants/forms'
 
 const generatePresentationFormStructure = () => ({
   description: {
     name: 'description',
-    label: 'Description',
+    label: PRESENTATION_FORM_LABELS.DESCRIPTION,
     type: 'text',
-    placeholder: 'Brief description of the presentation'
+    placeholder: PRESENTATION_FORM_LABELS.DESCRIPTION_PLACEHOLDER
   }
 })
 
@@ -39,12 +40,15 @@ const PresentationForm: FC = () => {
   return (
     <form action={formAction} className="flex flex-col gap-4">
       <FieldGroup>
-        <FieldLegend>Presentation Details</FieldLegend>
-        <CustomInput {...presentationFormStructure.description} />
+        <FieldLegend>{PRESENTATION_FORM_LABELS.TITLE}</FieldLegend>
+        <CustomInput
+          {...presentationFormStructure.description}
+          message={state.errors?.description}
+        />
       </FieldGroup>
 
       <Button type="submit" disabled={isPending}>
-        {'Create Presentation'}
+        {PRESENTATION_FORM_LABELS.SUBMIT_BUTTON}
       </Button>
     </form>
   )

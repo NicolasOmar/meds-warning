@@ -7,6 +7,7 @@ import { COMMON_FORM_ERRORS } from '@shared-constants/labels'
 import { PresentationActionState } from '@shared-types/states'
 import { MedicinePresentationSchema } from '@shared-types/zod'
 import { parseEmptyFormValueToNull } from '@shared-functions/helpers'
+import { PRESENTATION_FORM_ERRORS, PRESENTATION_FORM_LABELS } from '@shared-constants/forms'
 
 export async function createPresentationAction(
   _: PresentationActionState,
@@ -37,7 +38,7 @@ export async function createPresentationAction(
 
     if (presentationAlreadyExists) {
       return {
-        message: 'Presentation with this description already exists',
+        message: PRESENTATION_FORM_ERRORS.ALREADY_CREATED,
         success: false
       }
     }
@@ -49,12 +50,12 @@ export async function createPresentationAction(
     // revalidatePath(ROUTES.PRESENTATION_LIST)
 
     return {
-      message: 'Successfully created presentation',
+      message: PRESENTATION_FORM_LABELS.CREATE_SUCCESS,
       success: true
     }
   } catch (error: unknown) {
     let errorMessage = null
-    console.warn(error)
+
     if (error instanceof Error) {
       errorMessage = error.message.length > 0 ? error.message : COMMON_FORM_ERRORS.SUBMISSION_ERROR
     } else {

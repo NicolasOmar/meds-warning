@@ -6,11 +6,8 @@ import { revalidatePath } from 'next/cache'
 // SHARED
 import { MedicineSchema } from '@shared-types/zod'
 import { MedicineActionState } from '@shared-types/states'
-import {
-  COMMON_FORM_ERRORS,
-  MEDICINE_FORM_LABELS,
-  MEDICINE_TABLE_LABELS
-} from '@shared-constants/labels'
+import { MEDICINE_FORM_LABELS } from '@shared-constants/forms'
+import { COMMON_FORM_ERRORS, MEDICINE_TABLE_LABELS } from '@shared-constants/labels'
 import { ROUTES } from '@shared-constants/routes'
 import { parseEmptyFormValueToNull } from '@shared-functions/helpers'
 

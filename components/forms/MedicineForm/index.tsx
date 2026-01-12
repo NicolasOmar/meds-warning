@@ -13,7 +13,7 @@ import CustomTextArea from '@custom-components/CustomTextArea'
 import DatePicker from '@custom-components/DatePicker'
 import CustomSelect from '@custom-components/CustomSelect'
 // SHARED
-import { MEDICINE_FORM_LABELS } from '@shared-constants/labels'
+import { MEDICINE_FORM_LABELS } from '@shared-constants/forms'
 import { MedicinePresentationType, MedicineType } from '@shared-types/zod'
 import { MedicineActionState } from '@shared-types/states'
 import { ROUTES } from '@shared-constants/routes'

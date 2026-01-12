@@ -4,7 +4,7 @@ import '@testing-library/jest-dom'
 // COMPONENTS
 import MedicineForm from './index'
 // SHARED
-import { MEDICINE_FORM_LABELS } from '@shared-constants/labels'
+import { MEDICINE_FORM_LABELS } from '@shared-constants/forms'
 
 // Mock the server action
 vi.mock('@actions/index', () => ({

@@ -3,11 +3,7 @@ import { prisma } from '@prisma/index'
 // ACTIONS
 import { createMedicineAction, deleteMedicine, getMedicines } from './medicine'
 // SHARED
-import {
-  COMMON_FORM_ERRORS,
-  MEDICINE_FORM_LABELS,
-  MEDICINE_TABLE_LABELS
-} from '@shared-constants/labels'
+import { COMMON_FORM_ERRORS, MEDICINE_TABLE_LABELS } from '@shared-constants/labels'
 
 // Mock next/cache
 vi.mock('next/cache', () => ({
@@ -29,6 +25,7 @@ import {
   medicinesListResponse,
   emptyMedicinesListResponse
 } from './mocks.json'
+import { MEDICINE_FORM_LABELS } from '@shared-constants/forms'
 
 const populateFormData = (
   mockedData: Record<string, string | number | null>,
