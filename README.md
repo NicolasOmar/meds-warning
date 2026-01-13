@@ -4,7 +4,7 @@ A web system to help users manage and track their medication expiration dates an
 ## Table of contents
 - [Purpose](#purpose)
 - [Status](#status)
-- [Dependencies](#dependencies)
+- [Project Stack](#project-stack)
 - [What do I need?](#what-do-i-need)
 - [Setup](#setup)
 - [How to run it](#how-to-run-it)
@@ -49,9 +49,10 @@ The tool's objective is to <u>create notifications across several channels that 
 [badge-semantic-commits]: https://img.shields.io/badge/using-conventional%20commits-e10079?logo=conventional-commits
 [link-semantic-commits]: https://github.com/semantic-release/semantic-release
 
-## Dependencies
+## Project Stack
 ![nextjs dependency][badge-dependency-next]
 ![react dependency][badge-dependency-react]
+![typescript dependency][badge-dependency-typescript]
 ![prisma dependency][badge-dependency-prisma]
 ![postgres dependency][badge-dependency-postgres]
 ![tailwind dependency][badge-dependency-tailwind]
@@ -67,6 +68,7 @@ The tool's objective is to <u>create notifications across several channels that 
 
 [badge-dependency-next]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/next/main?logo=next.js
 [badge-dependency-react]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/react/main?logo=react
+[badge-dependency-typescript]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/typescript/main?logo=typescript
 [badge-dependency-tailwind]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/tailwindcss/main?logo=tailwindcss
 [badge-dependency-postgres]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/pg/main?logo=postgresql
 [badge-dependency-prisma]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/prisma/main?logo=prisma
