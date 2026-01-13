@@ -2,11 +2,11 @@ import { FC, Fragment } from 'react'
 // COMPONENTS
 import { Field, FieldDescription, FieldLabel } from '@base-components/field'
 // SHARED
-import { LayoutProps, BaseFormFieldProps } from '@shared-types/interfaces'
+import { BaseLayoutProps, BaseFormFieldProps } from '@shared-types/interfaces'
 
-interface FormFieldStructureProps extends LayoutProps, BaseFormFieldProps {}
+interface FormFieldStructureProps extends BaseLayoutProps, BaseFormFieldProps {}
 
-const FormFieldStructure: FC<FormFieldStructureProps> = ({ label, name, message, children }) => {
+const FormFieldTemplate: FC<FormFieldStructureProps> = ({ label, name, message, children }) => {
   return (
     <Field className="flex flex-col gap-3">
       <FieldLabel htmlFor={name}>{label}</FieldLabel>
@@ -20,4 +20,4 @@ const FormFieldStructure: FC<FormFieldStructureProps> = ({ label, name, message,
   )
 }
 
-export default FormFieldStructure
+export default FormFieldTemplate

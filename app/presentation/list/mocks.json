@@ -1,0 +1,19 @@
+{
+  "presentationListResponse": [
+    {
+      "id": 1,
+      "description": "Tablet"
+    }
+  ],
+  "secondPresentationListResponse": [
+    {
+      "id": 1,
+      "description": "Capsule"
+    },
+    {
+      "id": 2,
+      "description": "Syrup"
+    }
+  ],
+  "emptyPresentationListResponse": []
+}

@@ -1,7 +1,7 @@
 // CORE
 import { describe, test, expect, vi, beforeEach } from 'vitest'
 import '@testing-library/jest-dom'
-import { ROOT_LAYOUT_LABELS } from '@shared-constants/labels'
+import { ROOT_LAYOUT_LABELS } from '@shared-constants/pages'
 
 // Types for font configuration
 interface FontConfig {
@@ -59,7 +59,7 @@ describe('[HomeLayout]', () => {
     expect(typeof Component).toBe('function')
   })
 
-  test('component receives LayoutProps interface with children', async () => {
+  test('component receives BaseLayoutProps interface with children', async () => {
     // Verify the component accepts children prop
     const layoutModule = await import('./layout')
     const Component = layoutModule.default

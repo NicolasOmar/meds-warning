@@ -3,7 +3,7 @@
 import * as z from 'zod'
 import { prisma } from '@prisma/index'
 // SHARED
-import { COMMON_FORM_ERRORS } from '@shared-constants/labels'
+import { COMMON_FORM_ERRORS } from '@shared-constants/common'
 import { PresentationActionState } from '@shared-types/states'
 import { MedicinePresentationSchema } from '@shared-types/zod'
 import { parseEmptyFormValueToNull } from '@shared-functions/helpers'

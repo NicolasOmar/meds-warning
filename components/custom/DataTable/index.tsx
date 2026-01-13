@@ -10,7 +10,7 @@ import {
   TableRow
 } from '@base-components/table'
 // SHARED
-import { COMMON_TABLE_ERRORS } from '@shared-constants/labels'
+import { COMMON_TABLE_ERRORS } from '@shared-constants/common'
 
 interface DataTableProps<T extends object> {
   title?: string

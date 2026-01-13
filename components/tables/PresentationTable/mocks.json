@@ -1,0 +1,23 @@
+{
+  "basicPresentationData": [
+    {
+      "id": 1,
+      "description": "Tablet"
+    }
+  ],
+  "multiplePresentationData": [
+    {
+      "id": 1,
+      "description": "Tablet"
+    },
+    {
+      "id": 2,
+      "description": "Capsule"
+    },
+    {
+      "id": 3,
+      "description": "Syrup"
+    }
+  ],
+  "emptyPresentationData": []
+}

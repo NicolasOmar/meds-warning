@@ -8,7 +8,8 @@ import MedicineTable from './index'
 // ACTIONS
 import { deleteMedicine } from '@actions/medicine'
 // SHARED
-import { COMMON_TABLE_ERRORS, MEDICINE_TABLE_LABELS, COMMON_LABELS } from '@shared-constants/labels'
+import { COMMON_TABLE_ERRORS, COMMON_LABELS } from '@shared-constants/common'
+import { MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
 // MOCKS
 import {
   basicMedicineData,

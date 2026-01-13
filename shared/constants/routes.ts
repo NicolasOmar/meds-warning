@@ -20,6 +20,6 @@ export const MEDICINE_MAIN_ROUTES_OBJS = [
 ]
 
 export const PRESENTATION_MAIN_ROUTES_OBJS = [
-  { name: 'Add a new presentation', path: ROUTES.PRESENTATION_CREATE }
-  // { name: 'See all created ones', path: ROUTES.PRESENTATION_LIST }
+  { name: 'Add a new presentation', path: ROUTES.PRESENTATION_CREATE },
+  { name: 'See all created ones', path: ROUTES.PRESENTATION_LIST }
 ]

@@ -8,7 +8,8 @@ import { toast } from 'sonner'
 import { Button } from '@base-components/button'
 import DataTable from '@custom-components/DataTable'
 // SHARED
-import { COMMON_LABELS, MEDICINE_TABLE_LABELS } from '@shared-constants/labels'
+import { COMMON_LABELS } from '@shared-constants/common'
+import { MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
 import { ROUTES } from '@shared-constants/routes'
 import CustomDialog from '@custom-components/CustomModal'
 

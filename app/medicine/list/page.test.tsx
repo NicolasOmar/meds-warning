@@ -6,7 +6,8 @@ import { prisma } from '@prisma/index'
 // COMPONENTS
 import ListMedicinePage from './page'
 // SHARED
-import { COMMON_TABLE_ERRORS, MEDICINE_TABLE_LABELS } from '@shared-constants/labels'
+import { COMMON_TABLE_ERRORS } from '@shared-constants/common'
+import { MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
 // MOCKS
 import {
   medicineListResponse,

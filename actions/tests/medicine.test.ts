@@ -3,7 +3,8 @@ import { prisma } from '@prisma/index'
 // ACTIONS
 import { createMedicineAction, deleteMedicine, getMedicines } from '../medicine'
 // SHARED
-import { COMMON_FORM_ERRORS, MEDICINE_TABLE_LABELS } from '@shared-constants/labels'
+import { COMMON_FORM_ERRORS } from '@shared-constants/common'
+import { MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
 
 // Mock next/cache
 vi.mock('next/cache', () => ({

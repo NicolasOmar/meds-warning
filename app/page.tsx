@@ -1,14 +1,13 @@
 // CORE
 import { FC } from 'react'
 // SHARED
-import { ROOT_PAGE_LABELS } from '@shared-constants/labels'
+import { ROOT_PAGE_LABELS } from '@shared-constants/pages'
 
 const HomePage: FC = () => {
   return (
-    <section className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <section className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black content-center">
-        {ROOT_PAGE_LABELS.WELCOME_MESSAGE}
-      </section>
+    <section className="flex flex-col min-h-screen min-w-full justify-start items-center gap-5 py-16 px-8 font-sans dark:bg-black bg-white">
+      <p>{ROOT_PAGE_LABELS.WELCOME_MESSAGE}</p>
+      <p>{ROOT_PAGE_LABELS.FIRST_PARAGRAPH}</p>
     </section>
   )
 }

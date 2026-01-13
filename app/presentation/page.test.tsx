@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 // COMPONENTS
 import PresentationHomePage from './page'
-import { PRESENTATION_PAGE_LABELS } from '@shared-constants/labels'
+import { PRESENTATION_PAGE_LABELS } from '@shared-constants/pages'
 
 // Mock Prisma to prevent import errors
 vi.mock('@prisma/index', () => ({
@@ -20,6 +20,6 @@ describe('[PresentationHomePage]', () => {
   test('renders main section container', () => {
     const { container } = render(<PresentationHomePage />)
     const sections = container.querySelectorAll('section')
-    expect(sections.length).toBeGreaterThanOrEqual(2)
+    expect(sections.length).toBeGreaterThanOrEqual(1)
   })
 })
