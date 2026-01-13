@@ -7,7 +7,7 @@ import { Button } from '@base-components/button'
 import { Calendar } from '@base-components/calendar'
 import { Input } from '@base-components/input'
 import { Popover, PopoverContent, PopoverTrigger } from '@base-components/popover'
-import FormFieldStructure from '@custom-components/FormFieldStructure'
+import FormFieldTemplate from '@template-components/FormFieldTemplate'
 // SHARED
 import { CompleteFormFieldPorps } from '@shared-types/interfaces'
 
@@ -37,7 +37,7 @@ const DatePicker: FC<CompleteFormFieldPorps> = ({ label, name, value: propValue,
   const [value, setValue] = useState(formatDate(date))
 
   return (
-    <FormFieldStructure label={label} name={name} message={undefined}>
+    <FormFieldTemplate label={label} name={name} message={undefined}>
       <section className="relative flex gap-2">
         <Input
           id={name}
@@ -92,7 +92,7 @@ const DatePicker: FC<CompleteFormFieldPorps> = ({ label, name, value: propValue,
           </PopoverContent>
         </Popover>
       </section>
-    </FormFieldStructure>
+    </FormFieldTemplate>
   )
 }
 

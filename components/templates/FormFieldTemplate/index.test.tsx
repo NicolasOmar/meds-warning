@@ -2,9 +2,9 @@ import { describe, test, expect } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 // COMPONENTS
-import FormFieldStructure from './index'
+import FormFieldTemplate from './index'
 
-describe('[FormFieldStructure]', () => {
+describe('[FormFieldTemplate]', () => {
   const defaultProps = {
     label: 'Email',
     name: 'email'
@@ -12,9 +12,9 @@ describe('[FormFieldStructure]', () => {
 
   test('renders the label', () => {
     render(
-      <FormFieldStructure {...defaultProps}>
+      <FormFieldTemplate {...defaultProps}>
         <input type="text" />
-      </FormFieldStructure>
+      </FormFieldTemplate>
     )
     const label = screen.getByText(defaultProps.label)
     expect(label).toBeInTheDocument()
@@ -22,9 +22,9 @@ describe('[FormFieldStructure]', () => {
 
   test('renders the label with correct htmlFor attribute', () => {
     render(
-      <FormFieldStructure {...defaultProps}>
+      <FormFieldTemplate {...defaultProps}>
         <input type="text" />
-      </FormFieldStructure>
+      </FormFieldTemplate>
     )
     const label = screen.getByText(defaultProps.label)
     expect(label).toHaveAttribute('for', defaultProps.name)
@@ -32,9 +32,9 @@ describe('[FormFieldStructure]', () => {
 
   test('renders the children', () => {
     render(
-      <FormFieldStructure {...defaultProps}>
+      <FormFieldTemplate {...defaultProps}>
         <input type="text" />
-      </FormFieldStructure>
+      </FormFieldTemplate>
     )
     const input = screen.getByRole('textbox')
     expect(input).toBeInTheDocument()
@@ -47,18 +47,18 @@ describe('[FormFieldStructure]', () => {
       message: helpfulMessage
     }
     render(
-      <FormFieldStructure {...propsWithMessage}>
+      <FormFieldTemplate {...propsWithMessage}>
         <input type="text" />
-      </FormFieldStructure>
+      </FormFieldTemplate>
     )
     expect(screen.getByText(helpfulMessage)).toBeInTheDocument()
   })
 
   test('renders without message when not provided', () => {
     render(
-      <FormFieldStructure {...defaultProps}>
+      <FormFieldTemplate {...defaultProps}>
         <input type="text" />
-      </FormFieldStructure>
+      </FormFieldTemplate>
     )
     const label = screen.getByText(defaultProps.label)
     expect(label).toBeInTheDocument()
@@ -71,9 +71,9 @@ describe('[FormFieldStructure]', () => {
       message: errorMessages
     }
     const { container } = render(
-      <FormFieldStructure {...propsWithMessages}>
+      <FormFieldTemplate {...propsWithMessages}>
         <input type="text" />
-      </FormFieldStructure>
+      </FormFieldTemplate>
     )
     const description = container.querySelector('[data-slot="field-description"]')
 
@@ -88,9 +88,9 @@ describe('[FormFieldStructure]', () => {
       message: ['Single message']
     }
     render(
-      <FormFieldStructure {...propsWithSingleMessage}>
+      <FormFieldTemplate {...propsWithSingleMessage}>
         <input type="text" />
-      </FormFieldStructure>
+      </FormFieldTemplate>
     )
     expect(screen.getByText('Single message')).toBeInTheDocument()
   })
@@ -101,9 +101,9 @@ describe('[FormFieldStructure]', () => {
       message: []
     }
     render(
-      <FormFieldStructure {...propsWithEmptyArray}>
+      <FormFieldTemplate {...propsWithEmptyArray}>
         <input type="text" />
-      </FormFieldStructure>
+      </FormFieldTemplate>
     )
     const input = screen.getByRole('textbox')
     expect(input).toBeInTheDocument()
@@ -111,9 +111,9 @@ describe('[FormFieldStructure]', () => {
 
   test('has correct structure with field container', () => {
     const { container } = render(
-      <FormFieldStructure {...defaultProps}>
+      <FormFieldTemplate {...defaultProps}>
         <input type="text" />
-      </FormFieldStructure>
+      </FormFieldTemplate>
     )
     const field = container.querySelector('[class*="flex"]')
     expect(field).toBeInTheDocument()
@@ -125,9 +125,9 @@ describe('[FormFieldStructure]', () => {
       name: 'password'
     }
     render(
-      <FormFieldStructure {...customProps}>
+      <FormFieldTemplate {...customProps}>
         <input type="password" />
-      </FormFieldStructure>
+      </FormFieldTemplate>
     )
     const label = screen.getByText(customProps.label)
     expect(label).toHaveAttribute('for', customProps.name)
@@ -146,9 +146,9 @@ describe('[FormFieldStructure]', () => {
       </div>
     )
     render(
-      <FormFieldStructure label={complexFieldConfig.label} name={complexFieldConfig.name}>
+      <FormFieldTemplate label={complexFieldConfig.label} name={complexFieldConfig.name}>
         {complexChildren}
-      </FormFieldStructure>
+      </FormFieldTemplate>
     )
     expect(screen.getByText(complexFieldConfig.label)).toBeInTheDocument()
     expect(screen.getByText(complexFieldConfig.text)).toBeInTheDocument()
@@ -160,9 +160,9 @@ describe('[FormFieldStructure]', () => {
       message: undefined
     }
     render(
-      <FormFieldStructure {...propsWithUndefinedMessage}>
+      <FormFieldTemplate {...propsWithUndefinedMessage}>
         <input type="text" />
-      </FormFieldStructure>
+      </FormFieldTemplate>
     )
     const input = screen.getByRole('textbox')
     expect(input).toBeInTheDocument()

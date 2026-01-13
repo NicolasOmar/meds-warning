@@ -1,5 +1,7 @@
 export enum ROOT_PAGE_LABELS {
-  WELCOME_MESSAGE = 'Welcome to this Meds Warning. Please navigate to the [Medicine] page to add new medicines or to the [Concept] page to check its base implementation'
+  WELCOME_MESSAGE = 'Welcome to this Meds Warning',
+  FIRST_PARAGRAPH = 'Please navigate to the [Medicine] page to organize your medicines or to the [Presentation] page to add new ones.',
+  SECOND_PARAGRAPH = 'This is a simple web application designed to help users manage and track their medication expiration dates. It provides timely reminders to renew medications before they expire, ensuring that users never miss an important dose.'
 }
 
 export enum ROOT_LAYOUT_LABELS {

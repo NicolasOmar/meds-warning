@@ -1,7 +1,14 @@
 import { ReactNode } from 'react'
 
-export interface LayoutProps {
+export interface BaseLayoutProps {
   children: ReactNode
+}
+
+export interface LayoutTempalteProps extends BaseLayoutProps {
+  paths: {
+    name: string
+    path: string
+  }[]
 }
 
 export interface BaseFormFieldProps {

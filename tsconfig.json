@@ -33,7 +33,8 @@
       "@shared-constants/*": ["shared/constants/*"],
       "@shared-functions/*": ["shared/functions/*"],
       "@shared-types/*": ["shared/ts/*"],
-      "@table-components/*": ["components/tables/*"]
+      "@table-components/*": ["components/tables/*"],
+      "@template-components/*": ["components/templates/*"]
     }
   },
   "include": [

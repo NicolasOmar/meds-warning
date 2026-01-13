@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@base-components/select'
-import FormFieldStructure from '@custom-components/FormFieldStructure'
+import FormFieldTemplate from '@template-components/FormFieldTemplate'
 // SHARED
 import { CompleteFormFieldPorps } from '@shared-types/interfaces'
 
@@ -30,7 +30,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
   message
 }) => {
   return (
-    <FormFieldStructure label={label} name={name} message={message}>
+    <FormFieldTemplate label={label} name={name} message={message}>
       <Select name={name} defaultValue={value}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder={placeholder} />
@@ -46,7 +46,7 @@ const CustomSelect: FC<CustomSelectProps> = ({
           </SelectGroup>
         </SelectContent>
       </Select>
-    </FormFieldStructure>
+    </FormFieldTemplate>
   )
 }
 
