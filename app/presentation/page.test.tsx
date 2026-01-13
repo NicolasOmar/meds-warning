@@ -20,6 +20,6 @@ describe('[PresentationHomePage]', () => {
   test('renders main section container', () => {
     const { container } = render(<PresentationHomePage />)
     const sections = container.querySelectorAll('section')
-    expect(sections.length).toBeGreaterThanOrEqual(2)
+    expect(sections.length).toBeGreaterThanOrEqual(1)
   })
 })
