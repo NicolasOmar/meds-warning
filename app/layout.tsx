@@ -8,7 +8,7 @@ import { ButtonGroup } from '@base-components/button-group'
 import { Button } from '@base-components/button'
 import { Toaster } from '@base-components/sonner'
 // SHARED
-import { ROOT_LAYOUT_LABELS } from '@shared-constants/labels'
+import { ROOT_LAYOUT_LABELS } from '@shared-constants/pages'
 import { MAIN_ROUTES_OBJS } from '@shared-constants/routes'
 import { LayoutProps } from '@shared-types/interfaces'
 // STYLES

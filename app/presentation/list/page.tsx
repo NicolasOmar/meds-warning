@@ -4,10 +4,10 @@ import { prisma } from '@prisma/index'
 // COMPONENTS
 import MedicinePresentationTable from '@table-components/PresentationTable'
 
-const ListMedicinePage: FC = async () => {
+const ListMedicinePresentationPage: FC = async () => {
   const fetchedPresentationList = await prisma.medicinePresentation.findMany()
 
   return <MedicinePresentationTable presentationList={fetchedPresentationList} />
 }
 
-export default ListMedicinePage
+export default ListMedicinePresentationPage

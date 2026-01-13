@@ -1,19 +1,20 @@
-import DataTable from '@custom-components/DataTable'
-import { MedicinePresentationType } from '@shared-types/zod'
+// CORE
 import { FC } from 'react'
+// COMPONENTS
+import DataTable from '@custom-components/DataTable'
+// SHARED
+import { MEDICINE_PRESENTATION_TABLE_LABELS } from '@shared-constants/tables'
+import { MedicinePresentationType } from '@shared-types/zod'
 
 interface MedicinePresentationTableProps {
   presentationList: MedicinePresentationType[]
 }
 
 const MedicinePresentationTable: FC<MedicinePresentationTableProps> = ({ presentationList }) => {
-  const presentationTitle = 'Medicine Presentations'
-  const presentationHeaders = 'ID,Description'
-
   return (
     <DataTable
-      title={presentationTitle}
-      headers={presentationHeaders.split(',')}
+      title={MEDICINE_PRESENTATION_TABLE_LABELS.TITLE}
+      headers={MEDICINE_PRESENTATION_TABLE_LABELS.HEADERS.split(',')}
       data={presentationList}
     />
   )

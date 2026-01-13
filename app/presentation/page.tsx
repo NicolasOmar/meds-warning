@@ -1,7 +1,7 @@
 // CORE
 import { FC } from 'react'
 // SHARED
-import { PRESENTATION_PAGE_LABELS } from '@shared-constants/labels'
+import { PRESENTATION_PAGE_LABELS } from '@shared-constants/pages'
 
 const PresentationHomePage: FC = () => {
   return (

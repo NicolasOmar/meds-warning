@@ -1,7 +1,7 @@
 // CORE
 import { FC } from 'react'
 // SHARED
-import { MEDICINE_PAGE_LABELS } from '@shared-constants/labels'
+import { MEDICINE_PAGE_LABELS } from '@shared-constants/pages'
 
 const MedicineHomePage: FC = () => {
   return (

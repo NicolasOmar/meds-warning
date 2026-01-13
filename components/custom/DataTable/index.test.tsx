@@ -5,7 +5,7 @@ import '@testing-library/jest-dom'
 // COMPONENTS
 import DataTable from './index'
 // SHARED
-import { COMMON_TABLE_ERRORS } from '@shared-constants/labels'
+import { COMMON_TABLE_ERRORS } from '@shared-constants/common'
 // MOCKS
 import {
   baseHeaders,

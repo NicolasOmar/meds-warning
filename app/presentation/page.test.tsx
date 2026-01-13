@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 // COMPONENTS
 import PresentationHomePage from './page'
-import { PRESENTATION_PAGE_LABELS } from '@shared-constants/labels'
+import { PRESENTATION_PAGE_LABELS } from '@shared-constants/pages'
 
 // Mock Prisma to prevent import errors
 vi.mock('@prisma/index', () => ({

@@ -3,7 +3,7 @@ import { prisma } from '@prisma/index'
 // ACTIONS
 import { createPresentationAction } from '../presentation'
 // SHARED
-import { COMMON_FORM_ERRORS } from '@shared-constants/labels'
+import { COMMON_FORM_ERRORS } from '@shared-constants/common'
 import { PRESENTATION_FORM_LABELS, PRESENTATION_FORM_ERRORS } from '@shared-constants/forms'
 
 // Mock next/cache

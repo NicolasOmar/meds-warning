@@ -1,7 +1,7 @@
 // CORE
 import { FC } from 'react'
 // SHARED
-import { ROOT_PAGE_LABELS } from '@shared-constants/labels'
+import { ROOT_PAGE_LABELS } from '@shared-constants/pages'
 
 const HomePage: FC = () => {
   return (

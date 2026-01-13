@@ -5,7 +5,7 @@ import '@testing-library/jest-dom'
 // COMPONENTS
 import MedicineHomePage from './page'
 // SHARED
-import { MEDICINE_PAGE_LABELS } from '@shared-constants/labels'
+import { MEDICINE_PAGE_LABELS } from '@shared-constants/pages'
 
 describe('[MedicineHomePage]', () => {
   beforeEach(() => {

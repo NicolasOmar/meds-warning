@@ -16,7 +16,8 @@ export default defineConfig({
         'app/**/*.tsx',
         'components/custom/**/*.tsx',
         'components/forms/**/*.tsx',
-        'components/tables/**/*.tsx'
+        'components/tables/**/*.tsx',
+        'shared/functions/**/*.ts',
       ],
       reporter: ['html', 'lcov'],
       reportsDirectory: './coverage'

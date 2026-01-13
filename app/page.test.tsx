@@ -5,7 +5,7 @@ import '@testing-library/jest-dom'
 // COMPONENTS
 import HomePage from './page'
 // SHARED
-import { ROOT_PAGE_LABELS } from '@shared-constants/labels'
+import { ROOT_PAGE_LABELS } from '@shared-constants/pages'
 
 describe('[HomePage]', () => {
   test('renders the welcome message', () => {
