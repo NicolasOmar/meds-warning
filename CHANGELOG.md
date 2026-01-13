@@ -1,3 +1,17 @@
+# [1.6.0](https://github.com/NicolasOmar/meds-warning/compare/v1.5.0...v1.6.0) (2026-01-13)
+
+
+### Bug Fixes
+
+* copilot instructions improved. presentation table first implementation. readme updated ([a8fcf6c](https://github.com/NicolasOmar/meds-warning/commit/a8fcf6cd86df4efe7b5be8f43121ff9ead48deb6))
+* moving and implementing template components. some styling improvements ([348164c](https://github.com/NicolasOmar/meds-warning/commit/348164c66ae045ae34b228231c30039495d96d48))
+* moving labels references to specific constant files for better references ([dfc56d5](https://github.com/NicolasOmar/meds-warning/commit/dfc56d54ae3aa270894a783de3b51bf66cf50ceb))
+
+
+### Features
+
+* Merge pull request [#33](https://github.com/NicolasOmar/meds-warning/issues/33)/[#32](https://github.com/NicolasOmar/meds-warning/issues/32) from NicolasOmar/feature/list-all-created-medicine-types ([2aea4ec](https://github.com/NicolasOmar/meds-warning/commit/2aea4ec92493914c3bfab6ed145507ffa173ec82))
+
 # [1.5.0](https://github.com/NicolasOmar/meds-warning/compare/v1.4.0...v1.5.0) (2026-01-12)
 
 
