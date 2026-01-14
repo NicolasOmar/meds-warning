@@ -123,13 +123,14 @@ In case you have cloned the repo, it will show you the following folders:
 - `prisma:` Location of prisma implementation with its `models/entities` and migrations to mirror the entities relationship in the database.
 - `shared`: Location of shared pieces of reusable code to be used across the system.
   - `constants:`: Dedicated to labels, strings, regular expressions, and configuration objects.
+  - `functions:` Dedicated to generalistic functions that can be used across the application.
   - `ts:` Dedicated to typescript interfaces, types, enums, and other features.
 
 ## Branches and Environments
 After my previous experience with [semantic-release](https://semantic-release.gitbook.io/semantic-release/) in [other projects](https://github.com/NicolasOmar/reactive-bulma/issues/3), I decided to give the following meaning to the project's versions after `v4.0.0`:
 - Major versions (`5.0.0`, `6.0.0`, and beyond) will refer to milestone achievements and significant changes that will need extra attention before the update.
-- Minor versions (`4.1.0`, `4.2.0`, and so on) will refer to specific new features.
-- Patch versions (`4.0.1`, `4.0.2`, and so on) will refer to bug fixes or weekly dependency updates.
+- Minor versions (`4.1.0`, `4.2.0`, and so on) will refer to bug fixes that requried several and important code changes or specific new features.
+- Patch versions (`4.0.1`, `4.0.2`, and so on) will refer to bug fixes that requried small code changes or weekly dependency updates.
 
 To check the current project's status, go to the [Roadmap](#roadmap) section.
 

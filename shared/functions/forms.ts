@@ -1,7 +1,6 @@
 import { toast } from 'sonner'
 import { redirect } from 'next/navigation'
-import { MedicineActionState } from '@shared-types/states'
-import { PresentationActionState } from '@shared-types/states'
+import { MedicineActionState, PresentationActionState } from '@shared-types/states'
 import { ROUTES } from '@shared-constants/routes'
 
 export const handleMedicineFormState = (state?: MedicineActionState) => {

@@ -97,5 +97,5 @@ The dev server auto-reloads on file changes. TypeScript strict mode ensures type
 2. **"use client" for Interactivity**: If adding client-side state/hooks, add `"use client"` directive at top of file
 3. **Metadata is Server-Only**: Metadata exports must be server components; use `"use client"` in separate files if interaction needed
 4. **Next.js Auto-Optimization**: Images through `next/image`, fonts through `next/font` — don't bypass these
-5. **Zod for Validation**: Use Zod schemas for any form or data validation (see [components/forms/MedicineForm.tsx](../components/forms/MedicineForm.tsx))
-6. **For more details, refer to the README.md file in the project root.**
+5. **Zod for Validation**: Use Zod schemas for any form or data validation (see [components/forms/MedicineForm.tsx](../components/forms/MedicineForm/index.tsx) or [shared/schemas/medicine.ts](../shared/ts/zod.ts))
+6. **For more details, refer to the [README.md](../README.md) file in the project root.**
