@@ -1,7 +1,7 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { prisma } from '@prisma/index'
 // ACTIONS
-import { createPresentationAction } from '../presentation'
+import { handlePresentationAction } from '../presentation'
 // SHARED
 import { COMMON_FORM_ERRORS } from '@shared-constants/common'
 import { PRESENTATION_FORM_LABELS, PRESENTATION_FORM_ERRORS } from '@shared-constants/forms'
@@ -53,13 +53,13 @@ describe('Presentation Actions', () => {
     vi.clearAllMocks()
   })
 
-  describe('[createPresentationAction]', () => {
+  describe('[handlePresentationAction]', () => {
     test('creates presentation with valid data and calls prisma.medicinePresentation.create', async () => {
       vi.mocked(prisma.medicinePresentation.findFirst).mockResolvedValue(null)
       vi.mocked(prisma.medicinePresentation.create).mockResolvedValue(presentationCreationResponse)
 
       const formData = populateFormData(presentationCreationResponse, ['id'])
-      const result = await createPresentationAction({}, formData)
+      const result = await handlePresentationAction({}, formData)
 
       expect(result.message).toBe(PRESENTATION_FORM_LABELS.CREATE_SUCCESS)
       expect(result.success).toBe(true)
@@ -69,7 +69,7 @@ describe('Presentation Actions', () => {
 
     test('returns error with missing required fields (empty description)', async () => {
       const formData = populateFormData(missingRequiredFieldsData)
-      const result = await createPresentationAction({}, formData)
+      const result = await handlePresentationAction({}, formData)
 
       expect(result.success).toBe(false)
       expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
@@ -84,7 +84,7 @@ describe('Presentation Actions', () => {
       )
 
       const formData = populateFormData(duplicateDescriptionData)
-      const result = await createPresentationAction({}, formData)
+      const result = await handlePresentationAction({}, formData)
 
       expect(result.success).toBe(false)
       expect(result.message).toBe(PRESENTATION_FORM_ERRORS.ALREADY_CREATED)
@@ -100,7 +100,7 @@ describe('Presentation Actions', () => {
       vi.mocked(prisma.medicinePresentation.create).mockResolvedValue(presentationCreationResponse)
 
       const formData = populateFormData(minimalFormData, ['id'])
-      const result = await createPresentationAction({}, formData)
+      const result = await handlePresentationAction({}, formData)
 
       expect(result.success).toBe(true)
       expect(result.message).toBe(PRESENTATION_FORM_LABELS.CREATE_SUCCESS)
@@ -115,7 +115,7 @@ describe('Presentation Actions', () => {
       })
 
       const formData = populateFormData(presentationWithLongDescription)
-      const result = await createPresentationAction({}, formData)
+      const result = await handlePresentationAction({}, formData)
 
       expect(result.success).toBe(true)
       expect(prisma.medicinePresentation.create).toHaveBeenCalled()
@@ -129,7 +129,7 @@ describe('Presentation Actions', () => {
       })
 
       const formData = populateFormData(presentationWithSpecialCharacters)
-      const result = await createPresentationAction({}, formData)
+      const result = await handlePresentationAction({}, formData)
 
       expect(result.success).toBe(true)
       expect(prisma.medicinePresentation.create).toHaveBeenCalled()
@@ -142,7 +142,7 @@ describe('Presentation Actions', () => {
       )
 
       const formData = populateFormData(presentationCreationResponse, ['id'])
-      const result = await createPresentationAction({}, formData)
+      const result = await handlePresentationAction({}, formData)
 
       expect(result.success).toBe(false)
       expect(result.message).toContain('Database connection failed')
@@ -154,7 +154,7 @@ describe('Presentation Actions', () => {
       vi.mocked(prisma.medicinePresentation.create).mockRejectedValue(new Error(''))
 
       const formData = populateFormData(presentationCreationResponse, ['id'])
-      const result = await createPresentationAction({}, formData)
+      const result = await handlePresentationAction({}, formData)
 
       expect(result.success).toBe(false)
       expect(result.message).toBe(COMMON_FORM_ERRORS.SUBMISSION_ERROR)
@@ -165,7 +165,7 @@ describe('Presentation Actions', () => {
       vi.mocked(prisma.medicinePresentation.create).mockRejectedValue('Unknown error')
 
       const formData = populateFormData(presentationCreationResponse, ['id'])
-      const result = await createPresentationAction({}, formData)
+      const result = await handlePresentationAction({}, formData)
 
       expect(result.success).toBe(false)
       expect(result.message).toBe(COMMON_FORM_ERRORS.SUBMISSION_ERROR)
@@ -173,7 +173,7 @@ describe('Presentation Actions', () => {
 
     test('validates required fields are present', async () => {
       const emptyFormData = new FormData()
-      const result = await createPresentationAction({}, emptyFormData)
+      const result = await handlePresentationAction({}, emptyFormData)
 
       expect(result.success).toBe(false)
       expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
@@ -188,13 +188,13 @@ describe('Presentation Actions', () => {
         .mockResolvedValueOnce(presentationCreationResponse3)
 
       const formData1 = populateFormData(presentationCreationResponse, ['id'])
-      const result1 = await createPresentationAction({}, formData1)
+      const result1 = await handlePresentationAction({}, formData1)
 
       const formData2 = populateFormData(presentationCreationResponse2, ['id'])
-      const result2 = await createPresentationAction({}, formData2)
+      const result2 = await handlePresentationAction({}, formData2)
 
       const formData3 = populateFormData(presentationCreationResponse3, ['id'])
-      const result3 = await createPresentationAction({}, formData3)
+      const result3 = await handlePresentationAction({}, formData3)
 
       expect(result1.success).toBe(true)
       expect(result2.success).toBe(true)

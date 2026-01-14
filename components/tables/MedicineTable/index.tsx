@@ -7,11 +7,11 @@ import Link from 'next/link'
 import { toast } from 'sonner'
 import { Button } from '@base-components/button'
 import DataTable from '@custom-components/DataTable'
+import CustomDialog from '@custom-components/CustomModal'
 // SHARED
 import { COMMON_LABELS } from '@shared-constants/common'
 import { MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
 import { ROUTES } from '@shared-constants/routes'
-import CustomDialog from '@custom-components/CustomModal'
 
 interface MedicineDataItem {
   id: number
@@ -46,7 +46,7 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
         actions: (
           <>
             <Link href={`${ROUTES.MEDICINE_MAIN}/${medicineItem.id}`}>
-              <Button variant="secondary">Edit</Button>
+              <Button variant="secondary">{COMMON_LABELS.EDIT}</Button>
             </Link>
             <CustomDialog
               buttonText={COMMON_LABELS.DELETE}

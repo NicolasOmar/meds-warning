@@ -9,7 +9,7 @@ import { toast } from 'sonner'
 
 // Mock the server action
 vi.mock('@actions/index', () => ({
-  createMedicineAction: vi.fn()
+  handleMedicineAction: vi.fn()
 }))
 
 // Mock Prisma to prevent import errors

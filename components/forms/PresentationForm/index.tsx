@@ -1,8 +1,9 @@
 'use client'
 // CORE
 import { FC, useActionState, useEffect } from 'react'
+import { redirect } from 'next/navigation'
 // FORM
-import { createPresentationAction } from '@actions/presentation'
+import { handlePresentationAction } from '@actions/presentation'
 // COMPONENTS
 import { toast } from 'sonner'
 import { Button } from '@base-components/button'
@@ -11,6 +12,12 @@ import CustomInput from '@custom-components/CustomInput'
 // SHARED
 import { PresentationActionState } from '@shared-types/states'
 import { PRESENTATION_FORM_LABELS } from '@shared-constants/forms'
+import { MedicinePresentationType } from '@shared-types/zod'
+import { ROUTES } from '@shared-constants/routes'
+
+interface PresentationFormProps {
+  presentationData?: MedicinePresentationType
+}
 
 const generatePresentationFormStructure = () => ({
   description: {
@@ -21,10 +28,12 @@ const generatePresentationFormStructure = () => ({
   }
 })
 
-const PresentationForm: FC = () => {
+const PresentationForm: FC<PresentationFormProps> = ({ presentationData }) => {
   const presentationFormStructure = generatePresentationFormStructure()
+  const customFormAction = (state: PresentationActionState, formData: FormData) =>
+    handlePresentationAction(state, formData, presentationData?.id?.toString())
   const [state, formAction, isPending] = useActionState<PresentationActionState, FormData>(
-    createPresentationAction,
+    customFormAction,
     {}
   )
 
@@ -33,7 +42,10 @@ const PresentationForm: FC = () => {
       const toastAction = state.success ? toast.success : toast.error
 
       toastAction(state.message)
-      // redirect(ROUTES.PRESENTATION_LIST)
+
+      if (state.success) {
+        redirect(ROUTES.PRESENTATION_LIST)
+      }
     }
   }, [state.message, state.success])
 
@@ -44,6 +56,7 @@ const PresentationForm: FC = () => {
         <CustomInput
           {...presentationFormStructure.description}
           message={state.errors?.description}
+          value={presentationData?.description ?? ''}
         />
       </FieldGroup>
 

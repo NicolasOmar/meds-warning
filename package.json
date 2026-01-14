@@ -99,7 +99,7 @@
   "lint-staged": {
     "(actions|app|components|prisma|shared)/**/*.(ts|tsx)": [
       "prettier --write",
-      "eslint"
+      "eslint --max-warnings 0"
     ]
   }
 }
