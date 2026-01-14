@@ -1,0 +1,10 @@
+{
+  "firstPresentationResponse": {
+    "id": 1,
+    "description": "Tablet"
+  },
+  "secondPresentationResponse": {
+    "id": 2,
+    "description": "Capsule"
+  }
+}

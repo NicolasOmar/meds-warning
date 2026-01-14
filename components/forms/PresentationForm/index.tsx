@@ -1,11 +1,9 @@
 'use client'
 // CORE
 import { FC, useActionState, useEffect } from 'react'
-import { redirect } from 'next/navigation'
 // FORM
 import { handlePresentationAction } from '@actions/presentation'
 // COMPONENTS
-import { toast } from 'sonner'
 import { Button } from '@base-components/button'
 import { FieldGroup, FieldLegend } from '@base-components/field'
 import CustomInput from '@custom-components/CustomInput'
@@ -13,7 +11,7 @@ import CustomInput from '@custom-components/CustomInput'
 import { PresentationActionState } from '@shared-types/states'
 import { PRESENTATION_FORM_LABELS } from '@shared-constants/forms'
 import { MedicinePresentationType } from '@shared-types/zod'
-import { ROUTES } from '@shared-constants/routes'
+import { handlePresentationFormState } from '@shared-functions/forms'
 
 interface PresentationFormProps {
   presentationData?: MedicinePresentationType
@@ -38,16 +36,8 @@ const PresentationForm: FC<PresentationFormProps> = ({ presentationData }) => {
   )
 
   useEffect(() => {
-    if (state?.message) {
-      const toastAction = state.success ? toast.success : toast.error
-
-      toastAction(state.message)
-
-      if (state.success) {
-        redirect(ROUTES.PRESENTATION_LIST)
-      }
-    }
-  }, [state.message, state.success])
+    handlePresentationFormState(state)
+  }, [state])
 
   return (
     <form action={formAction} className="flex flex-col gap-4">

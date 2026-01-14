@@ -1,11 +1,9 @@
 'use client'
 // CORE
 import { FC, useActionState, useEffect } from 'react'
-import { redirect } from 'next/navigation'
 // FORM
 import { handleMedicineAction } from '@actions/medicine'
 // COMPONENTS
-import { toast } from 'sonner'
 import { FieldGroup, FieldLegend, FieldSet } from '@base-components/field'
 import { Button } from '@base-components/button'
 import CustomInput from '@custom-components/CustomInput'
@@ -16,7 +14,7 @@ import CustomSelect from '@custom-components/CustomSelect'
 import { MEDICINE_FORM_LABELS } from '@shared-constants/forms'
 import { MedicinePresentationType, MedicineType } from '@shared-types/zod'
 import { MedicineActionState } from '@shared-types/states'
-import { ROUTES } from '@shared-constants/routes'
+import { handleMedicineFormState } from '@shared-functions/forms'
 
 interface MedicineFormProps {
   presentationsList: MedicinePresentationType[]
@@ -72,16 +70,8 @@ const MedicineForm: FC<MedicineFormProps> = ({ presentationsList, medicineData }
   const [state, boundFormAction, isPending] = useActionState(formAction, {})
 
   useEffect(() => {
-    if (state?.message) {
-      const toastAction = state.success ? toast.success : toast.error
-
-      toastAction(state.message)
-
-      if (state.success) {
-        redirect(ROUTES.MEDICINE_LIST)
-      }
-    }
-  }, [state.message, state.success])
+    handleMedicineFormState(state)
+  }, [state])
 
   return (
     <form action={boundFormAction} className="flex flex-col gap-4">

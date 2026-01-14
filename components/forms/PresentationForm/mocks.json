@@ -1,0 +1,14 @@
+{
+  "mockPresentationData": {
+    "id": 1,
+    "description": "Tablet"
+  },
+  "mockPresentationDataWithId5": {
+    "id": 5,
+    "description": "Capsule"
+  },
+  "mockPresentationDataWithId7": {
+    "id": 7,
+    "description": "Transdermal Patch"
+  }
+}
