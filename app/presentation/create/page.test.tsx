@@ -11,7 +11,7 @@ vi.mock('@prisma/index', () => ({
 
 // Mock the action
 vi.mock('@actions/presentation', () => ({
-  createPresentationAction: vi.fn()
+  handlePresentationAction: vi.fn()
 }))
 
 // Mock sonner toast

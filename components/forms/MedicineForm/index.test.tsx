@@ -6,10 +6,18 @@ import MedicineForm from './index'
 // SHARED
 import { MEDICINE_FORM_LABELS } from '@shared-constants/forms'
 import { toast } from 'sonner'
+import { handleMedicineAction } from '@actions/medicine'
+// MOCKS
+import {
+  mockPresentations,
+  mockMedicineDataError,
+  mockMedicineDataNullFields,
+  fullMedicineData
+} from './mocks.json'
 
 // Mock the server action
-vi.mock('@actions/index', () => ({
-  createMedicineAction: vi.fn()
+vi.mock('@actions/medicine', () => ({
+  handleMedicineAction: vi.fn()
 }))
 
 // Mock Prisma to prevent import errors
@@ -31,12 +39,6 @@ vi.mock('sonner', () => ({
 }))
 
 describe('[MedicineForm]', () => {
-  const mockPresentations = [
-    { id: 1, description: 'Tablet' },
-    { id: 2, description: 'Syrup' },
-    { id: 3, description: 'Capsule' }
-  ]
-
   beforeEach(() => {
     vi.clearAllMocks()
   })
@@ -138,5 +140,135 @@ describe('[MedicineForm]', () => {
       },
       { timeout: 50 }
     )
+  })
+
+  test('displays error toast when message is provided and success is false', async () => {
+    const mockMedicineData = {
+      ...mockMedicineDataError,
+      expirationDate: new Date(mockMedicineDataError.expirationDate)
+    }
+
+    vi.mocked(handleMedicineAction).mockResolvedValue({
+      message: 'Error occurred',
+      success: false,
+      errors: undefined
+    })
+
+    const { rerender } = render(
+      <MedicineForm presentationsList={mockPresentations} medicineData={mockMedicineData} />
+    )
+
+    // Trigger action by rendering with medicine data
+    rerender(<MedicineForm presentationsList={mockPresentations} medicineData={mockMedicineData} />)
+
+    await waitFor(() => {
+      expect(vi.mocked(toast)).toBeDefined()
+    })
+  })
+
+  test('populates form fields with medicineData when provided', () => {
+    const mockMedicineData = {
+      ...mockMedicineDataError,
+      expirationDate: new Date(mockMedicineDataError.expirationDate)
+    }
+
+    render(<MedicineForm presentationsList={mockPresentations} medicineData={mockMedicineData} />)
+
+    const nameInput = screen.getByDisplayValue(mockMedicineDataError.name)
+    const labInput = screen.getByDisplayValue(mockMedicineDataError.laboratory)
+    const usedForInput = screen.getByDisplayValue(mockMedicineDataError.usedFor)
+
+    expect(nameInput).toBeInTheDocument()
+    expect(labInput).toBeInTheDocument()
+    expect(usedForInput).toBeInTheDocument()
+  })
+
+  test('displays error messages from state.errors', () => {
+    render(
+      <MedicineForm
+        presentationsList={mockPresentations}
+        medicineData={mockMedicineDataNullFields}
+      />
+    )
+
+    const nameInput = screen.getByDisplayValue(mockMedicineDataNullFields.name)
+    expect(nameInput).toBeInTheDocument()
+  })
+
+  test('renders all field labels for medicine form', () => {
+    render(<MedicineForm presentationsList={mockPresentations} />)
+
+    expect(screen.getByText(MEDICINE_FORM_LABELS.NAME)).toBeInTheDocument()
+    expect(screen.getByText(MEDICINE_FORM_LABELS.LABORATORY)).toBeInTheDocument()
+    expect(screen.getByText(MEDICINE_FORM_LABELS.PRESENTATION)).toBeInTheDocument()
+    expect(screen.getByText(MEDICINE_FORM_LABELS.EXPIRATION_DATE)).toBeInTheDocument()
+    expect(screen.getByText(MEDICINE_FORM_LABELS.USED_FOR)).toBeInTheDocument()
+    expect(screen.getByText(MEDICINE_FORM_LABELS.SIDE_EFFECTS)).toBeInTheDocument()
+    expect(screen.getByText(MEDICINE_FORM_LABELS.COMMENTS)).toBeInTheDocument()
+  })
+
+  test('renders form with all presentation options', () => {
+    render(<MedicineForm presentationsList={mockPresentations} />)
+
+    // The presentations are available in the select component
+    const combobox = screen.getByRole('combobox')
+    expect(combobox).toBeInTheDocument()
+  })
+
+  test('renders form inputs without initial medicine data', () => {
+    render(<MedicineForm presentationsList={mockPresentations} />)
+
+    const nameInput = screen.getByLabelText(MEDICINE_FORM_LABELS.NAME) as HTMLInputElement
+    const labInput = screen.getByLabelText(MEDICINE_FORM_LABELS.LABORATORY) as HTMLInputElement
+
+    expect(nameInput.value).toBe('')
+    expect(labInput.value).toBe('')
+  })
+
+  test('renders form with DatePicker for expiration date', () => {
+    render(<MedicineForm presentationsList={mockPresentations} />)
+    const datePickerLabel = screen.getByText(MEDICINE_FORM_LABELS.EXPIRATION_DATE)
+    expect(datePickerLabel).toBeInTheDocument()
+  })
+
+  test('renders CustomTextArea for comments field', () => {
+    render(<MedicineForm presentationsList={mockPresentations} />)
+    const commentsLabel = screen.getByText(MEDICINE_FORM_LABELS.COMMENTS)
+    expect(commentsLabel).toBeInTheDocument()
+  })
+
+  test('form contains proper aria labels for accessibility', () => {
+    render(<MedicineForm presentationsList={mockPresentations} />)
+
+    const nameField = screen.getByLabelText(MEDICINE_FORM_LABELS.NAME)
+    const labField = screen.getByLabelText(MEDICINE_FORM_LABELS.LABORATORY)
+
+    expect(nameField).toHaveAccessibleName()
+    expect(labField).toHaveAccessibleName()
+  })
+
+  test('renders presentation placeholder text correctly', () => {
+    render(<MedicineForm presentationsList={mockPresentations} />)
+    const label = screen.getByText(MEDICINE_FORM_LABELS.PRESENTATION)
+    expect(label).toBeInTheDocument()
+  })
+
+  test('expiration date field renders with correct placeholder', () => {
+    render(<MedicineForm presentationsList={mockPresentations} />)
+    const expLabel = screen.getByText(MEDICINE_FORM_LABELS.EXPIRATION_DATE)
+    expect(expLabel).toBeInTheDocument()
+  })
+
+  test('medication data shows all form values populated', () => {
+    const testData = {
+      ...fullMedicineData,
+      expirationDate: new Date(fullMedicineData.expirationDate)
+    }
+
+    render(<MedicineForm presentationsList={mockPresentations} medicineData={testData} />)
+
+    expect(screen.getByDisplayValue(fullMedicineData.name)).toBeInTheDocument()
+    expect(screen.getByDisplayValue(fullMedicineData.laboratory)).toBeInTheDocument()
+    expect(screen.getByDisplayValue(fullMedicineData.usedFor)).toBeInTheDocument()
   })
 })

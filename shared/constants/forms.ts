@@ -35,7 +35,8 @@ export enum PRESENTATION_FORM_LABELS {
   DESCRIPTION = 'Description:',
   DESCRIPTION_PLACEHOLDER = 'Brief description of the presentation',
   SUBMIT_BUTTON = 'Create Presentation',
-  CREATE_SUCCESS = 'Presentation created successfully!'
+  CREATE_SUCCESS = 'Presentation created successfully!',
+  UPDATE_SUCCESS = 'Presentation updated successfully!'
 }
 
 export enum PRESENTATION_FORM_ERRORS {

@@ -22,7 +22,7 @@ export type MedicineType = z.infer<typeof MedicineSchema>
 export const MedicinePresentationSchema = z.object({
   id: z.number().int().optional(),
   description: z
-    .string()
+    .string(PRESENTATION_FORM_ERRORS.DESCRIPTION_REQUIRED)
     .min(1, PRESENTATION_FORM_ERRORS.DESCRIPTION_MIN)
     .max(50, PRESENTATION_FORM_ERRORS.DESCRIPTION_MAX)
 })

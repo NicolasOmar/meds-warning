@@ -7,5 +7,5 @@ export enum MEDICINE_TABLE_LABELS {
 
 export enum MEDICINE_PRESENTATION_TABLE_LABELS {
   TITLE = 'Medicine Presentations',
-  HEADERS = 'ID,Description'
+  HEADERS = 'ID,Description,Actions'
 }

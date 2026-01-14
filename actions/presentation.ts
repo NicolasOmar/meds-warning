@@ -2,16 +2,19 @@
 // CORE
 import * as z from 'zod'
 import { prisma } from '@prisma/index'
+import { revalidatePath } from 'next/cache'
 // SHARED
 import { COMMON_FORM_ERRORS } from '@shared-constants/common'
 import { PresentationActionState } from '@shared-types/states'
 import { MedicinePresentationSchema } from '@shared-types/zod'
 import { parseEmptyFormValueToNull } from '@shared-functions/helpers'
 import { PRESENTATION_FORM_ERRORS, PRESENTATION_FORM_LABELS } from '@shared-constants/forms'
+import { ROUTES } from '@shared-constants/routes'
 
-export async function createPresentationAction(
+export async function handlePresentationAction(
   _: PresentationActionState,
-  formData: FormData
+  formData: FormData,
+  id?: string
 ): Promise<PresentationActionState> {
   const validatedPresentationObject = MedicinePresentationSchema.safeParse({
     description: parseEmptyFormValueToNull(formData.get('description'))
@@ -43,14 +46,23 @@ export async function createPresentationAction(
       }
     }
 
-    await prisma.medicinePresentation.create({
-      data: presentationData
-    })
+    if (id) {
+      await prisma.medicinePresentation.update({
+        where: { id: +id },
+        data: presentationData
+      })
+    } else {
+      await prisma.medicinePresentation.create({
+        data: presentationData
+      })
+    }
 
-    // revalidatePath(ROUTES.PRESENTATION_LIST)
+    revalidatePath(ROUTES.PRESENTATION_LIST)
 
     return {
-      message: PRESENTATION_FORM_LABELS.CREATE_SUCCESS,
+      message: id
+        ? PRESENTATION_FORM_LABELS.UPDATE_SUCCESS
+        : PRESENTATION_FORM_LABELS.CREATE_SUCCESS,
       success: true
     }
   } catch (error: unknown) {

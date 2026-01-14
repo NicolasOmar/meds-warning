@@ -12,7 +12,7 @@ import { MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
 import { ROUTES } from '@shared-constants/routes'
 import { parseEmptyFormValueToNull } from '@shared-functions/helpers'
 
-export async function createMedicineAction(
+export async function handleMedicineAction(
   _: MedicineActionState,
   formData: FormData,
   id?: string

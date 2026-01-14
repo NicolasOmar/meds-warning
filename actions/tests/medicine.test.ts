@@ -1,7 +1,7 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { prisma } from '@prisma/index'
 // ACTIONS
-import { createMedicineAction, deleteMedicine, getMedicines } from '../medicine'
+import { handleMedicineAction, deleteMedicine, getMedicines } from '../medicine'
 // SHARED
 import { COMMON_FORM_ERRORS } from '@shared-constants/common'
 import { MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
@@ -60,7 +60,7 @@ describe('Medicine Actions', () => {
     vi.clearAllMocks()
   })
 
-  describe('[createMedicineAction]', () => {
+  describe('[handleMedicineAction]', () => {
     test('creates medicine with valid data and calls prisma.medicine.create', async () => {
       vi.mocked(prisma.medicine.create).mockResolvedValue({
         ...medicineCreationResponse,
@@ -68,7 +68,7 @@ describe('Medicine Actions', () => {
       })
 
       const formData = populateFormData(medicineCreationResponse, ['id'])
-      const result = await createMedicineAction({}, formData)
+      const result = await handleMedicineAction({}, formData)
 
       expect(result.message).toBe(MEDICINE_FORM_LABELS.CREATE_SUCCESS)
       expect(result.errors).toBeUndefined()
@@ -77,7 +77,7 @@ describe('Medicine Actions', () => {
 
     test('returns error with missing required fields', async () => {
       const formData = populateFormData(missingRequiredFieldsData)
-      const result = await createMedicineAction({}, formData)
+      const result = await handleMedicineAction({}, formData)
 
       expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
       expect(result.errors).toBeDefined()
@@ -85,21 +85,21 @@ describe('Medicine Actions', () => {
 
     test('parses empty form values to null', async () => {
       const formData = populateFormData(emptyNullFormValues)
-      const result = await createMedicineAction({}, formData)
+      const result = await handleMedicineAction({}, formData)
 
       expect(result.message).toBe(MEDICINE_FORM_LABELS.CREATE_SUCCESS)
     })
 
     test('converts presentation string to number', async () => {
       const formData = populateFormData(presentationStringToNumber)
-      const result = await createMedicineAction({}, formData)
+      const result = await handleMedicineAction({}, formData)
 
       expect(result.message).toBe(MEDICINE_FORM_LABELS.CREATE_SUCCESS)
     })
 
     test('converts date string to Date object', async () => {
       const formData = populateFormData(convertsDateStringToDateObj)
-      const result = await createMedicineAction({}, formData)
+      const result = await handleMedicineAction({}, formData)
 
       expect(result.message).toBe(MEDICINE_FORM_LABELS.CREATE_SUCCESS)
     })
@@ -109,7 +109,7 @@ describe('Medicine Actions', () => {
       const longName = 'A'.repeat(51) // Exceeds max length of 50
       formData.append('name', longName)
 
-      const result = await createMedicineAction({}, formData)
+      const result = await handleMedicineAction({}, formData)
 
       expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
       expect(result.errors).toBeDefined()
@@ -117,7 +117,7 @@ describe('Medicine Actions', () => {
 
     test('handles medicine with only name and presentation field', async () => {
       const formData = populateFormData(minimalFormData)
-      const result = await createMedicineAction({}, formData)
+      const result = await handleMedicineAction({}, formData)
 
       expect(result.message).toBe(MEDICINE_FORM_LABELS.CREATE_SUCCESS)
     })
@@ -129,7 +129,7 @@ describe('Medicine Actions', () => {
       })
 
       const formData = populateFormData(medicineCreationResponse, ['id'])
-      await createMedicineAction({}, formData)
+      await handleMedicineAction({}, formData)
 
       expect(prisma.medicine.create).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -139,7 +139,7 @@ describe('Medicine Actions', () => {
     })
   })
 
-  describe('[createMedicineAction] - Update Mode', () => {
+  describe('[handleMedicineAction] - Update Mode', () => {
     test('updates medicine with valid data and calls prisma.medicine.update', async () => {
       vi.mocked(prisma.medicine.update).mockResolvedValue({
         ...medicineUpdateResponse,
@@ -147,7 +147,7 @@ describe('Medicine Actions', () => {
       })
 
       const formData = populateFormData(medicineUpdateResponse, ['id'])
-      const result = await createMedicineAction({}, formData, medicineUpdateResponse.id.toString())
+      const result = await handleMedicineAction({}, formData, medicineUpdateResponse.id.toString())
 
       expect(result.message).toBe(MEDICINE_FORM_LABELS.UPDATE_SUCCESS)
       expect(result.errors).toBeUndefined()
@@ -161,7 +161,7 @@ describe('Medicine Actions', () => {
       })
 
       const formData = populateFormData(medicineUpdateResponse, ['id'])
-      await createMedicineAction({}, formData, '2')
+      await handleMedicineAction({}, formData, '2')
 
       expect(prisma.medicine.update).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -178,7 +178,7 @@ describe('Medicine Actions', () => {
       })
 
       const formData = populateFormData(medicineUpdateWithNullFields, ['id'])
-      const result = await createMedicineAction(
+      const result = await handleMedicineAction(
         {},
         formData,
         medicineUpdateWithNullFields.id.toString()
@@ -190,7 +190,7 @@ describe('Medicine Actions', () => {
 
     test('handles update with missing required fields returns error', async () => {
       const formData = populateFormData(missingRequiredFieldsData)
-      const result = await createMedicineAction({}, formData, '1')
+      const result = await handleMedicineAction({}, formData, '1')
 
       expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
       expect(result.errors).toBeDefined()
@@ -209,7 +209,7 @@ describe('Medicine Actions', () => {
       })
 
       const formData = populateFormData(medicineUpdateOnlyName, ['id'])
-      const result = await createMedicineAction({}, formData, medicineUpdateOnlyName.id.toString())
+      const result = await handleMedicineAction({}, formData, medicineUpdateOnlyName.id.toString())
 
       expect(result.message).toBe(MEDICINE_FORM_LABELS.UPDATE_SUCCESS)
       expect(prisma.medicine.update).toHaveBeenCalled()
@@ -222,7 +222,7 @@ describe('Medicine Actions', () => {
       })
 
       const formData = populateFormData(medicineUpdateResponse, ['id'])
-      await createMedicineAction({}, formData) // No id parameter
+      await handleMedicineAction({}, formData) // No id parameter
 
       expect(prisma.medicine.update).not.toHaveBeenCalled()
       expect(prisma.medicine.create).toHaveBeenCalled()
@@ -235,7 +235,7 @@ describe('Medicine Actions', () => {
       })
 
       const formData = populateFormData(medicineUpdateResponse, ['id'])
-      await createMedicineAction({}, formData, '2')
+      await handleMedicineAction({}, formData, '2')
 
       const callArgs = vi.mocked(prisma.medicine.update).mock.calls[0][0]
       expect(callArgs.where).toEqual({ id: 2 })
@@ -244,13 +244,13 @@ describe('Medicine Actions', () => {
     })
   })
 
-  describe('[createMedicineAction] - Error Handling', () => {
+  describe('[handleMedicineAction] - Error Handling', () => {
     test('handles database error on medicine creation', async () => {
       const dbError = new Error('Database connection failed')
       vi.mocked(prisma.medicine.create).mockRejectedValueOnce(dbError)
 
       const formData = populateFormData(medicineCreationResponse, ['id'])
-      const result = await createMedicineAction({}, formData)
+      const result = await handleMedicineAction({}, formData)
 
       expect(result.message).toBe('Database connection failed')
       expect(result.errors).toBeUndefined()
@@ -261,7 +261,7 @@ describe('Medicine Actions', () => {
       vi.mocked(prisma.medicine.update).mockRejectedValueOnce(dbError)
 
       const formData = populateFormData(medicineUpdateResponse, ['id'])
-      const result = await createMedicineAction({}, formData, '999')
+      const result = await handleMedicineAction({}, formData, '999')
 
       expect(result.message).toBe('Record not found')
       expect(result.errors).toBeUndefined()
@@ -272,7 +272,7 @@ describe('Medicine Actions', () => {
       vi.mocked(prisma.medicine.create).mockRejectedValueOnce(constraintError)
 
       const formData = populateFormData(medicineCreationResponse, ['id'])
-      const result = await createMedicineAction({}, formData)
+      const result = await handleMedicineAction({}, formData)
 
       expect(result.message).toBe('Unique constraint failed on the fields: (`name`)')
     })
@@ -282,7 +282,7 @@ describe('Medicine Actions', () => {
       vi.mocked(prisma.medicine.update).mockRejectedValueOnce(constraintError)
 
       const formData = populateFormData(medicineUpdateResponse, ['id'])
-      const result = await createMedicineAction({}, formData, '1')
+      const result = await handleMedicineAction({}, formData, '1')
 
       expect(result.message).toBe('Unique constraint failed on the fields: (`name`)')
     })
@@ -292,7 +292,7 @@ describe('Medicine Actions', () => {
       vi.mocked(prisma.medicine.create).mockRejectedValueOnce(runtimeError)
 
       const formData = populateFormData(medicineCreationResponse, ['id'])
-      const result = await createMedicineAction({}, formData)
+      const result = await handleMedicineAction({}, formData)
 
       expect(result.message).toBe('Invalid input data format')
     })
@@ -302,7 +302,7 @@ describe('Medicine Actions', () => {
       vi.mocked(prisma.medicine.update).mockRejectedValueOnce(runtimeError)
 
       const formData = populateFormData(medicineUpdateResponse, ['id'])
-      const result = await createMedicineAction({}, formData, '2')
+      const result = await handleMedicineAction({}, formData, '2')
 
       expect(result.message).toBe('Transaction timeout')
     })
@@ -312,7 +312,7 @@ describe('Medicine Actions', () => {
       vi.mocked(prisma.medicine.update).mockRejectedValueOnce(runtimeError)
 
       const formData = populateFormData(medicineUpdateResponse, ['id'])
-      const result = await createMedicineAction({}, formData, '2')
+      const result = await handleMedicineAction({}, formData, '2')
 
       expect(result.message).toBe(COMMON_FORM_ERRORS.SUBMISSION_ERROR)
     })

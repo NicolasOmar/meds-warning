@@ -1,0 +1,37 @@
+{
+  "mockPresentations": [
+    { "id": 1, "description": "Tablet" },
+    { "id": 2, "description": "Syrup" },
+    { "id": 3, "description": "Capsule" }
+  ],
+  "mockMedicineDataError": {
+    "id": 1,
+    "name": "Aspirin",
+    "laboratory": "Bayer",
+    "presentation": 1,
+    "expirationDate": "2025-12-31",
+    "usedFor": "Pain relief",
+    "sideEffects": "Dizziness",
+    "comments": "Take with food"
+  },
+  "mockMedicineDataNullFields": {
+    "id": 1,
+    "name": "Test",
+    "laboratory": null,
+    "presentation": 1,
+    "expirationDate": null,
+    "usedFor": null,
+    "sideEffects": null,
+    "comments": null
+  },
+  "fullMedicineData": {
+    "id": 1,
+    "name": "Vitamin C",
+    "laboratory": "Generic",
+    "presentation": 1,
+    "expirationDate": "2026-01-14",
+    "usedFor": "Immune support",
+    "sideEffects": "None known",
+    "comments": "Take daily"
+  }
+}
