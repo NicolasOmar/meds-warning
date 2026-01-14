@@ -1,3 +1,16 @@
+# [1.7.0](https://github.com/NicolasOmar/meds-warning/compare/v1.6.0...v1.7.0) (2026-01-14)
+
+
+### Bug Fixes
+
+* first implementation of presentation edit form. small text changes ([08f9519](https://github.com/NicolasOmar/meds-warning/commit/08f95193cd5c0c74238a084f8e3226cd2cfa837e))
+* moving toast logic into separated files. adding needed unit tests ([fc37671](https://github.com/NicolasOmar/meds-warning/commit/fc37671002d3916009e31cced94f534df074a53d))
+
+
+### Features
+
+* Merge pull request [#35](https://github.com/NicolasOmar/meds-warning/issues/35)/[#34](https://github.com/NicolasOmar/meds-warning/issues/34) from NicolasOmar/feature/update-a-created-medicine-type ([9d9e6da](https://github.com/NicolasOmar/meds-warning/commit/9d9e6dabdd727f35ed8de2ff8c5acb2215bac770))
+
 # [1.6.0](https://github.com/NicolasOmar/meds-warning/compare/v1.5.0...v1.6.0) (2026-01-13)
 
 
