@@ -79,25 +79,25 @@ export async function handlePresentationAction(
   }
 }
 
-export async function deletePresentation(id: number): Promise<MedicineActionState> {
+export async function deletePresentation(presentationId: number): Promise<MedicineActionState> {
   try {
     const availablePresentations = await prisma.medicine.findMany()
     const presentation = availablePresentations.filter(
-      presentationItem => presentationItem.presentation !== id
+      presentationItem => presentationItem.presentation !== presentationId
     )[0]
 
     await prisma.medicine.updateMany({
-      where: { presentation: id },
+      where: { presentation: presentationId },
       data: { presentation: presentation.id }
     })
 
     await prisma.medicinePresentation.delete({
-      where: { id }
+      where: { id: presentationId }
     })
 
     revalidatePath(ROUTES.PRESENTATION_LIST)
 
-    return { message: MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_SUCCESS }
+    return { message: MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_SUCCESS, success: true }
   } catch (error: unknown) {
     let errorMessage = null
 
@@ -107,6 +107,6 @@ export async function deletePresentation(id: number): Promise<MedicineActionStat
       errorMessage = COMMON_FORM_ERRORS.SUBMISSION_ERROR
     }
 
-    return { message: errorMessage }
+    return { message: errorMessage, success: false }
   }
 }
