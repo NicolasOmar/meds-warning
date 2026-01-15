@@ -7,5 +7,7 @@ export enum MEDICINE_TABLE_LABELS {
 
 export enum MEDICINE_PRESENTATION_TABLE_LABELS {
   TITLE = 'Medicine Presentations',
-  HEADERS = 'ID,Description,Actions'
+  HEADERS = 'ID,Description,Actions',
+  DELETE_SUCCESS = 'Medicine presentation deleted successfully!',
+  DELETE_ERROR = 'An error occurred while deleting the medicine presentation. Please try again later.'
 }

@@ -11,6 +11,14 @@
     "id": 3,
     "description": "Syrup"
   },
+  "presentationWithLongDescriptionResponse": {
+    "id": 4,
+    "description": "Extended Release Tablet with Enteric Coating"
+  },
+  "presentationWithSpecialCharactersResponse": {
+    "id": 5,
+    "description": "Tablet (500mg)"
+  },
   "missingRequiredFieldsData": {
     "description": ""
   },
@@ -43,5 +51,25 @@
   },
   "presentationWithSpecialCharacters": {
     "description": "Tablet (500mg)"
+  },
+  "mockMedicineForDelete": {
+    "id": 1,
+    "name": "Test Med",
+    "laboratory": null,
+    "presentation": 2,
+    "expirationDate": null,
+    "usedFor": null,
+    "sideEffects": null,
+    "comments": null
+  },
+  "mockMedicineForDelete2": {
+    "id": 2,
+    "name": "Test Med",
+    "laboratory": null,
+    "presentation": 2,
+    "expirationDate": null,
+    "usedFor": null,
+    "sideEffects": null,
+    "comments": null
   }
 }

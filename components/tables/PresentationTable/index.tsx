@@ -2,8 +2,12 @@
 // CORE
 import { FC, useMemo } from 'react'
 import Link from 'next/link'
+// ACTIONS
+import { deletePresentation } from '@actions/presentation'
 // COMPONENTS
+import { toast } from 'sonner'
 import DataTable from '@custom-components/DataTable'
+import CustomDialog from '@custom-components/CustomModal'
 // SHARED
 import { MEDICINE_PRESENTATION_TABLE_LABELS } from '@shared-constants/tables'
 import { MedicinePresentationType } from '@shared-types/zod'
@@ -16,6 +20,15 @@ interface MedicinePresentationTableProps {
 }
 
 const MedicinePresentationTable: FC<MedicinePresentationTableProps> = ({ presentationList }) => {
+  const handleDeleteClick = async (id: number) => {
+    const response = await deletePresentation(id)
+    if (response.message) {
+      const toastAction = response.errors ? toast.error : toast.success
+
+      toastAction(response.message)
+    }
+  }
+
   const memoizedMedicineList = useMemo(
     () =>
       presentationList.map(presentationItem => ({
@@ -26,6 +39,14 @@ const MedicinePresentationTable: FC<MedicinePresentationTableProps> = ({ present
             <Link href={`${ROUTES.PRESENTATION_MAIN}/${presentationItem.id}`}>
               <Button variant="secondary">{COMMON_LABELS.EDIT}</Button>
             </Link>
+            <CustomDialog
+              buttonText={COMMON_LABELS.DELETE}
+              title={COMMON_LABELS.CONFIRM_DELETE}
+              description={`Are you sure you want to delete the medicine presentation "${presentationItem.description}"? This action cannot be undone.`}
+              confirmText={COMMON_LABELS.DELETE}
+              onConfirm={() => handleDeleteClick(presentationItem.id!)}
+              cancelText={COMMON_LABELS.CANCEL}
+            />
           </>
         )
       })),
