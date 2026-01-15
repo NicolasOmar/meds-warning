@@ -1,3 +1,15 @@
+# [1.8.0](https://github.com/NicolasOmar/meds-warning/compare/v1.7.0...v1.8.0) (2026-01-15)
+
+
+### Bug Fixes
+
+* adding feature to delete a medicine presentation ([160d4ee](https://github.com/NicolasOmar/meds-warning/commit/160d4ee29957e587a850d433defea9979ef2a4b9))
+
+
+### Features
+
+* Merge pull request [#37](https://github.com/NicolasOmar/meds-warning/issues/37)/[#36](https://github.com/NicolasOmar/meds-warning/issues/36) from NicolasOmar/feature/delete-a-created-medicine-type ([859685b](https://github.com/NicolasOmar/meds-warning/commit/859685b8503466939027f8b44e2e886d71bb96b9))
+
 # [1.7.0](https://github.com/NicolasOmar/meds-warning/compare/v1.6.0...v1.7.0) (2026-01-14)
 
 
