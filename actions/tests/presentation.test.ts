@@ -272,14 +272,11 @@ describe('Presentation Actions', () => {
       vi.mocked(prisma.medicinePresentation.findFirst).mockResolvedValue(null)
       vi.mocked(prisma.medicinePresentation.create).mockResolvedValue(presentationCreationResponse)
 
-      const callArgs = vi.mocked(prisma.medicinePresentation.update).mock.calls[0][0]
       const formData = populateFormData(presentationCreationResponse, ['id'])
       await handlePresentationAction({}, formData)
 
       expect(prisma.medicinePresentation.update).not.toHaveBeenCalled()
       expect(prisma.medicinePresentation.create).toHaveBeenCalled()
-      expect(callArgs.where).toEqual({ id: 1 })
-      expect(callArgs.data).toHaveProperty('description')
     })
 
     test('updates presentation with long description', async () => {
