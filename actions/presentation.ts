@@ -6,7 +6,7 @@ import { revalidatePath } from 'next/cache'
 // SHARED
 import { COMMON_FORM_ERRORS } from '@shared-constants/common'
 import { MedicineActionState, PresentationActionState } from '@shared-types/states'
-import { MedicinePresentationSchema } from '@shared-types/zod'
+import { MedicinePresentationSchema, MedicinePresentationType } from '@shared-types/zod'
 import { parseEmptyFormValueToNull } from '@shared-functions/helpers'
 import { PRESENTATION_FORM_ERRORS, PRESENTATION_FORM_LABELS } from '@shared-constants/forms'
 import { ROUTES } from '@shared-constants/routes'
@@ -102,11 +102,16 @@ export async function deletePresentation(presentationId: number): Promise<Medici
     let errorMessage = null
 
     if (error instanceof Error) {
-      errorMessage = error.message.length > 0 ? error.message : COMMON_FORM_ERRORS.SUBMISSION_ERROR
+      errorMessage =
+        error.message.length > 0 ? error.message : MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_ERROR
     } else {
-      errorMessage = COMMON_FORM_ERRORS.SUBMISSION_ERROR
+      errorMessage = MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_ERROR
     }
 
     return { message: errorMessage, success: false }
   }
+}
+
+export async function getPresentations(): Promise<MedicinePresentationType[]> {
+  return prisma.medicinePresentation.findMany()
 }

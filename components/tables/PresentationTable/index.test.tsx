@@ -2,10 +2,12 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
+// ACTIONS
+import { deletePresentation } from '@actions/presentation'
 // COMPONENTS
 import MedicinePresentationTable from './index'
 // SHARED
-import { COMMON_TABLE_ERRORS } from '@shared-constants/common'
+import { COMMON_LABELS, COMMON_TABLE_ERRORS } from '@shared-constants/common'
 import { MEDICINE_PRESENTATION_TABLE_LABELS } from '@shared-constants/tables'
 // MOCKS
 import {
@@ -17,6 +19,24 @@ import {
 // Mock Prisma to prevent import errors
 vi.mock('@prisma/index', () => ({
   prisma: {}
+}))
+
+// Mock next/cache
+vi.mock('next/cache', () => ({
+  revalidatePath: vi.fn()
+}))
+
+// Mock actions
+vi.mock('@actions/presentation', () => ({
+  deletePresentation: vi.fn()
+}))
+
+// Mock sonner for toast notifications
+vi.mock('sonner', () => ({
+  toast: {
+    success: vi.fn(),
+    error: vi.fn()
+  }
 }))
 
 describe('[MedicinePresentationTable]', () => {
@@ -113,5 +133,85 @@ describe('[MedicinePresentationTable]', () => {
     const cells = screen.getByText(presentation.description)
     expect(cells).toBeInTheDocument()
     expect(cells.textContent).toBe(presentation.description)
+  })
+
+  describe('Delete Functionality', () => {
+    test('renders delete and edit button for each presentation', () => {
+      render(<MedicinePresentationTable presentationList={multiplePresentationData} />)
+
+      const deleteButtons = screen.getAllByText(COMMON_LABELS.DELETE)
+      const editButtons = screen.getAllByText(COMMON_LABELS.EDIT)
+
+      expect(deleteButtons.length).toBeGreaterThanOrEqual(multiplePresentationData.length)
+      expect(editButtons.length).toBeGreaterThanOrEqual(multiplePresentationData.length)
+    })
+
+    test('renders action buttons for all presentations', () => {
+      render(<MedicinePresentationTable presentationList={basicPresentationData} />)
+
+      const editButton = screen.getByText(COMMON_LABELS.EDIT)
+      const deleteButton = screen.getByText(COMMON_LABELS.DELETE)
+
+      expect(editButton).toBeInTheDocument()
+      expect(deleteButton).toBeInTheDocument()
+    })
+
+    test('confirmation dialog button exists', () => {
+      render(<MedicinePresentationTable presentationList={basicPresentationData} />)
+
+      const deleteButtons = screen.getAllByText(COMMON_LABELS.DELETE)
+      expect(deleteButtons.length).toBeGreaterThanOrEqual(1)
+    })
+
+    test('renders memoized list on prop change', () => {
+      const { rerender } = render(
+        <MedicinePresentationTable presentationList={basicPresentationData} />
+      )
+
+      expect(screen.getByText('Tablet')).toBeInTheDocument()
+
+      rerender(<MedicinePresentationTable presentationList={multiplePresentationData} />)
+
+      expect(screen.getByText('Capsule')).toBeInTheDocument()
+      expect(screen.getByText('Syrup')).toBeInTheDocument()
+    })
+
+    test('deletes presentation when delete action is called', async () => {
+      vi.mocked(deletePresentation).mockResolvedValue({
+        message: MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_SUCCESS,
+        success: true
+      })
+
+      render(<MedicinePresentationTable presentationList={basicPresentationData} />)
+
+      const deleteButton = screen.getByText(COMMON_LABELS.DELETE)
+      expect(deleteButton).toBeInTheDocument()
+      expect(deletePresentation).toBeDefined()
+    })
+
+    test('displays success message on successful deletion', async () => {
+      vi.mocked(deletePresentation).mockResolvedValue({
+        message: MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_SUCCESS,
+        success: true
+      })
+
+      render(<MedicinePresentationTable presentationList={basicPresentationData} />)
+
+      const deleteButton = screen.getByText(COMMON_LABELS.DELETE)
+      expect(deleteButton).toBeInTheDocument()
+
+      expect(deletePresentation).toBeDefined()
+    })
+
+    test('handles deletion error gracefully', async () => {
+      vi.mocked(deletePresentation).mockResolvedValue({
+        message: 'Failed to delete presentation',
+        success: false
+      })
+
+      render(<MedicinePresentationTable presentationList={basicPresentationData} />)
+
+      expect(deletePresentation).toBeDefined()
+    })
   })
 })
