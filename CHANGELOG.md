@@ -1,3 +1,11 @@
+## [1.8.1](https://github.com/NicolasOmar/meds-warning/compare/v1.8.0...v1.8.1) (2026-01-20)
+
+
+### Bug Fixes
+
+* Merge pull request [#44](https://github.com/NicolasOmar/meds-warning/issues/44)/[#43](https://github.com/NicolasOmar/meds-warning/issues/43) from NicolasOmar/check-weekly-dependency-updates-26-01-20 ([3fe010b](https://github.com/NicolasOmar/meds-warning/commit/3fe010b73d540d4f80ebb740497d952c951c0c60))
+* updating dependencies ([cf2af3a](https://github.com/NicolasOmar/meds-warning/commit/cf2af3a7b0ebf961b1b966b2b515550176426aaa))
+
 # [1.8.0](https://github.com/NicolasOmar/meds-warning/compare/v1.7.0...v1.8.0) (2026-01-15)
 
 
