@@ -1,17 +1,20 @@
 'use client'
 // CORE
-import { FC, useMemo } from 'react'
-import { deleteMedicine } from '@actions/medicine'
+import { FC, useMemo, useRef, useState } from 'react'
+import { deleteMedicine, getMedicines } from '@actions/medicine'
 import Link from 'next/link'
 // COMPONENTS
 import { toast } from 'sonner'
 import { Button } from '@base-components/button'
 import DataTable from '@custom-components/DataTable'
 import CustomDialog from '@custom-components/CustomModal'
+import CustomInput from '@custom-components/CustomInput'
 // SHARED
 import { COMMON_LABELS } from '@shared-constants/common'
 import { MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
 import { ROUTES } from '@shared-constants/routes'
+import { debounce } from '@shared-functions/debounce'
+import { parseMedicineToDataItem } from '@shared-functions/parsers'
 
 interface MedicineDataItem {
   id: number
@@ -30,8 +33,30 @@ interface MedicineTableProps {
 }
 
 const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
+  const [medicines, setMedicines] = useState<MedicineDataItem[]>(medicineList)
+  const [isWorking, setIsWorking] = useState<boolean>(false)
+
+  // Create a persistent debounced search function using useRef
+  const debouncedSearchRef = useRef(
+    debounce(async (value: string) => {
+      setIsWorking(true)
+      try {
+        const fetchedMedicineList = await getMedicines(value)
+        setMedicines(parseMedicineToDataItem(fetchedMedicineList))
+      } catch {
+        // Handle error gracefully - user will see the current medicines list
+        // In a production app, you might want to show an error toast here
+      } finally {
+        setIsWorking(false)
+      }
+    }, 300)
+  )
+
   const handleDeleteClick = async (id: number) => {
+    setIsWorking(true)
     const response = await deleteMedicine(id)
+    setIsWorking(false)
+
     if (response.message) {
       const toastAction = response.errors ? toast.error : toast.success
 
@@ -39,9 +64,13 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
     }
   }
 
+  const handleSearchChange = (value: string) => {
+    debouncedSearchRef.current(value)
+  }
+
   const memoizedMedicineList = useMemo(
     () =>
-      medicineList.map(medicineItem => ({
+      medicines.map(medicineItem => ({
         ...medicineItem,
         actions: (
           <>
@@ -53,21 +82,31 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
               title={COMMON_LABELS.CONFIRM_DELETE}
               description={`Are you sure you want to delete the medicine "${medicineItem.name}"? This action cannot be undone.`}
               confirmText={COMMON_LABELS.DELETE}
+              disableConfirm={isWorking}
               onConfirm={() => handleDeleteClick(medicineItem.id)}
               cancelText={COMMON_LABELS.CANCEL}
+              disableCancel={isWorking}
             />
           </>
         )
       })),
-    [medicineList]
+    [medicines, isWorking]
   )
 
   return (
-    <DataTable
-      title={MEDICINE_TABLE_LABELS.TITLE}
-      headers={MEDICINE_TABLE_LABELS.HEADERS.split(',')}
-      data={memoizedMedicineList}
-    />
+    <>
+      <CustomInput
+        type="search"
+        name="searchMedicine"
+        placeholder={MEDICINE_TABLE_LABELS.SEARCH_PLACEHOLDER}
+        onChange={event => handleSearchChange(event.target.value)}
+      />
+      <DataTable
+        title={MEDICINE_TABLE_LABELS.TITLE}
+        headers={MEDICINE_TABLE_LABELS.HEADERS.split(',')}
+        data={memoizedMedicineList}
+      />
+    </>
   )
 }
 

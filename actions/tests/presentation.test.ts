@@ -426,7 +426,7 @@ describe('Presentation Actions', () => {
         new Error('Database connection failed')
       )
 
-      expect(getPresentations()).rejects.toThrow('Database connection failed')
+      await expect(getPresentations()).rejects.toThrow('Database connection failed')
     })
 
     test('returns multiple presentations in correct order', async () => {

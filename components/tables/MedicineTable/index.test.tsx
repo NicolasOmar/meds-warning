@@ -1,12 +1,12 @@
 // CORE
-import { describe, test, expect, vi, beforeEach } from 'vitest'
+import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 // COMPONENTS
 import { toast } from 'sonner'
 import MedicineTable from './index'
 // ACTIONS
-import { deleteMedicine } from '@actions/medicine'
+import { deleteMedicine, getMedicines } from '@actions/medicine'
 // SHARED
 import { COMMON_TABLE_ERRORS, COMMON_LABELS } from '@shared-constants/common'
 import { MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
@@ -25,9 +25,10 @@ vi.mock('next/link', () => ({
   )
 }))
 
-// Mock server action
+// Mock server actions
 vi.mock('@actions/medicine', () => ({
-  deleteMedicine: vi.fn()
+  deleteMedicine: vi.fn(),
+  getMedicines: vi.fn()
 }))
 
 // Mock sonner toast
@@ -41,6 +42,11 @@ vi.mock('sonner', () => ({
 describe('[MedicineTable]', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    vi.useFakeTimers()
+  })
+
+  afterEach(() => {
+    vi.useRealTimers()
   })
 
   test('renders table title correctly', () => {
@@ -159,9 +165,10 @@ describe('[MedicineTable]', () => {
   })
 
   test('displays delete confirmation dialog when delete button is clicked', async () => {
+    vi.useRealTimers()
     render(<MedicineTable medicineList={basicMedicineData} />)
 
-    const deleteButton = screen.getByRole('button', { name: COMMON_LABELS.DELETE })
+    const deleteButton = screen.getByRole('button', { name: /Delete/i })
     fireEvent.click(deleteButton)
 
     const confirmDeleteTitle = await screen.findByText(COMMON_LABELS.CONFIRM_DELETE)
@@ -171,9 +178,11 @@ describe('[MedicineTable]', () => {
 
     expect(confirmDeleteTitle).toBeInTheDocument()
     expect(confirmMessage).toBeInTheDocument()
+    vi.useFakeTimers()
   })
 
   test('calls deleteMedicine action when delete is confirmed', async () => {
+    vi.useRealTimers()
     vi.mocked(deleteMedicine).mockResolvedValueOnce({
       message: MEDICINE_TABLE_LABELS.DELETE_SUCCESS
     })
@@ -192,9 +201,11 @@ describe('[MedicineTable]', () => {
       expect(deleteMedicine).toHaveBeenCalledWith(medicineId)
       expect(vi.mocked(toast.success)).toHaveBeenCalledWith(MEDICINE_TABLE_LABELS.DELETE_SUCCESS)
     })
+    vi.useFakeTimers()
   })
 
   test('shows error toast on delete failure', async () => {
+    vi.useRealTimers()
     vi.mocked(deleteMedicine).mockResolvedValueOnce({
       message: MEDICINE_TABLE_LABELS.DELETE_ERROR,
       errors: { name: ['Error occurred'] }
@@ -211,9 +222,11 @@ describe('[MedicineTable]', () => {
     await waitFor(() => {
       expect(vi.mocked(toast.error)).toHaveBeenCalledWith(MEDICINE_TABLE_LABELS.DELETE_ERROR)
     })
+    vi.useFakeTimers()
   })
 
   test('handles delete with no response message', async () => {
+    vi.useRealTimers()
     vi.mocked(deleteMedicine).mockResolvedValueOnce({})
 
     const medicineId = basicMedicineData[0].id
@@ -229,9 +242,11 @@ describe('[MedicineTable]', () => {
     await waitFor(() => {
       expect(deleteMedicine).toHaveBeenCalledWith(medicineId)
     })
+    vi.useFakeTimers()
   })
 
   test('medicine name appears correctly in delete confirmation for multiple medicines', async () => {
+    vi.useRealTimers()
     render(<MedicineTable medicineList={multipleMedicineData} />)
 
     const deleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
@@ -241,9 +256,11 @@ describe('[MedicineTable]', () => {
       new RegExp(`Are you sure you want to delete the medicine "${multipleMedicineData[0].name}"`)
     )
     expect(confirmMessage).toBeInTheDocument()
+    vi.useFakeTimers()
   })
 
   test('handles delete action for different medicine ids', async () => {
+    vi.useRealTimers()
     vi.mocked(deleteMedicine).mockResolvedValue({
       message: 'Success'
     })
@@ -258,6 +275,274 @@ describe('[MedicineTable]', () => {
 
     await waitFor(() => {
       expect(deleteMedicine).toHaveBeenCalledWith(multipleMedicineData[0].id)
+    })
+    vi.useFakeTimers()
+  })
+
+  describe('Search Functionality', () => {
+    test('renders search input field', () => {
+      render(<MedicineTable medicineList={basicMedicineData} />)
+
+      const searchInput = screen.getByPlaceholderText(MEDICINE_TABLE_LABELS.SEARCH_PLACEHOLDER)
+      expect(searchInput).toBeInTheDocument()
+      expect(searchInput).toHaveAttribute('type', 'search')
+    })
+
+    test('search input has correct placeholder', () => {
+      render(<MedicineTable medicineList={basicMedicineData} />)
+
+      const searchInput = screen.getByPlaceholderText(MEDICINE_TABLE_LABELS.SEARCH_PLACEHOLDER)
+      expect(searchInput).toHaveAttribute('placeholder', MEDICINE_TABLE_LABELS.SEARCH_PLACEHOLDER)
+    })
+
+    test('calls getMedicines with search term after debounce delay', async () => {
+      vi.mocked(getMedicines).mockResolvedValueOnce([])
+
+      render(<MedicineTable medicineList={basicMedicineData} />)
+
+      const searchInput = screen.getByPlaceholderText(MEDICINE_TABLE_LABELS.SEARCH_PLACEHOLDER)
+      fireEvent.change(searchInput, { target: { value: basicMedicineData[0].name } })
+
+      // Before delay, getMedicines should not be called
+      expect(vi.mocked(getMedicines)).not.toHaveBeenCalled()
+
+      // Advance timers past debounce delay (300ms)
+      vi.advanceTimersByTime(300)
+
+      // Run any pending promise callbacks
+      await vi.runAllTimersAsync()
+
+      expect(vi.mocked(getMedicines)).toHaveBeenCalledWith(basicMedicineData[0].name)
+    })
+
+    test('debounces rapid search inputs', async () => {
+      vi.mocked(getMedicines).mockResolvedValue([])
+
+      render(<MedicineTable medicineList={basicMedicineData} />)
+
+      const searchInput = screen.getByPlaceholderText(MEDICINE_TABLE_LABELS.SEARCH_PLACEHOLDER)
+
+      // Type multiple characters rapidly
+      fireEvent.change(searchInput, { target: { value: 'A' } })
+      vi.advanceTimersByTime(100)
+      fireEvent.change(searchInput, { target: { value: 'As' } })
+      vi.advanceTimersByTime(100)
+      fireEvent.change(searchInput, { target: { value: 'Asp' } })
+      vi.advanceTimersByTime(100)
+
+      // Should not have called getMedicines yet (total 300ms but interrupted)
+      expect(vi.mocked(getMedicines)).not.toHaveBeenCalled()
+
+      // Advance to complete the debounce
+      vi.advanceTimersByTime(300)
+
+      // Run any pending promise callbacks
+      await vi.runAllTimersAsync()
+
+      // Should only be called once with the final value
+      expect(vi.mocked(getMedicines)).toHaveBeenCalledTimes(1)
+      expect(vi.mocked(getMedicines)).toHaveBeenCalledWith('Asp')
+    })
+
+    test('updates medicine list with search results', async () => {
+      vi.mocked(getMedicines).mockResolvedValueOnce([
+        {
+          id: 1,
+          name: 'Aspirin',
+          laboratory: 'Bayer',
+          presentation: 1,
+          medicinePresentation: { id: 1, description: 'Tablet' },
+          expirationDate: new Date('2025-12-31'),
+          usedFor: 'Pain relief',
+          sideEffects: 'Nausea',
+          comments: 'Take with food'
+        }
+      ])
+
+      render(<MedicineTable medicineList={multipleMedicineData} />)
+
+      // Initial render should show all medicines
+      expect(screen.getByText(multipleMedicineData[0].name)).toBeInTheDocument()
+
+      const searchInput = screen.getByPlaceholderText(MEDICINE_TABLE_LABELS.SEARCH_PLACEHOLDER)
+      fireEvent.change(searchInput, { target: { value: 'Aspirin' } })
+
+      vi.advanceTimersByTime(300)
+      await vi.runAllTimersAsync()
+
+      expect(screen.getByText('Aspirin')).toBeInTheDocument()
+    })
+
+    test('handles empty search results', async () => {
+      vi.mocked(getMedicines).mockResolvedValueOnce([])
+
+      render(<MedicineTable medicineList={basicMedicineData} />)
+
+      const searchInput = screen.getByPlaceholderText(MEDICINE_TABLE_LABELS.SEARCH_PLACEHOLDER)
+      fireEvent.change(searchInput, { target: { value: 'NonexistentMedicine' } })
+
+      vi.advanceTimersByTime(300)
+      await vi.runAllTimersAsync()
+
+      expect(vi.mocked(getMedicines)).toHaveBeenCalledWith('NonexistentMedicine')
+      expect(screen.getByText(COMMON_TABLE_ERRORS.NO_DATA)).toBeInTheDocument()
+    })
+
+    test('handles error during search gracefully', async () => {
+      // Mock getMedicines to throw an error
+      // The component should handle it gracefully
+      vi.mocked(getMedicines).mockImplementationOnce(async () => {
+        throw new Error('Search failed')
+      })
+
+      render(<MedicineTable medicineList={basicMedicineData} />)
+
+      const searchInput = screen.getByPlaceholderText(MEDICINE_TABLE_LABELS.SEARCH_PLACEHOLDER)
+      fireEvent.change(searchInput, { target: { value: 'Aspirin' } })
+
+      vi.advanceTimersByTime(300)
+
+      // Component should handle error gracefully and still be rendered
+      try {
+        await vi.runAllTimersAsync()
+      } catch {
+        // Ignore error - we're just testing that the component doesn't crash
+      }
+
+      expect(
+        screen.getByPlaceholderText(MEDICINE_TABLE_LABELS.SEARCH_PLACEHOLDER)
+      ).toBeInTheDocument()
+    })
+
+    test('clears previous search results when new search is performed', async () => {
+      vi.mocked(getMedicines)
+        .mockResolvedValueOnce([
+          {
+            id: 1,
+            name: 'Aspirin',
+            laboratory: 'Bayer',
+            presentation: 1,
+            medicinePresentation: { id: 1, description: 'Tablet' },
+            expirationDate: new Date('2025-12-31'),
+            usedFor: 'Pain relief',
+            sideEffects: 'Nausea',
+            comments: 'Take with food'
+          }
+        ])
+        .mockResolvedValueOnce([
+          {
+            id: 2,
+            name: 'Ibuprofen',
+            laboratory: 'Pfizer',
+            presentation: 1,
+            medicinePresentation: { id: 1, description: 'Tablet' },
+            expirationDate: new Date('2025-12-31'),
+            usedFor: 'Fever',
+            sideEffects: 'Dizziness',
+            comments: ''
+          }
+        ])
+
+      render(<MedicineTable medicineList={basicMedicineData} />)
+
+      const searchInput = screen.getByPlaceholderText(MEDICINE_TABLE_LABELS.SEARCH_PLACEHOLDER)
+
+      // First search
+      fireEvent.change(searchInput, { target: { value: 'Aspirin' } })
+      vi.advanceTimersByTime(300)
+      await vi.runAllTimersAsync()
+
+      expect(screen.getByText('Aspirin')).toBeInTheDocument()
+
+      // Second search
+      fireEvent.change(searchInput, { target: { value: 'Ibuprofen' } })
+      vi.advanceTimersByTime(300)
+      await vi.runAllTimersAsync()
+
+      expect(screen.getByText('Ibuprofen')).toBeInTheDocument()
+    })
+
+    test('search input is accessible', () => {
+      render(<MedicineTable medicineList={basicMedicineData} />)
+
+      const searchInput = screen.getByPlaceholderText(MEDICINE_TABLE_LABELS.SEARCH_PLACEHOLDER)
+      expect(searchInput).toBeInTheDocument()
+    })
+
+    test('preserves edit and delete buttons during search', async () => {
+      vi.mocked(getMedicines).mockResolvedValueOnce([
+        {
+          id: 1,
+          name: 'Aspirin',
+          laboratory: 'Bayer',
+          presentation: 1,
+          medicinePresentation: { id: 1, description: 'Tablet' },
+          expirationDate: new Date('2025-12-31'),
+          usedFor: 'Pain relief',
+          sideEffects: 'Nausea',
+          comments: 'Take with food'
+        }
+      ])
+
+      render(<MedicineTable medicineList={basicMedicineData} />)
+
+      const searchInput = screen.getByPlaceholderText(MEDICINE_TABLE_LABELS.SEARCH_PLACEHOLDER)
+      fireEvent.change(searchInput, { target: { value: 'Aspirin' } })
+
+      vi.advanceTimersByTime(300)
+      await vi.runAllTimersAsync()
+
+      const editLink = screen.getByRole('link', { name: /Edit/i })
+      const deleteButton = screen.getByRole('button', { name: COMMON_LABELS.DELETE })
+
+      expect(editLink).toBeInTheDocument()
+      expect(deleteButton).toBeInTheDocument()
+    })
+
+    test('delete works correctly on searched medicines', async () => {
+      vi.useRealTimers()
+      vi.mocked(getMedicines).mockResolvedValueOnce([
+        {
+          id: 1,
+          name: 'Aspirin',
+          laboratory: 'Bayer',
+          presentation: 1,
+          medicinePresentation: { id: 1, description: 'Tablet' },
+          expirationDate: new Date('2025-12-31'),
+          usedFor: 'Pain relief',
+          sideEffects: 'Nausea',
+          comments: 'Take with food'
+        }
+      ])
+
+      vi.mocked(deleteMedicine).mockResolvedValueOnce({
+        message: MEDICINE_TABLE_LABELS.DELETE_SUCCESS
+      })
+
+      render(<MedicineTable medicineList={basicMedicineData} />)
+
+      // Use fake timers for search, then switch to real for dialog
+      vi.useFakeTimers()
+      const searchInput = screen.getByPlaceholderText(MEDICINE_TABLE_LABELS.SEARCH_PLACEHOLDER)
+      fireEvent.change(searchInput, { target: { value: 'Aspirin' } })
+
+      vi.advanceTimersByTime(300)
+      await vi.runAllTimersAsync()
+      vi.useRealTimers()
+
+      expect(screen.getByText('Aspirin')).toBeInTheDocument()
+
+      const deleteButton = screen.getByRole('button', { name: COMMON_LABELS.DELETE })
+      fireEvent.click(deleteButton)
+
+      const allDeleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
+      fireEvent.click(allDeleteButtons[allDeleteButtons.length - 1])
+
+      await waitFor(() => {
+        expect(deleteMedicine).toHaveBeenCalledWith(1)
+        expect(vi.mocked(toast.success)).toHaveBeenCalledWith(MEDICINE_TABLE_LABELS.DELETE_SUCCESS)
+      })
+      vi.useFakeTimers()
     })
   })
 })

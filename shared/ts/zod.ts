@@ -19,6 +19,13 @@ export const MedicineSchema = z.object({
 
 export type MedicineType = z.infer<typeof MedicineSchema>
 
+export type MedicineTypeExtended = MedicineType & {
+  medicinePresentation?: {
+    id: number
+    description: string
+  }
+}
+
 export const MedicinePresentationSchema = z.object({
   id: z.number().int().optional(),
   description: z
