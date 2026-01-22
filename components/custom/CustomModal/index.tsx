@@ -43,7 +43,11 @@ const CustomDialog: FC<CustomDialogProps> = ({
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          {title ? <DialogTitle>{title}</DialogTitle> : null}
+          {title ? (
+            <DialogTitle>{title}</DialogTitle>
+          ) : (
+            <DialogTitle className="sr-only">Dialog</DialogTitle>
+          )}
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
         {body ?? null}

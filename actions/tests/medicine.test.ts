@@ -395,6 +395,12 @@ describe('Medicine Actions', () => {
 
       expect(result).toHaveLength(2)
       expect(prisma.medicine.findMany).toHaveBeenCalledWith({
+        where: {
+          name: {
+            contains: '',
+            mode: 'insensitive'
+          }
+        },
         include: {
           medicinePresentation: true
         }
@@ -411,6 +417,12 @@ describe('Medicine Actions', () => {
       await getMedicines()
 
       expect(prisma.medicine.findMany).toHaveBeenCalledWith({
+        where: {
+          name: {
+            contains: '',
+            mode: 'insensitive'
+          }
+        },
         include: {
           medicinePresentation: true
         }
@@ -467,14 +479,14 @@ describe('Medicine Actions', () => {
       const dbError = new Error('Database connection failed')
       vi.mocked(prisma.medicine.findMany).mockRejectedValueOnce(dbError)
 
-      expect(getMedicines()).rejects.toThrow('Database connection failed')
+      await expect(getMedicines()).rejects.toThrow('Database connection failed')
     })
 
     test('handles timeout error on getMedicines', async () => {
       const timeoutError = new Error('Query timeout')
       vi.mocked(prisma.medicine.findMany).mockRejectedValueOnce(timeoutError)
 
-      expect(getMedicines()).rejects.toThrow('Query timeout')
+      await expect(getMedicines()).rejects.toThrow('Query timeout')
     })
 
     test('returns multiple medicines in correct order', async () => {
