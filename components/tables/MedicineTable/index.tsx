@@ -1,6 +1,6 @@
 'use client'
 // CORE
-import { FC, useMemo, useState } from 'react'
+import { FC, useMemo, useRef, useState } from 'react'
 import { deleteMedicine, getMedicines } from '@actions/medicine'
 import Link from 'next/link'
 // COMPONENTS
@@ -36,6 +36,22 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
   const [medicines, setMedicines] = useState<MedicineDataItem[]>(medicineList)
   const [isWorking, setIsWorking] = useState<boolean>(false)
 
+  // Create a persistent debounced search function using useRef
+  const debouncedSearchRef = useRef(
+    debounce(async (value: string) => {
+      setIsWorking(true)
+      try {
+        const fetchedMedicineList = await getMedicines(value)
+        setMedicines(parseMedicineToDataItem(fetchedMedicineList))
+      } catch {
+        // Handle error gracefully - user will see the current medicines list
+        // In a production app, you might want to show an error toast here
+      } finally {
+        setIsWorking(false)
+      }
+    }, 300)
+  )
+
   const handleDeleteClick = async (id: number) => {
     setIsWorking(true)
     const response = await deleteMedicine(id)
@@ -49,13 +65,7 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
   }
 
   const handleSearchChange = (value: string) => {
-    debounce(async (value: string) => {
-      setIsWorking(true)
-      const fetchedMedicineList = await getMedicines(value)
-
-      setIsWorking(false)
-      setMedicines(parseMedicineToDataItem(fetchedMedicineList))
-    }, 300)(value)
+    debouncedSearchRef.current(value)
   }
 
   const memoizedMedicineList = useMemo(

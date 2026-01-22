@@ -37,6 +37,7 @@ npm run prettier:fix    # Run Prettier fixes
 The dev server auto-reloads on file changes. TypeScript strict mode ensures type safety.
 
 ### Testing
+- Load instructrions related to testing in [.github/instructions/testing.md](./instructions/testing.md).
 - Tests are written using Vitest. To run all tests:
   ```bash
   npm test
