@@ -105,8 +105,14 @@ export async function deleteMedicine(id: number): Promise<MedicineActionState> {
   }
 }
 
-export async function getMedicines() {
+export async function getMedicines(name?: string) {
   return await prisma.medicine.findMany({
+    where: {
+      name: {
+        contains: name ?? '',
+        mode: 'insensitive'
+      }
+    },
     include: {
       medicinePresentation: true
     }

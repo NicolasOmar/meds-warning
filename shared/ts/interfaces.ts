@@ -12,7 +12,7 @@ export interface LayoutTempalteProps extends BaseLayoutProps {
 }
 
 export interface BaseFormFieldProps {
-  label: string
+  label?: string
   name: string
   message?: string | string[]
 }

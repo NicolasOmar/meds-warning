@@ -19,8 +19,10 @@ interface CustomDialogProps {
   description: string | React.ReactNode
   body?: React.ReactNode
   confirmText: string
+  disableConfirm?: boolean
   onConfirm?: () => void
   cancelText?: string
+  disableCancel?: boolean
 }
 
 const CustomDialog: FC<CustomDialogProps> = ({
@@ -30,7 +32,9 @@ const CustomDialog: FC<CustomDialogProps> = ({
   body,
   confirmText,
   onConfirm,
-  cancelText
+  cancelText,
+  disableConfirm,
+  disableCancel
 }) => {
   return (
     <Dialog>
@@ -45,9 +49,11 @@ const CustomDialog: FC<CustomDialogProps> = ({
         {body ?? null}
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">{cancelText ?? 'Cancel'}</Button>
+            <Button variant="outline" disabled={disableCancel}>
+              {cancelText ?? 'Cancel'}
+            </Button>
           </DialogClose>
-          <Button type="submit" onClick={onConfirm}>
+          <Button type="submit" onClick={onConfirm} disabled={disableConfirm}>
             {confirmText}
           </Button>
         </DialogFooter>
