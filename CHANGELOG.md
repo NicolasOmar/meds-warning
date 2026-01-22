@@ -1,3 +1,15 @@
+# [1.9.0](https://github.com/NicolasOmar/meds-warning/compare/v1.8.1...v1.9.0) (2026-01-22)
+
+
+### Bug Fixes
+
+* adding search bar on medicine table ([262442e](https://github.com/NicolasOmar/meds-warning/commit/262442ea305a71debfd568aefb7a7aa945872adb))
+
+
+### Features
+
+* Merge pull request [#46](https://github.com/NicolasOmar/meds-warning/issues/46)/[#45](https://github.com/NicolasOmar/meds-warning/issues/45) from NicolasOmar/feature/filter-created-medicines-by-their-name ([11009da](https://github.com/NicolasOmar/meds-warning/commit/11009da44175b2842ca7fb60efbc55349c314461))
+
 ## [1.8.1](https://github.com/NicolasOmar/meds-warning/compare/v1.8.0...v1.8.1) (2026-01-20)
 
 
