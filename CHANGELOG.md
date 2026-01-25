@@ -1,3 +1,10 @@
+## [1.9.1](https://github.com/NicolasOmar/meds-warning/compare/v1.9.0...v1.9.1) (2026-01-25)
+
+
+### Bug Fixes
+
+* pdating dependencies ([0f4d82e](https://github.com/NicolasOmar/meds-warning/commit/0f4d82ec9a0823c98816a8dfb57741ed75d4ef6a))
+
 # [1.9.0](https://github.com/NicolasOmar/meds-warning/compare/v1.8.1...v1.9.0) (2026-01-22)
 
 
