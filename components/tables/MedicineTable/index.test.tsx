@@ -9,7 +9,7 @@ import MedicineTable from './index'
 import { deleteMedicine, getMedicines } from '@actions/medicine'
 // SHARED
 import { COMMON_TABLE_ERRORS, COMMON_LABELS } from '@shared-constants/common'
-import { MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
+import { MEDICINE_TABLE_ERRORS, MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
 // MOCKS
 import {
   basicMedicineData,
@@ -172,10 +172,10 @@ describe('[MedicineTable]', () => {
     const deleteButton = screen.getByRole('button', { name: /Delete/i })
     fireEvent.click(deleteButton)
 
-    const confirmDeleteTitle = await screen.findByText(COMMON_LABELS.CONFIRM_DELETE)
-    const confirmMessage = await screen.findByText(
-      new RegExp(`Are you sure you want to delete the medicine "${basicMedicineData[0].name}"`)
+    const confirmDeleteTitle = await screen.findByText(
+      `${COMMON_LABELS.DELETE} '${basicMedicineData[0].name}'`
     )
+    const confirmMessage = await screen.findByText(MEDICINE_TABLE_LABELS.DELETE_QUESTION)
 
     expect(confirmDeleteTitle).toBeInTheDocument()
     expect(confirmMessage).toBeInTheDocument()
@@ -208,7 +208,7 @@ describe('[MedicineTable]', () => {
   test('shows error toast on delete failure', async () => {
     vi.useRealTimers()
     vi.mocked(deleteMedicine).mockResolvedValueOnce({
-      message: MEDICINE_TABLE_LABELS.DELETE_ERROR,
+      message: MEDICINE_TABLE_ERRORS.DELETE_ERROR,
       errors: { name: ['Error occurred'] }
     })
 
@@ -221,7 +221,7 @@ describe('[MedicineTable]', () => {
     fireEvent.click(allDeleteButtons[allDeleteButtons.length - 1])
 
     await waitFor(() => {
-      expect(vi.mocked(toast.error)).toHaveBeenCalledWith(MEDICINE_TABLE_LABELS.DELETE_ERROR)
+      expect(vi.mocked(toast.error)).toHaveBeenCalledWith(MEDICINE_TABLE_ERRORS.DELETE_ERROR)
     })
     vi.useFakeTimers()
   })
@@ -253,9 +253,12 @@ describe('[MedicineTable]', () => {
     const deleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
     fireEvent.click(deleteButtons[0])
 
-    const confirmMessage = await screen.findByText(
-      new RegExp(`Are you sure you want to delete the medicine "${multipleMedicineData[0].name}"`)
+    const dialogTitle = await screen.findByText(
+      `${COMMON_LABELS.DELETE} '${multipleMedicineData[0].name}'`
     )
+    const confirmMessage = await screen.findByText(MEDICINE_TABLE_LABELS.DELETE_QUESTION)
+
+    expect(dialogTitle).toBeInTheDocument()
     expect(confirmMessage).toBeInTheDocument()
     vi.useFakeTimers()
   })

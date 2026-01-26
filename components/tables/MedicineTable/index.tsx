@@ -16,7 +16,7 @@ import { ExpirationDateActionState } from '@shared-types/states'
 import { COMMON_LABELS } from '@shared-constants/common'
 import { MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
 import { ROUTES } from '@shared-constants/routes'
-import { debounce } from '@shared-functions/debounce'
+import { debounce } from '@shared-functions/helpers'
 import { parseMedicineToDataItem } from '@shared-functions/parsers'
 import { handleCommonFormState } from '@shared-functions/forms'
 
@@ -43,7 +43,6 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
   >(handleExpirationDateAction, {})
   const [medicines, setMedicines] = useState<MedicineDataItem[]>(medicineList)
   const [isWorking, setIsWorking] = useState<boolean>(false)
-  // Create a persistent debounced search function using useRef
   const debouncedSearchRef = useRef(
     debounce(async (value: string) => {
       try {
@@ -112,8 +111,8 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
             </Link>
             <CustomDialog
               buttonText={COMMON_LABELS.DELETE}
-              title={COMMON_LABELS.CONFIRM_DELETE}
-              description={`Are you sure you want to delete the medicine "${medicineItem.name}"? This action cannot be undone.`}
+              title={`${COMMON_LABELS.DELETE} '${medicineItem.name}'`}
+              description={MEDICINE_TABLE_LABELS.DELETE_QUESTION}
               confirmButton={{
                 text: COMMON_LABELS.DELETE,
                 type: 'button',
@@ -134,7 +133,7 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
                   <input type="hidden" name="medicineId" value={medicineItem.id} />
                   <DatePicker
                     name="expirationDate"
-                    label="New Expiration Date"
+                    label={MEDICINE_TABLE_LABELS.NEW_EXPIRATION_DATE_LABEL}
                     value={medicineItem.expirationDate ?? undefined}
                   />
                   <section className="flex justify-end">
