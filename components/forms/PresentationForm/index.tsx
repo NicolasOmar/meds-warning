@@ -28,19 +28,19 @@ const generatePresentationFormStructure = () => ({
 
 const PresentationForm: FC<PresentationFormProps> = ({ presentationData }) => {
   const presentationFormStructure = generatePresentationFormStructure()
-  const customFormAction = (state: PresentationActionState, formData: FormData) =>
+  const customPresentationFormAction = (state: PresentationActionState, formData: FormData) =>
     handlePresentationAction(state, formData, presentationData?.id?.toString())
-  const [state, formAction, isPending] = useActionState<PresentationActionState, FormData>(
-    customFormAction,
-    {}
-  )
+  const [state, presentationFormAction, isPending] = useActionState<
+    PresentationActionState,
+    FormData
+  >(customPresentationFormAction, {})
 
   useEffect(() => {
     handlePresentationFormState(state)
   }, [state])
 
   return (
-    <form action={formAction} className="flex flex-col gap-4">
+    <form action={presentationFormAction} className="flex flex-col gap-4">
       <FieldGroup>
         <FieldLegend>{PRESENTATION_FORM_LABELS.TITLE}</FieldLegend>
         <CustomInput

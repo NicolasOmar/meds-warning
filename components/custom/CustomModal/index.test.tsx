@@ -5,13 +5,57 @@ import '@testing-library/jest-dom'
 // COMPONENTS
 import CustomDialog from './index'
 // MOCKS
-import {
-  defaultProps,
-  withoutTitleProps,
-  withCustomCancelProps,
-  withLongDescriptionProps,
-  minimalProps
-} from './mocks.json'
+import mockedProps from './mocks.json'
+
+const defaultProps = {
+  ...mockedProps.defaultProps,
+  confirmButton: {
+    ...mockedProps.defaultProps.confirmButton,
+    type: 'button' as const
+  },
+  cancelButton: {
+    ...mockedProps.defaultProps.cancelButton,
+    type: 'button' as const
+  }
+}
+
+const withoutTitleProps = {
+  ...mockedProps.withoutTitleProps,
+  confirmButton: {
+    ...mockedProps.withoutTitleProps.confirmButton,
+    type: 'button' as const
+  },
+  cancelButton: {
+    ...mockedProps.withoutTitleProps.cancelButton,
+    type: 'button' as const
+  }
+}
+
+const withCustomCancelProps = {
+  ...mockedProps.withCustomCancelProps,
+  confirmButton: {
+    ...mockedProps.withCustomCancelProps.confirmButton,
+    type: 'button' as const
+  },
+  cancelButton: {
+    ...mockedProps.withCustomCancelProps.cancelButton,
+    type: 'button' as const
+  }
+}
+
+const withLongDescriptionProps = {
+  ...mockedProps.withLongDescriptionProps,
+  confirmButton: {
+    ...mockedProps.withLongDescriptionProps.confirmButton,
+    type: 'button' as const
+  },
+  cancelButton: {
+    ...mockedProps.withLongDescriptionProps.cancelButton,
+    type: 'button' as const
+  }
+}
+
+const minimalProps = mockedProps.minimalProps
 
 describe('[CustomDialog]', () => {
   beforeEach(() => {
@@ -61,7 +105,9 @@ describe('[CustomDialog]', () => {
     const trigger = screen.getByRole('button', { name: defaultProps.buttonText })
     fireEvent.click(trigger)
 
-    const confirmButton = await screen.findByRole('button', { name: defaultProps.confirmText })
+    const confirmButton = await screen.findByRole('button', {
+      name: defaultProps.confirmButton.text
+    })
     expect(confirmButton).toBeInTheDocument()
   })
 
@@ -71,7 +117,7 @@ describe('[CustomDialog]', () => {
     const trigger = screen.getByRole('button', { name: defaultProps.buttonText })
     fireEvent.click(trigger)
 
-    const cancelButton = await screen.findByRole('button', { name: 'Cancel' })
+    const cancelButton = await screen.findByRole('button', { name: defaultProps.cancelButton.text })
     expect(cancelButton).toBeInTheDocument()
   })
 
@@ -82,7 +128,7 @@ describe('[CustomDialog]', () => {
     fireEvent.click(trigger)
 
     const customCancelButton = await screen.findByRole('button', {
-      name: withCustomCancelProps.cancelText
+      name: withCustomCancelProps.cancelButton.text
     })
     expect(customCancelButton).toBeInTheDocument()
   })
@@ -118,26 +164,37 @@ describe('[CustomDialog]', () => {
     expect(title).toBeInTheDocument()
   })
 
-  test('calls onConfirm callback when confirm button is clicked', async () => {
-    const onConfirmMock = vi.fn()
-    render(<CustomDialog {...defaultProps} onConfirm={onConfirmMock} />)
+  test('calls onClick callback when confirm button is clicked', async () => {
+    const onClickMock = vi.fn()
+    const propsWithCallback = {
+      ...defaultProps,
+      confirmButton: {
+        ...defaultProps.confirmButton,
+        onClick: onClickMock
+      }
+    }
+    render(<CustomDialog {...propsWithCallback} />)
 
     const trigger = screen.getByRole('button', { name: defaultProps.buttonText })
     fireEvent.click(trigger)
 
-    const confirmButton = await screen.findByRole('button', { name: defaultProps.confirmText })
+    const confirmButton = await screen.findByRole('button', {
+      name: defaultProps.confirmButton.text
+    })
     fireEvent.click(confirmButton)
 
-    expect(onConfirmMock).toHaveBeenCalledOnce()
+    expect(onClickMock).toHaveBeenCalledOnce()
   })
 
-  test('does not throw error when onConfirm is not provided', async () => {
+  test('does not throw error when onClick is not provided', async () => {
     render(<CustomDialog {...defaultProps} />)
 
     const trigger = screen.getByRole('button', { name: defaultProps.buttonText })
     fireEvent.click(trigger)
 
-    const confirmButton = await screen.findByRole('button', { name: defaultProps.confirmText })
+    const confirmButton = await screen.findByRole('button', {
+      name: defaultProps.confirmButton.text
+    })
     expect(() => fireEvent.click(confirmButton)).not.toThrow()
   })
 
@@ -148,11 +205,15 @@ describe('[CustomDialog]', () => {
     expect(button).toHaveClass('border')
   })
 
-  test('renders with minimal required props', () => {
+  test('renders with minimal required props', async () => {
     render(<CustomDialog {...minimalProps} />)
 
     const button = screen.getByRole('button', { name: minimalProps.buttonText })
     expect(button).toBeInTheDocument()
+
+    fireEvent.click(button)
+    const description = await screen.findByText(minimalProps.description)
+    expect(description).toBeInTheDocument()
   })
 
   test('renders with long description text', async () => {
@@ -185,7 +246,7 @@ describe('[CustomDialog]', () => {
     const title = await screen.findByText(defaultProps.title)
     expect(title).toBeInTheDocument()
 
-    const cancelButton = await screen.findByRole('button', { name: 'Cancel' })
+    const cancelButton = await screen.findByRole('button', { name: defaultProps.cancelButton.text })
     fireEvent.click(cancelButton)
 
     expect(title).not.toBeInTheDocument()
@@ -197,8 +258,10 @@ describe('[CustomDialog]', () => {
     const trigger = screen.getByRole('button', { name: defaultProps.buttonText })
     fireEvent.click(trigger)
 
-    const confirmButton = await screen.findByRole('button', { name: defaultProps.confirmText })
-    const cancelButton = await screen.findByRole('button', { name: 'Cancel' })
+    const confirmButton = await screen.findByRole('button', {
+      name: defaultProps.confirmButton.text
+    })
+    const cancelButton = await screen.findByRole('button', { name: defaultProps.cancelButton.text })
 
     expect(confirmButton).toBeInTheDocument()
     expect(cancelButton).toBeInTheDocument()
@@ -218,14 +281,18 @@ describe('[CustomDialog]', () => {
     expect(body).toBeInTheDocument()
   })
 
-  test('cancel button text defaults to "Cancel"', async () => {
+  test('footer is not rendered when buttons are not provided', async () => {
     render(<CustomDialog {...minimalProps} />)
 
     const trigger = screen.getByRole('button', { name: minimalProps.buttonText })
     fireEvent.click(trigger)
 
-    const cancelButton = await screen.findByRole('button', { name: 'Cancel' })
-    expect(cancelButton).toBeInTheDocument()
+    const description = await screen.findByText(minimalProps.description)
+    expect(description).toBeInTheDocument()
+
+    // Only the trigger button should be present, not footer buttons
+    const allButtons = screen.getAllByRole('button')
+    expect(allButtons).toHaveLength(1)
   })
 
   test('renders correct number of buttons in footer', async () => {
@@ -235,7 +302,7 @@ describe('[CustomDialog]', () => {
     fireEvent.click(trigger)
 
     const buttons = await screen.findAllByRole('button')
-    // Trigger button + Cancel button + Confirm button
-    expect(buttons.length).toBeGreaterThanOrEqual(3)
+    // Trigger button + Cancel button + Confirm button = 3 total
+    expect(buttons).toHaveLength(3)
   })
 })

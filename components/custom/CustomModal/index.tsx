@@ -13,16 +13,20 @@ import {
   DialogTrigger
 } from '@base-components/dialog'
 
+interface CustomDialogButtonProps {
+  text: string
+  type: 'button' | 'submit' | 'reset'
+  disabled?: boolean
+  onClick?: () => void
+}
+
 interface CustomDialogProps {
   buttonText: string
   title?: string
-  description: string | React.ReactNode
+  description?: string | React.ReactNode
   body?: React.ReactNode
-  confirmText: string
-  disableConfirm?: boolean
-  onConfirm?: () => void
-  cancelText?: string
-  disableCancel?: boolean
+  confirmButton?: CustomDialogButtonProps
+  cancelButton?: CustomDialogButtonProps
 }
 
 const CustomDialog: FC<CustomDialogProps> = ({
@@ -30,11 +34,8 @@ const CustomDialog: FC<CustomDialogProps> = ({
   title,
   description,
   body,
-  confirmText,
-  onConfirm,
-  cancelText,
-  disableConfirm,
-  disableCancel
+  confirmButton,
+  cancelButton
 }) => {
   return (
     <Dialog>
@@ -48,19 +49,30 @@ const CustomDialog: FC<CustomDialogProps> = ({
           ) : (
             <DialogTitle className="sr-only">Dialog</DialogTitle>
           )}
-          <DialogDescription>{description}</DialogDescription>
+          {description ? <DialogDescription>{description}</DialogDescription> : null}
         </DialogHeader>
         {body ?? null}
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="outline" disabled={disableCancel}>
-              {cancelText ?? 'Cancel'}
+        {confirmButton || cancelButton ? (
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button
+                variant="outline"
+                disabled={cancelButton?.disabled}
+                onClick={cancelButton?.onClick}
+                type={cancelButton?.type}
+              >
+                {cancelButton?.text}
+              </Button>
+            </DialogClose>
+            <Button
+              type={confirmButton?.type}
+              onClick={confirmButton?.onClick}
+              disabled={confirmButton?.disabled}
+            >
+              {confirmButton?.text}
             </Button>
-          </DialogClose>
-          <Button type="submit" onClick={onConfirm} disabled={disableConfirm}>
-            {confirmText}
-          </Button>
-        </DialogFooter>
+          </DialogFooter>
+        ) : null}
       </DialogContent>
     </Dialog>
   )

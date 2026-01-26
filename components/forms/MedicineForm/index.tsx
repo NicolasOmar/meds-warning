@@ -65,16 +65,16 @@ const generateUserFormStructure = () => ({
 
 const MedicineForm: FC<MedicineFormProps> = ({ presentationsList, medicineData }) => {
   const medicineFormStructure = generateUserFormStructure()
-  const formAction = (state: MedicineActionState, formData: FormData) =>
+  const customMedicineFormAction = (state: MedicineActionState, formData: FormData) =>
     handleMedicineAction(state, formData, medicineData?.id?.toString())
-  const [state, boundFormAction, isPending] = useActionState(formAction, {})
+  const [state, medicineFormAction, isPending] = useActionState(customMedicineFormAction, {})
 
   useEffect(() => {
     handleMedicineFormState(state)
   }, [state])
 
   return (
-    <form action={boundFormAction} className="flex flex-col gap-4">
+    <form action={medicineFormAction} className="flex flex-col gap-4">
       <FieldGroup>
         <FieldSet>
           <FieldLegend>{MEDICINE_FORM_LABELS.TITLE}</FieldLegend>
@@ -99,11 +99,12 @@ const MedicineForm: FC<MedicineFormProps> = ({ presentationsList, medicineData }
             value={medicineData?.presentation?.toString() ?? undefined}
             message={state.errors?.presentation}
           />
-          <DatePicker
-            {...medicineFormStructure.expirationDate}
-            message={state.errors?.expirationDate}
-            value={medicineData?.expirationDate?.toISOString() ?? undefined}
-          />
+          {medicineData ? null : (
+            <DatePicker
+              {...medicineFormStructure.expirationDate}
+              message={state.errors?.expirationDate}
+            />
+          )}
           <CustomInput
             {...medicineFormStructure.usedFor}
             message={state.errors?.usedFor}

@@ -20,3 +20,9 @@ export type PresentationActionState = BaseActionState & {
     description?: string[]
   }
 }
+
+export type ExpirationDateActionState = BaseActionState & {
+  errors?: {
+    expirationDate?: string[]
+  }
+}

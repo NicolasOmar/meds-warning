@@ -43,9 +43,15 @@ const MedicinePresentationTable: FC<MedicinePresentationTableProps> = ({ present
               buttonText={COMMON_LABELS.DELETE}
               title={COMMON_LABELS.CONFIRM_DELETE}
               description={`Are you sure you want to delete the medicine presentation "${presentationItem.description}"? This action cannot be undone.`}
-              confirmText={COMMON_LABELS.DELETE}
-              onConfirm={() => handleDeleteClick(presentationItem.id!)}
-              cancelText={COMMON_LABELS.CANCEL}
+              confirmButton={{
+                text: COMMON_LABELS.DELETE,
+                type: 'button',
+                onClick: () => handleDeleteClick(presentationItem.id!)
+              }}
+              cancelButton={{
+                text: COMMON_LABELS.CANCEL,
+                type: 'button'
+              }}
             />
           </>
         )
