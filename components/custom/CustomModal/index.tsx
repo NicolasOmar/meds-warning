@@ -14,14 +14,15 @@ import {
 } from '@base-components/dialog'
 
 interface CustomDialogButtonProps {
-  text: string
+  text: string | React.ReactNode
+  title?: string
   type: 'button' | 'submit' | 'reset'
   disabled?: boolean
   onClick?: () => void
 }
 
 interface CustomDialogProps {
-  buttonText: string
+  initButton: Omit<CustomDialogButtonProps, 'onClick' | 'type'>
   title?: string
   description?: string | React.ReactNode
   body?: React.ReactNode
@@ -30,7 +31,7 @@ interface CustomDialogProps {
 }
 
 const CustomDialog: FC<CustomDialogProps> = ({
-  buttonText,
+  initButton,
   title,
   description,
   body,
@@ -40,7 +41,9 @@ const CustomDialog: FC<CustomDialogProps> = ({
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">{buttonText}</Button>
+        <Button disabled={initButton?.disabled} title={initButton?.title}>
+          {initButton?.text}
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -57,17 +60,19 @@ const CustomDialog: FC<CustomDialogProps> = ({
             <DialogClose asChild>
               <Button
                 variant="outline"
+                type={cancelButton?.type}
+                title={cancelButton?.title}
                 disabled={cancelButton?.disabled}
                 onClick={cancelButton?.onClick}
-                type={cancelButton?.type}
               >
                 {cancelButton?.text}
               </Button>
             </DialogClose>
             <Button
               type={confirmButton?.type}
-              onClick={confirmButton?.onClick}
+              title={confirmButton?.title}
               disabled={confirmButton?.disabled}
+              onClick={confirmButton?.onClick}
             >
               {confirmButton?.text}
             </Button>

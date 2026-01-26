@@ -16,7 +16,7 @@ export const parseStringDateToISOString = (dateString: string | null): string | 
   if (!dateString) return null
 
   const parsedToDate = new Date(dateString)
-  return isNaN(parsedToDate.getTime()) ? null : parsedToDate.toISOString().split('T')[0]
+  return Number.isNaN(parsedToDate.getTime()) ? null : parsedToDate.toISOString().split('T')[0]
 }
 
 export const parseMedicineToDataItem = (

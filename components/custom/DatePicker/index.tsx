@@ -27,7 +27,7 @@ function isValidDate(date: Date | undefined) {
   if (!date) {
     return false
   }
-  return !isNaN(date.getTime())
+  return !Number.isNaN(date.getTime())
 }
 
 const DatePicker: FC<CompleteFormFieldPorps> = ({ label, name, value: propValue, placeholder }) => {

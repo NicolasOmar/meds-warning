@@ -40,7 +40,7 @@ const MedicinePresentationTable: FC<MedicinePresentationTableProps> = ({ present
               <Button variant="secondary">{COMMON_LABELS.EDIT}</Button>
             </Link>
             <CustomDialog
-              buttonText={COMMON_LABELS.DELETE}
+              initButton={{ text: COMMON_LABELS.DELETE }}
               title={COMMON_LABELS.CONFIRM_DELETE}
               description={`Are you sure you want to delete the medicine presentation "${presentationItem.description}"? This action cannot be undone.`}
               confirmButton={{

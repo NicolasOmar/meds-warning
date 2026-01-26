@@ -88,8 +88,8 @@ describe('[MedicineTable]', () => {
   test('renders Edit button for each medicine', () => {
     render(<MedicineTable medicineList={basicMedicineData} />)
 
-    const editButtons = screen.getAllByRole('link', { name: /Edit/i })
-    expect(editButtons).toHaveLength(basicMedicineData.length)
+    const editLinks = screen.getAllByTitle(COMMON_LABELS.EDIT)
+    expect(editLinks).toHaveLength(basicMedicineData.length)
   })
 
   test('renders Delete button for each medicine', () => {
@@ -102,7 +102,8 @@ describe('[MedicineTable]', () => {
   test('Edit button links to correct medicine URL', () => {
     render(<MedicineTable medicineList={basicMedicineData} />)
 
-    const editLink = screen.getByRole('link', { name: /Edit/i })
+    const editButton = screen.getByTitle(COMMON_LABELS.EDIT)
+    const editLink = editButton.closest('a')
     expect(editLink).toHaveAttribute('href', `/medicine/${basicMedicineData[0].id}`)
   })
 
@@ -151,8 +152,8 @@ describe('[MedicineTable]', () => {
   test('renders multiple Edit and Delete buttons for multiple medicines', () => {
     render(<MedicineTable medicineList={multipleMedicineData} />)
 
-    const editButtons = screen.getAllByRole('link', { name: /Edit/i })
-    const deleteButtons = screen.getAllByRole('button', { name: /Delete/i })
+    const editButtons = screen.getAllByTitle(COMMON_LABELS.EDIT)
+    const deleteButtons = screen.getAllByTitle(COMMON_LABELS.DELETE)
 
     expect(editButtons).toHaveLength(2)
     expect(deleteButtons).toHaveLength(2)
@@ -496,10 +497,10 @@ describe('[MedicineTable]', () => {
       vi.advanceTimersByTime(300)
       await vi.runAllTimersAsync()
 
-      const editLink = screen.getByRole('link', { name: /Edit/i })
-      const deleteButton = screen.getByRole('button', { name: COMMON_LABELS.DELETE })
+      const editButton = screen.getByTitle(COMMON_LABELS.EDIT)
+      const deleteButton = screen.getByTitle(COMMON_LABELS.DELETE)
 
-      expect(editLink).toBeInTheDocument()
+      expect(editButton).toBeInTheDocument()
       expect(deleteButton).toBeInTheDocument()
     })
 

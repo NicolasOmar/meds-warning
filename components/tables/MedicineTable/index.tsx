@@ -19,6 +19,7 @@ import { ROUTES } from '@shared-constants/routes'
 import { debounce } from '@shared-functions/helpers'
 import { parseMedicineToDataItem } from '@shared-functions/parsers'
 import { handleCommonFormState } from '@shared-functions/forms'
+import { CalendarSyncIcon, PencilIcon, TrashIcon } from 'lucide-react'
 
 interface MedicineDataItem {
   id: number
@@ -105,12 +106,18 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
       medicines.map(medicineItem => ({
         ...medicineItem,
         actions: (
-          <>
+          <section className="flex gap-2">
             <Link href={`${ROUTES.MEDICINE_MAIN}/${medicineItem.id}`}>
-              <Button variant="secondary">{COMMON_LABELS.EDIT}</Button>
+              <Button variant="secondary" title={COMMON_LABELS.EDIT}>
+                <PencilIcon />
+              </Button>
             </Link>
             <CustomDialog
-              buttonText={COMMON_LABELS.DELETE}
+              initButton={{
+                text: <TrashIcon />,
+                disabled: isWorking,
+                title: COMMON_LABELS.DELETE
+              }}
               title={`${COMMON_LABELS.DELETE} '${medicineItem.name}'`}
               description={MEDICINE_TABLE_LABELS.DELETE_QUESTION}
               confirmButton={{
@@ -126,7 +133,11 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
               }}
             />
             <CustomDialog
-              buttonText={MEDICINE_TABLE_LABELS.EDIT_EXPIRATION_DATE_LABEL}
+              initButton={{
+                text: <CalendarSyncIcon />,
+                disabled: isWorking,
+                title: MEDICINE_TABLE_LABELS.EDIT_EXPIRATION_DATE_LABEL
+              }}
               title={MEDICINE_TABLE_LABELS.EDIT_EXPIRATION_DATE_LABEL}
               body={
                 <form className="flex flex-col gap-4" action={expirationDateFormAction}>
@@ -153,7 +164,7 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
                 </form>
               }
             />
-          </>
+          </section>
         )
       })),
     [medicines, isWorking, expirationDateFormAction, isExpirationDatePending]
