@@ -114,26 +114,6 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
             </Link>
             <CustomDialog
               initButton={{
-                text: <TrashIcon />,
-                disabled: isWorking,
-                title: COMMON_LABELS.DELETE
-              }}
-              title={`${COMMON_LABELS.DELETE} '${medicineItem.name}'`}
-              description={MEDICINE_TABLE_LABELS.DELETE_QUESTION}
-              confirmButton={{
-                text: COMMON_LABELS.DELETE,
-                type: 'button',
-                disabled: isWorking,
-                onClick: () => handleDeleteClick(medicineItem.id)
-              }}
-              cancelButton={{
-                text: COMMON_LABELS.CANCEL,
-                type: 'button',
-                disabled: isWorking
-              }}
-            />
-            <CustomDialog
-              initButton={{
                 text: <CalendarSyncIcon />,
                 disabled: isWorking,
                 title: MEDICINE_TABLE_LABELS.EDIT_EXPIRATION_DATE_LABEL
@@ -163,6 +143,26 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
                   </section>
                 </form>
               }
+            />
+            <CustomDialog
+              initButton={{
+                text: <TrashIcon />,
+                disabled: isWorking,
+                title: COMMON_LABELS.DELETE
+              }}
+              title={`${COMMON_LABELS.DELETE} '${medicineItem.name}'`}
+              description={MEDICINE_TABLE_LABELS.DELETE_QUESTION}
+              confirmButton={{
+                text: COMMON_LABELS.DELETE,
+                type: 'button',
+                disabled: isWorking,
+                onClick: () => handleDeleteClick(medicineItem.id)
+              }}
+              cancelButton={{
+                text: COMMON_LABELS.CANCEL,
+                type: 'button',
+                disabled: isWorking
+              }}
             />
           </section>
         )

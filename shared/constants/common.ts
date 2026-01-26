@@ -4,8 +4,7 @@ export enum COMMON_LABELS {
   EDIT = 'Edit',
   SAVE = 'Save',
   CONFIRM = 'Confirm',
-  CANCEL = 'Cancel',
-  CONFIRM_DELETE = 'Confirm Deletion'
+  CANCEL = 'Cancel'
 }
 
 export enum COMMON_FORM_ERRORS {
