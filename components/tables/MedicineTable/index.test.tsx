@@ -28,7 +28,8 @@ vi.mock('next/link', () => ({
 // Mock server actions
 vi.mock('@actions/medicine', () => ({
   deleteMedicine: vi.fn(),
-  getMedicines: vi.fn()
+  getMedicines: vi.fn(),
+  handleExpirationDateAction: vi.fn()
 }))
 
 // Mock sonner toast
