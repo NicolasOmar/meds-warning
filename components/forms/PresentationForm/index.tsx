@@ -11,7 +11,8 @@ import CustomInput from '@custom-components/CustomInput'
 import { PresentationActionState } from '@shared-types/states'
 import { PRESENTATION_FORM_LABELS } from '@shared-constants/forms'
 import { MedicinePresentationType } from '@shared-types/zod'
-import { handlePresentationFormState } from '@shared-functions/forms'
+import { handleCommonFormState } from '@shared-functions/forms'
+import { ROUTES } from '@shared-constants/routes'
 
 interface PresentationFormProps {
   presentationData?: MedicinePresentationType
@@ -36,7 +37,7 @@ const PresentationForm: FC<PresentationFormProps> = ({ presentationData }) => {
   >(customPresentationFormAction, {})
 
   useEffect(() => {
-    handlePresentationFormState(state)
+    handleCommonFormState(ROUTES.PRESENTATION_LIST, state)
   }, [state])
 
   return (

@@ -18,7 +18,7 @@ import { MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
 import { ROUTES } from '@shared-constants/routes'
 import { debounce } from '@shared-functions/debounce'
 import { parseMedicineToDataItem } from '@shared-functions/parsers'
-import { handleExpirationDateFormState } from '@shared-functions/forms'
+import { handleCommonFormState } from '@shared-functions/forms'
 
 interface MedicineDataItem {
   id: number
@@ -63,7 +63,7 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
   )
 
   useEffect(() => {
-    handleExpirationDateFormState(state)
+    handleCommonFormState(ROUTES.MEDICINE_LIST, state)
   }, [state])
 
   const handleDeleteClick = async (id: number) => {

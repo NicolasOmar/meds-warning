@@ -1,4 +1,4 @@
-type BaseActionState = {
+export type BaseActionState = {
   message?: string
   success?: boolean
 }

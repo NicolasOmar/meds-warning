@@ -14,7 +14,8 @@ import CustomSelect from '@custom-components/CustomSelect'
 import { MEDICINE_FORM_LABELS } from '@shared-constants/forms'
 import { MedicinePresentationType, MedicineType } from '@shared-types/zod'
 import { MedicineActionState } from '@shared-types/states'
-import { handleMedicineFormState } from '@shared-functions/forms'
+import { handleCommonFormState } from '@shared-functions/forms'
+import { ROUTES } from '@shared-constants/routes'
 
 interface MedicineFormProps {
   presentationsList: MedicinePresentationType[]
@@ -70,7 +71,7 @@ const MedicineForm: FC<MedicineFormProps> = ({ presentationsList, medicineData }
   const [state, medicineFormAction, isPending] = useActionState(customMedicineFormAction, {})
 
   useEffect(() => {
-    handleMedicineFormState(state)
+    handleCommonFormState(ROUTES.MEDICINE_LIST, state)
   }, [state])
 
   return (
