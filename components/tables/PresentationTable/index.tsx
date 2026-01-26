@@ -14,6 +14,7 @@ import { MedicinePresentationType } from '@shared-types/zod'
 import { Button } from '@base-components/button'
 import { COMMON_LABELS } from '@shared-constants/common'
 import { ROUTES } from '@shared-constants/routes'
+import { PencilIcon, TrashIcon } from 'lucide-react'
 
 interface MedicinePresentationTableProps {
   presentationList: MedicinePresentationType[]
@@ -35,19 +36,30 @@ const MedicinePresentationTable: FC<MedicinePresentationTableProps> = ({ present
         id: presentationItem.id,
         description: presentationItem.description,
         actions: (
-          <>
+          <section className="flex gap-2">
             <Link href={`${ROUTES.PRESENTATION_MAIN}/${presentationItem.id}`}>
-              <Button variant="secondary">{COMMON_LABELS.EDIT}</Button>
+              <Button variant="secondary" title={COMMON_LABELS.EDIT}>
+                <PencilIcon />
+              </Button>
             </Link>
             <CustomDialog
-              buttonText={COMMON_LABELS.DELETE}
-              title={COMMON_LABELS.CONFIRM_DELETE}
-              description={`Are you sure you want to delete the medicine presentation "${presentationItem.description}"? This action cannot be undone.`}
-              confirmText={COMMON_LABELS.DELETE}
-              onConfirm={() => handleDeleteClick(presentationItem.id!)}
-              cancelText={COMMON_LABELS.CANCEL}
+              initButton={{
+                text: <TrashIcon />,
+                title: COMMON_LABELS.DELETE
+              }}
+              title={`${COMMON_LABELS.DELETE} '${presentationItem.description}'`}
+              description={MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_QUESTION}
+              confirmButton={{
+                text: COMMON_LABELS.DELETE,
+                type: 'button',
+                onClick: () => handleDeleteClick(presentationItem.id!)
+              }}
+              cancelButton={{
+                text: COMMON_LABELS.CANCEL,
+                type: 'button'
+              }}
             />
-          </>
+          </section>
         )
       })),
     [presentationList]

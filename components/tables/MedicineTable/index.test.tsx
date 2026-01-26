@@ -9,7 +9,7 @@ import MedicineTable from './index'
 import { deleteMedicine, getMedicines } from '@actions/medicine'
 // SHARED
 import { COMMON_TABLE_ERRORS, COMMON_LABELS } from '@shared-constants/common'
-import { MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
+import { MEDICINE_TABLE_ERRORS, MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
 // MOCKS
 import {
   basicMedicineData,
@@ -28,7 +28,8 @@ vi.mock('next/link', () => ({
 // Mock server actions
 vi.mock('@actions/medicine', () => ({
   deleteMedicine: vi.fn(),
-  getMedicines: vi.fn()
+  getMedicines: vi.fn(),
+  handleExpirationDateAction: vi.fn()
 }))
 
 // Mock sonner toast
@@ -87,8 +88,8 @@ describe('[MedicineTable]', () => {
   test('renders Edit button for each medicine', () => {
     render(<MedicineTable medicineList={basicMedicineData} />)
 
-    const editButtons = screen.getAllByRole('link', { name: /Edit/i })
-    expect(editButtons).toHaveLength(basicMedicineData.length)
+    const editLinks = screen.getAllByTitle(COMMON_LABELS.EDIT)
+    expect(editLinks).toHaveLength(basicMedicineData.length)
   })
 
   test('renders Delete button for each medicine', () => {
@@ -101,7 +102,8 @@ describe('[MedicineTable]', () => {
   test('Edit button links to correct medicine URL', () => {
     render(<MedicineTable medicineList={basicMedicineData} />)
 
-    const editLink = screen.getByRole('link', { name: /Edit/i })
+    const editButton = screen.getByTitle(COMMON_LABELS.EDIT)
+    const editLink = editButton.closest('a')
     expect(editLink).toHaveAttribute('href', `/medicine/${basicMedicineData[0].id}`)
   })
 
@@ -150,8 +152,8 @@ describe('[MedicineTable]', () => {
   test('renders multiple Edit and Delete buttons for multiple medicines', () => {
     render(<MedicineTable medicineList={multipleMedicineData} />)
 
-    const editButtons = screen.getAllByRole('link', { name: /Edit/i })
-    const deleteButtons = screen.getAllByRole('button', { name: /Delete/i })
+    const editButtons = screen.getAllByTitle(COMMON_LABELS.EDIT)
+    const deleteButtons = screen.getAllByTitle(COMMON_LABELS.DELETE)
 
     expect(editButtons).toHaveLength(2)
     expect(deleteButtons).toHaveLength(2)
@@ -171,10 +173,10 @@ describe('[MedicineTable]', () => {
     const deleteButton = screen.getByRole('button', { name: /Delete/i })
     fireEvent.click(deleteButton)
 
-    const confirmDeleteTitle = await screen.findByText(COMMON_LABELS.CONFIRM_DELETE)
-    const confirmMessage = await screen.findByText(
-      new RegExp(`Are you sure you want to delete the medicine "${basicMedicineData[0].name}"`)
+    const confirmDeleteTitle = await screen.findByText(
+      `${COMMON_LABELS.DELETE} '${basicMedicineData[0].name}'`
     )
+    const confirmMessage = await screen.findByText(MEDICINE_TABLE_LABELS.DELETE_QUESTION)
 
     expect(confirmDeleteTitle).toBeInTheDocument()
     expect(confirmMessage).toBeInTheDocument()
@@ -207,7 +209,7 @@ describe('[MedicineTable]', () => {
   test('shows error toast on delete failure', async () => {
     vi.useRealTimers()
     vi.mocked(deleteMedicine).mockResolvedValueOnce({
-      message: MEDICINE_TABLE_LABELS.DELETE_ERROR,
+      message: MEDICINE_TABLE_ERRORS.DELETE_ERROR,
       errors: { name: ['Error occurred'] }
     })
 
@@ -220,7 +222,7 @@ describe('[MedicineTable]', () => {
     fireEvent.click(allDeleteButtons[allDeleteButtons.length - 1])
 
     await waitFor(() => {
-      expect(vi.mocked(toast.error)).toHaveBeenCalledWith(MEDICINE_TABLE_LABELS.DELETE_ERROR)
+      expect(vi.mocked(toast.error)).toHaveBeenCalledWith(MEDICINE_TABLE_ERRORS.DELETE_ERROR)
     })
     vi.useFakeTimers()
   })
@@ -252,9 +254,12 @@ describe('[MedicineTable]', () => {
     const deleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
     fireEvent.click(deleteButtons[0])
 
-    const confirmMessage = await screen.findByText(
-      new RegExp(`Are you sure you want to delete the medicine "${multipleMedicineData[0].name}"`)
+    const dialogTitle = await screen.findByText(
+      `${COMMON_LABELS.DELETE} '${multipleMedicineData[0].name}'`
     )
+    const confirmMessage = await screen.findByText(MEDICINE_TABLE_LABELS.DELETE_QUESTION)
+
+    expect(dialogTitle).toBeInTheDocument()
     expect(confirmMessage).toBeInTheDocument()
     vi.useFakeTimers()
   })
@@ -492,10 +497,10 @@ describe('[MedicineTable]', () => {
       vi.advanceTimersByTime(300)
       await vi.runAllTimersAsync()
 
-      const editLink = screen.getByRole('link', { name: /Edit/i })
-      const deleteButton = screen.getByRole('button', { name: COMMON_LABELS.DELETE })
+      const editButton = screen.getByTitle(COMMON_LABELS.EDIT)
+      const deleteButton = screen.getByTitle(COMMON_LABELS.DELETE)
 
-      expect(editLink).toBeInTheDocument()
+      expect(editButton).toBeInTheDocument()
       expect(deleteButton).toBeInTheDocument()
     })
 

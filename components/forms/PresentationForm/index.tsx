@@ -11,7 +11,8 @@ import CustomInput from '@custom-components/CustomInput'
 import { PresentationActionState } from '@shared-types/states'
 import { PRESENTATION_FORM_LABELS } from '@shared-constants/forms'
 import { MedicinePresentationType } from '@shared-types/zod'
-import { handlePresentationFormState } from '@shared-functions/forms'
+import { handleCommonFormState } from '@shared-functions/forms'
+import { ROUTES } from '@shared-constants/routes'
 
 interface PresentationFormProps {
   presentationData?: MedicinePresentationType
@@ -28,19 +29,19 @@ const generatePresentationFormStructure = () => ({
 
 const PresentationForm: FC<PresentationFormProps> = ({ presentationData }) => {
   const presentationFormStructure = generatePresentationFormStructure()
-  const customFormAction = (state: PresentationActionState, formData: FormData) =>
+  const customPresentationFormAction = (state: PresentationActionState, formData: FormData) =>
     handlePresentationAction(state, formData, presentationData?.id?.toString())
-  const [state, formAction, isPending] = useActionState<PresentationActionState, FormData>(
-    customFormAction,
-    {}
-  )
+  const [state, presentationFormAction, isPending] = useActionState<
+    PresentationActionState,
+    FormData
+  >(customPresentationFormAction, {})
 
   useEffect(() => {
-    handlePresentationFormState(state)
+    handleCommonFormState(ROUTES.PRESENTATION_LIST, state)
   }, [state])
 
   return (
-    <form action={formAction} className="flex flex-col gap-4">
+    <form action={presentationFormAction} className="flex flex-col gap-4">
       <FieldGroup>
         <FieldLegend>{PRESENTATION_FORM_LABELS.TITLE}</FieldLegend>
         <CustomInput

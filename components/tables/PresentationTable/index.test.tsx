@@ -140,8 +140,8 @@ describe('[MedicinePresentationTable]', () => {
     test('renders delete and edit button for each presentation', () => {
       render(<MedicinePresentationTable presentationList={multiplePresentationData} />)
 
-      const deleteButtons = screen.getAllByText(COMMON_LABELS.DELETE)
-      const editButtons = screen.getAllByText(COMMON_LABELS.EDIT)
+      const deleteButtons = screen.getAllByTitle(COMMON_LABELS.DELETE)
+      const editButtons = screen.getAllByTitle(COMMON_LABELS.EDIT)
 
       expect(deleteButtons.length).toBe(multiplePresentationData.length)
       expect(editButtons.length).toBe(multiplePresentationData.length)
@@ -150,8 +150,8 @@ describe('[MedicinePresentationTable]', () => {
     test('renders action buttons for all presentations', () => {
       render(<MedicinePresentationTable presentationList={basicPresentationData} />)
 
-      const editButton = screen.getByText(COMMON_LABELS.EDIT)
-      const deleteButton = screen.getByText(COMMON_LABELS.DELETE)
+      const editButton = screen.getByTitle(COMMON_LABELS.EDIT)
+      const deleteButton = screen.getByTitle(COMMON_LABELS.DELETE)
 
       expect(editButton).toBeInTheDocument()
       expect(deleteButton).toBeInTheDocument()
@@ -170,7 +170,9 @@ describe('[MedicinePresentationTable]', () => {
       const deleteButton = screen.getByRole('button', { name: COMMON_LABELS.DELETE })
       fireEvent.click(deleteButton)
 
-      const confirmDeleteTitle = await screen.findByText(COMMON_LABELS.CONFIRM_DELETE)
+      const confirmDeleteTitle = await screen.findByText(
+        MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_QUESTION
+      )
       expect(confirmDeleteTitle).toBeInTheDocument()
 
       // Check for the description text (may be split across elements)

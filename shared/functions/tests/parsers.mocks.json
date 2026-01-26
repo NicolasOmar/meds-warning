@@ -1,0 +1,148 @@
+{
+  "medicineWithAllFields": [
+    {
+      "id": 1,
+      "name": "Aspirin",
+      "laboratory": "Bayer",
+      "presentation": 1,
+      "medicinePresentation": {
+        "id": 1,
+        "description": "Tablet"
+      },
+      "expirationDate": "2025-12-31",
+      "usedFor": "Pain relief",
+      "sideEffects": "Nausea",
+      "comments": "Take with food"
+    }
+  ],
+  "expectedWithAllFields": [
+    {
+      "id": 1,
+      "name": "Aspirin",
+      "laboratory": "Bayer",
+      "presentation": "Tablet",
+      "expirationDate": "2025-12-31",
+      "usedFor": "Pain relief",
+      "sideEffects": "Nausea",
+      "comments": "Take with food"
+    }
+  ],
+  "medicineWithNullFields": [
+    {
+      "id": 2,
+      "name": "Ibuprofen",
+      "laboratory": null,
+      "presentation": 2,
+      "medicinePresentation": {
+        "id": 2,
+        "description": "Capsule"
+      },
+      "expirationDate": null,
+      "usedFor": null,
+      "sideEffects": null,
+      "comments": null
+    }
+  ],
+  "expectedWithNullFields": [
+    {
+      "id": 2,
+      "name": "Ibuprofen",
+      "laboratory": null,
+      "presentation": "Capsule",
+      "expirationDate": null,
+      "usedFor": null,
+      "sideEffects": null,
+      "comments": null
+    }
+  ],
+  "multipleMedicines": [
+    {
+      "id": 1,
+      "name": "Aspirin",
+      "laboratory": "Bayer",
+      "presentation": 1,
+      "medicinePresentation": {
+        "id": 1,
+        "description": "Tablet"
+      },
+      "expirationDate": "2025-12-31",
+      "usedFor": "Pain relief",
+      "sideEffects": "Nausea",
+      "comments": "Take with food"
+    },
+    {
+      "id": 2,
+      "name": "Ibuprofen",
+      "laboratory": "Pfizer",
+      "presentation": 2,
+      "medicinePresentation": {
+        "id": 2,
+        "description": "Capsule"
+      },
+      "expirationDate": "2026-06-15",
+      "usedFor": "Fever",
+      "sideEffects": "Dizziness",
+      "comments": "Do not exceed dose"
+    }
+  ],
+  "medicineWithoutPresentation": [
+    {
+      "id": 1,
+      "name": "Paracetamol",
+      "laboratory": "Generic",
+      "presentation": 1,
+      "expirationDate": "2025-11-20",
+      "usedFor": "Headache",
+      "sideEffects": "None",
+      "comments": ""
+    }
+  ],
+  "medicineWithDateTime": [
+    {
+      "id": 1,
+      "name": "Vitamin C",
+      "laboratory": "Nature Made",
+      "presentation": 1,
+      "medicinePresentation": {
+        "id": 1,
+        "description": "Tablet"
+      },
+      "expirationDate": "2025-03-15T10:30:00Z",
+      "usedFor": "Immunity",
+      "sideEffects": "None",
+      "comments": ""
+    }
+  ],
+  "emptyMedicineList": [],
+  "medicineWithUndefinedId": [
+    {
+      "name": "Test Medicine",
+      "laboratory": "Test Lab",
+      "presentation": 1,
+      "medicinePresentation": {
+        "id": 1,
+        "description": "Tablet"
+      },
+      "expirationDate": "2025-12-31",
+      "usedFor": "Testing",
+      "sideEffects": "None",
+      "comments": ""
+    }
+  ],
+  "medicineForFieldOrder": [
+    {
+      "id": 5,
+      "name": "Medication X",
+      "laboratory": "Lab X",
+      "presentation": 3,
+      "medicinePresentation": {
+        "id": 3,
+        "description": "Syrup"
+      },
+      "expirationDate": "2025-09-01",
+      "usedFor": "Treatment X",
+      "sideEffects": "Side X",
+      "comments": "Comment X"
+    }
+  ]
+}

@@ -2,7 +2,7 @@
 applyTo: "**/*.test.ts,**/*.test.tsx"
 ---
 # Project unit tests standards
-
+- All mocked data used for the tests should be located in a separated `mocks.json` file and import them.
 - Every time a test file is updated, at the end of the update, run the following scripts in order:
   - `npm run build` to check project builds correctly.
   - `npm run lint` to check the code maintains correct standards.

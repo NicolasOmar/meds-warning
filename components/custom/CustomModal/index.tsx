@@ -13,33 +13,37 @@ import {
   DialogTrigger
 } from '@base-components/dialog'
 
-interface CustomDialogProps {
-  buttonText: string
+interface CustomDialogButtonProps {
+  text: string | React.ReactNode
   title?: string
-  description: string | React.ReactNode
+  type: 'button' | 'submit' | 'reset'
+  disabled?: boolean
+  onClick?: () => void
+}
+
+interface CustomDialogProps {
+  initButton: Omit<CustomDialogButtonProps, 'onClick' | 'type'>
+  title?: string
+  description?: string | React.ReactNode
   body?: React.ReactNode
-  confirmText: string
-  disableConfirm?: boolean
-  onConfirm?: () => void
-  cancelText?: string
-  disableCancel?: boolean
+  confirmButton?: CustomDialogButtonProps
+  cancelButton?: CustomDialogButtonProps
 }
 
 const CustomDialog: FC<CustomDialogProps> = ({
-  buttonText,
+  initButton,
   title,
   description,
   body,
-  confirmText,
-  onConfirm,
-  cancelText,
-  disableConfirm,
-  disableCancel
+  confirmButton,
+  cancelButton
 }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="outline">{buttonText}</Button>
+        <Button disabled={initButton?.disabled} title={initButton?.title}>
+          {initButton?.text}
+        </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
@@ -48,19 +52,32 @@ const CustomDialog: FC<CustomDialogProps> = ({
           ) : (
             <DialogTitle className="sr-only">Dialog</DialogTitle>
           )}
-          <DialogDescription>{description}</DialogDescription>
+          {description ? <DialogDescription>{description}</DialogDescription> : null}
         </DialogHeader>
         {body ?? null}
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="outline" disabled={disableCancel}>
-              {cancelText ?? 'Cancel'}
+        {confirmButton || cancelButton ? (
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button
+                variant="outline"
+                type={cancelButton?.type}
+                title={cancelButton?.title}
+                disabled={cancelButton?.disabled}
+                onClick={cancelButton?.onClick}
+              >
+                {cancelButton?.text}
+              </Button>
+            </DialogClose>
+            <Button
+              type={confirmButton?.type}
+              title={confirmButton?.title}
+              disabled={confirmButton?.disabled}
+              onClick={confirmButton?.onClick}
+            >
+              {confirmButton?.text}
             </Button>
-          </DialogClose>
-          <Button type="submit" onClick={onConfirm} disabled={disableConfirm}>
-            {confirmText}
-          </Button>
-        </DialogFooter>
+          </DialogFooter>
+        ) : null}
       </DialogContent>
     </Dialog>
   )

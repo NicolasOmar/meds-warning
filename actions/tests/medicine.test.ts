@@ -1,10 +1,15 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { prisma } from '@prisma/index'
 // ACTIONS
-import { handleMedicineAction, deleteMedicine, getMedicines } from '../medicine'
+import {
+  handleMedicineAction,
+  deleteMedicine,
+  getMedicines,
+  handleExpirationDateAction
+} from '../medicine'
 // SHARED
 import { COMMON_FORM_ERRORS } from '@shared-constants/common'
-import { MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
+import { MEDICINE_TABLE_ERRORS, MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
 
 // Mock next/cache
 vi.mock('next/cache', () => ({
@@ -379,7 +384,7 @@ describe('Medicine Actions', () => {
 
       const result = await deleteMedicine(deleteableMedicineId)
 
-      expect(result.message).toBe(MEDICINE_TABLE_LABELS.DELETE_ERROR)
+      expect(result.message).toBe(MEDICINE_TABLE_ERRORS.DELETE_ERROR)
     })
   })
 
@@ -500,6 +505,216 @@ describe('Medicine Actions', () => {
 
       expect(result[0].name).toBe('Aspirin')
       expect(result[1].name).toBe('Ibuprofen')
+    })
+  })
+
+  describe('[handleExpirationDateAction]', () => {
+    test('updates expiration date with valid data and calls prisma.medicine.update', async () => {
+      vi.mocked(prisma.medicine.update).mockResolvedValue({
+        ...medicineCreationResponse,
+        expirationDate: new Date('2025-12-31')
+      })
+
+      const formData = new FormData()
+      formData.append('medicineId', '1')
+      formData.append('expirationDate', '2025-12-31')
+
+      const result = await handleExpirationDateAction({}, formData)
+
+      expect(result.message).toBe(MEDICINE_FORM_LABELS.UPDATE_SUCCESS)
+      expect(result.success).toBe(true)
+      expect(result.errors).toBeUndefined()
+      expect(prisma.medicine.update).toHaveBeenCalled()
+    })
+
+    test('converts medicineId string to number', async () => {
+      vi.mocked(prisma.medicine.update).mockResolvedValue({
+        ...medicineCreationResponse,
+        expirationDate: new Date('2025-12-31')
+      })
+
+      const formData = new FormData()
+      formData.append('medicineId', '42')
+      formData.append('expirationDate', '2025-12-31')
+
+      await handleExpirationDateAction({}, formData)
+
+      expect(prisma.medicine.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: 42 },
+          data: expect.any(Object)
+        })
+      )
+    })
+
+    test('handles null expiration date to clear the field', async () => {
+      vi.mocked(prisma.medicine.update).mockResolvedValue({
+        ...medicineCreationResponse,
+        expirationDate: null
+      })
+
+      const formData = new FormData()
+      formData.append('medicineId', '1')
+
+      const result = await handleExpirationDateAction({}, formData)
+
+      expect(result.message).toBe(MEDICINE_FORM_LABELS.UPDATE_SUCCESS)
+      expect(result.success).toBe(true)
+      expect(prisma.medicine.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: 1 },
+          data: { expirationDate: null }
+        })
+      )
+    })
+
+    test('calls prisma.medicine.update with correct data structure', async () => {
+      vi.mocked(prisma.medicine.update).mockResolvedValue({
+        ...medicineCreationResponse,
+        expirationDate: new Date('2026-03-15')
+      })
+
+      const formData = new FormData()
+      formData.append('medicineId', '5')
+      formData.append('expirationDate', '2026-03-15')
+
+      await handleExpirationDateAction({}, formData)
+
+      const callArgs = vi.mocked(prisma.medicine.update).mock.calls[0][0]
+      expect(callArgs.where).toEqual({ id: 5 })
+      expect(callArgs.data).toHaveProperty('expirationDate')
+      expect(callArgs.data.expirationDate).toBeInstanceOf(Date)
+    })
+
+    test('converts date string to Date object', async () => {
+      vi.mocked(prisma.medicine.update).mockResolvedValue({
+        ...medicineCreationResponse,
+        expirationDate: new Date('2025-06-30')
+      })
+
+      const formData = new FormData()
+      formData.append('medicineId', '1')
+      formData.append('expirationDate', '2025-06-30')
+
+      await handleExpirationDateAction({}, formData)
+
+      const callArgs = vi.mocked(prisma.medicine.update).mock.calls[0][0]
+      expect(callArgs.data.expirationDate).toBeInstanceOf(Date)
+      const dateValue = callArgs.data.expirationDate as Date
+      expect(dateValue.toISOString()).toContain('2025-06-30')
+    })
+
+    test('handles database error on expiration date update', async () => {
+      const dbError = new Error('Record not found')
+      vi.mocked(prisma.medicine.update).mockRejectedValueOnce(dbError)
+
+      const formData = new FormData()
+      formData.append('medicineId', '999')
+      formData.append('expirationDate', '2025-12-31')
+
+      const result = await handleExpirationDateAction({}, formData)
+
+      expect(result.message).toBe('Record not found')
+      expect(result.success).toBe(false)
+      expect(result.errors).toBeUndefined()
+    })
+
+    test('handles Prisma constraint error', async () => {
+      const constraintError = new Error('Foreign key constraint failed')
+      vi.mocked(prisma.medicine.update).mockRejectedValueOnce(constraintError)
+
+      const formData = new FormData()
+      formData.append('medicineId', '1')
+      formData.append('expirationDate', '2025-12-31')
+
+      const result = await handleExpirationDateAction({}, formData)
+
+      expect(result.message).toBe('Foreign key constraint failed')
+      expect(result.success).toBe(false)
+    })
+
+    test('handles error with no message', async () => {
+      const error = new Error()
+      vi.mocked(prisma.medicine.update).mockRejectedValueOnce(error)
+
+      const formData = new FormData()
+      formData.append('medicineId', '1')
+      formData.append('expirationDate', '2025-12-31')
+
+      const result = await handleExpirationDateAction({}, formData)
+
+      expect(result.message).toBe(COMMON_FORM_ERRORS.SUBMISSION_ERROR)
+      expect(result.success).toBe(false)
+    })
+
+    test('handles non-Error exceptions', async () => {
+      vi.mocked(prisma.medicine.update).mockRejectedValueOnce('Unexpected error')
+
+      const formData = new FormData()
+      formData.append('medicineId', '1')
+      formData.append('expirationDate', '2025-12-31')
+
+      const result = await handleExpirationDateAction({}, formData)
+
+      expect(result.message).toBe(COMMON_FORM_ERRORS.SUBMISSION_ERROR)
+      expect(result.success).toBe(false)
+    })
+
+    test('handles different medicineId values', async () => {
+      vi.mocked(prisma.medicine.update).mockResolvedValue({
+        ...medicineCreationResponse,
+        expirationDate: new Date('2025-12-31')
+      })
+
+      const formData = new FormData()
+      formData.append('medicineId', '123')
+      formData.append('expirationDate', '2025-12-31')
+
+      await handleExpirationDateAction({}, formData)
+
+      expect(prisma.medicine.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          where: { id: 123 }
+        })
+      )
+    })
+
+    test('returns success state with correct message', async () => {
+      vi.mocked(prisma.medicine.update).mockResolvedValue({
+        ...medicineCreationResponse,
+        expirationDate: new Date('2025-12-31')
+      })
+
+      const formData = new FormData()
+      formData.append('medicineId', '1')
+      formData.append('expirationDate', '2025-12-31')
+
+      const result = await handleExpirationDateAction({}, formData)
+
+      expect(result).toEqual({
+        message: MEDICINE_FORM_LABELS.UPDATE_SUCCESS,
+        success: true
+      })
+    })
+
+    test('handles empty expirationDate as null', async () => {
+      vi.mocked(prisma.medicine.update).mockResolvedValue({
+        ...medicineCreationResponse,
+        expirationDate: null
+      })
+
+      const formData = new FormData()
+      formData.append('medicineId', '1')
+      formData.append('expirationDate', '')
+
+      const result = await handleExpirationDateAction({}, formData)
+
+      expect(result.success).toBe(true)
+      expect(prisma.medicine.update).toHaveBeenCalledWith(
+        expect.objectContaining({
+          data: { expirationDate: null }
+        })
+      )
     })
   })
 })

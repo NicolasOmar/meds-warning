@@ -52,6 +52,7 @@ The tool's objective is to <u>create notifications across several channels that 
 ## Project Stack
 ![nextjs dependency][badge-dependency-next]
 ![react dependency][badge-dependency-react]
+![lucide-react dependency][badge-dependency-lucide-react]
 ![typescript dependency][badge-dependency-typescript]
 ![prisma dependency][badge-dependency-prisma]
 ![postgres dependency][badge-dependency-postgres]
@@ -68,6 +69,7 @@ The tool's objective is to <u>create notifications across several channels that 
 
 [badge-dependency-next]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/next/main?logo=next.js
 [badge-dependency-react]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/react/main?logo=react
+[badge-dependency-lucide-react]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/lucide-react/main?logo=lucide
 [badge-dependency-typescript]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/typescript/main?logo=typescript
 [badge-dependency-tailwind]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/tailwindcss/main?logo=tailwindcss
 [badge-dependency-postgres]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/pg/main?logo=postgresql

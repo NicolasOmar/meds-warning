@@ -5,10 +5,10 @@ import { prisma } from '@prisma/index'
 import { revalidatePath } from 'next/cache'
 // SHARED
 import { MedicineSchema } from '@shared-types/zod'
-import { MedicineActionState } from '@shared-types/states'
+import { ExpirationDateActionState, MedicineActionState } from '@shared-types/states'
 import { MEDICINE_FORM_LABELS } from '@shared-constants/forms'
 import { COMMON_FORM_ERRORS } from '@shared-constants/common'
-import { MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
+import { MEDICINE_TABLE_ERRORS, MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
 import { ROUTES } from '@shared-constants/routes'
 import { parseEmptyFormValueToNull } from '@shared-functions/helpers'
 
@@ -96,9 +96,9 @@ export async function deleteMedicine(id: number): Promise<MedicineActionState> {
     let errorMessage = null
 
     if (error instanceof Error) {
-      errorMessage = error.message.length > 0 ? error.message : MEDICINE_TABLE_LABELS.DELETE_ERROR
+      errorMessage = error.message.length > 0 ? error.message : MEDICINE_TABLE_ERRORS.DELETE_ERROR
     } else {
-      errorMessage = MEDICINE_TABLE_LABELS.DELETE_ERROR
+      errorMessage = MEDICINE_TABLE_ERRORS.DELETE_ERROR
     }
 
     return { message: errorMessage, success: false }
@@ -117,4 +117,38 @@ export async function getMedicines(name?: string) {
       medicinePresentation: true
     }
   })
+}
+
+export async function handleExpirationDateAction(
+  _: ExpirationDateActionState,
+  formData: FormData
+): Promise<ExpirationDateActionState> {
+  const medicineId = formData.get('medicineId') as string
+  const expirationDate = formData.get('expirationDate')
+    ? new Date(formData.get('expirationDate') as string)
+    : null
+
+  try {
+    await prisma.medicine.update({
+      where: { id: +medicineId },
+      data: { expirationDate }
+    })
+
+    revalidatePath(ROUTES.MEDICINE_LIST)
+
+    return {
+      message: MEDICINE_FORM_LABELS.UPDATE_SUCCESS,
+      success: true
+    }
+  } catch (error: unknown) {
+    let errorMessage = null
+
+    if (error instanceof Error) {
+      errorMessage = error.message.length > 0 ? error.message : COMMON_FORM_ERRORS.SUBMISSION_ERROR
+    } else {
+      errorMessage = COMMON_FORM_ERRORS.SUBMISSION_ERROR
+    }
+
+    return { message: errorMessage, success: false }
+  }
 }

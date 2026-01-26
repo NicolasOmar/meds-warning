@@ -1,6 +1,6 @@
 import { MedicineTypeExtended } from '@shared-types/zod'
 
-interface MedicineDataItem {
+interface MedicineTableDataItem {
   id: number
   name: string
   laboratory: string | null
@@ -12,7 +12,16 @@ interface MedicineDataItem {
   actions?: React.ReactNode
 }
 
-export const parseMedicineToDataItem = (medicineList: MedicineTypeExtended[]): MedicineDataItem[] =>
+export const parseStringDateToISOString = (dateString: string | null): string | null => {
+  if (!dateString) return null
+
+  const parsedToDate = new Date(dateString)
+  return Number.isNaN(parsedToDate.getTime()) ? null : parsedToDate.toISOString().split('T')[0]
+}
+
+export const parseMedicineToDataItem = (
+  medicineList: MedicineTypeExtended[]
+): MedicineTableDataItem[] =>
   medicineList.map(medItem => ({
     id: medItem.id ?? 0,
     name: medItem.name,

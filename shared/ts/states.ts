@@ -1,4 +1,4 @@
-type BaseActionState = {
+export type BaseActionState = {
   message?: string
   success?: boolean
 }
@@ -18,5 +18,11 @@ export type MedicineActionState = BaseActionState & {
 export type PresentationActionState = BaseActionState & {
   errors?: {
     description?: string[]
+  }
+}
+
+export type ExpirationDateActionState = BaseActionState & {
+  errors?: {
+    expirationDate?: string[]
   }
 }
