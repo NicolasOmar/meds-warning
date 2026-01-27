@@ -19,6 +19,7 @@ export default defineConfig({
         'components/tables/**/*.tsx',
         'shared/functions/**/*.ts',
       ],
+      exclude: ['app/api/**/*'],
       reporter: ['html', 'lcov'],
       reportsDirectory: './coverage'
     }
