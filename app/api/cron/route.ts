@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
-  const medicinePresentationList = await prisma.medicinePresentation.findMany()
+  const medicineList = await prisma.medicine.findMany()
 
   const mailgun = new Mailgun(FormData)
   const mg = mailgun.client({
@@ -20,14 +20,33 @@ export async function GET(request: NextRequest) {
     // url: "https://api.eu.mailgun.net"
   })
   try {
-    const data = await mg.messages.create(process.env.MAILGUN_MAIL_SENDER!, {
-      from: `Mailgun Sandbox <postmaster@${process.env.MAILGUN_MAIL_SENDER}>`,
-      to: [`Recipient <${process.env.MAILGUN_MAIL_RECIPIENT}>`],
-      subject: 'Hello Recipient',
-      text: `Congratulations Recipient, you just sent an email with Mailgun! You are truly awesome!, ${medicinePresentationList[0].description}`
-    })
+    const userSettings = await prisma.settings.findFirst()
+    const mailList = await Promise.all(
+      medicineList
+        .map(async medicine => {
+          if (medicine.expirationDate === null) {
+            return null
+          }
 
-    return NextResponse.json({ success: true, data }, { status: 200 })
+          const expirationDateInAdvance =
+            medicine.expirationDate!.getTime() -
+            (userSettings?.daysToNotify ?? 0) * 24 * 60 * 60 * 1000
+          const todayDateInAdvance =
+            new Date().getTime() + (userSettings?.daysToNotify ?? 0) * 24 * 60 * 60 * 1000
+
+          return expirationDateInAdvance === todayDateInAdvance
+            ? mg.messages.create(process.env.MAILGUN_MAIL_SENDER!, {
+                from: `Mailgun Sandbox <postmaster@${process.env.MAILGUN_MAIL_SENDER}>`,
+                to: [`Recipient <${process.env.MAILGUN_MAIL_RECIPIENT}>`],
+                subject: 'Your medicine is about to expire!',
+                text: `Dear user, your medicine ${medicine.name} is about to expire. Please take necessary action.`
+              })
+            : null
+        })
+        .filter(mailToSend => mailToSend !== null)
+    )
+
+    return NextResponse.json({ success: true, data: mailList }, { status: 200 })
   } catch (error) {
     return NextResponse.json({ success: false, error }, { status: 500 })
   }
