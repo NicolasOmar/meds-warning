@@ -1,3 +1,15 @@
+# [1.10.0](https://github.com/NicolasOmar/meds-warning/compare/v1.9.2...v1.10.0) (2026-01-30)
+
+
+### Bug Fixes
+
+* adding settings page. integration with prisma. still wip. renaming roots url enum ([bdbf519](https://github.com/NicolasOmar/meds-warning/commit/bdbf519b095f2a4994422da19e80856aa829b755))
+
+
+### Features
+
+* Merge pull request [#62](https://github.com/NicolasOmar/meds-warning/issues/62)/[#61](https://github.com/NicolasOmar/meds-warning/issues/61) from NicolasOmar/feature/change-date-to-send-expiration-renewal-notification ([0f67a49](https://github.com/NicolasOmar/meds-warning/commit/0f67a494edda561ebe5b3f2bd92d8cdf890048e0))
+
 ## [1.9.2](https://github.com/NicolasOmar/meds-warning/compare/v1.9.1...v1.9.2) (2026-01-26)
 
 
