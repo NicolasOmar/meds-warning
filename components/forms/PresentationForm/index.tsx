@@ -12,7 +12,7 @@ import { PresentationActionState } from '@shared-types/states'
 import { PRESENTATION_FORM_LABELS } from '@shared-constants/forms'
 import { MedicinePresentationType } from '@shared-types/zod'
 import { handleCommonFormState } from '@shared-functions/forms'
-import { ROUTES } from '@shared-constants/routes'
+import { ROUTE_URLS } from '@shared-constants/routes'
 
 interface PresentationFormProps {
   presentationData?: MedicinePresentationType
@@ -37,7 +37,7 @@ const PresentationForm: FC<PresentationFormProps> = ({ presentationData }) => {
   >(customPresentationFormAction, {})
 
   useEffect(() => {
-    handleCommonFormState(ROUTES.PRESENTATION_LIST, state)
+    handleCommonFormState(ROUTE_URLS.PRESENTATION_LIST, state)
   }, [state])
 
   return (

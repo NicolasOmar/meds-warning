@@ -15,7 +15,7 @@ import DatePicker from '@custom-components/DatePicker'
 import { ExpirationDateActionState } from '@shared-types/states'
 import { COMMON_LABELS } from '@shared-constants/common'
 import { MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
-import { ROUTES } from '@shared-constants/routes'
+import { ROUTE_URLS } from '@shared-constants/routes'
 import { debounce } from '@shared-functions/helpers'
 import { parseMedicineToDataItem } from '@shared-functions/parsers'
 import { handleCommonFormState } from '@shared-functions/forms'
@@ -63,7 +63,7 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
   )
 
   useEffect(() => {
-    handleCommonFormState(ROUTES.MEDICINE_LIST, state)
+    handleCommonFormState(ROUTE_URLS.MEDICINE_LIST, state)
   }, [state])
 
   const handleDeleteClick = async (id: number) => {
@@ -107,7 +107,7 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
         ...medicineItem,
         actions: (
           <section className="flex gap-2">
-            <Link href={`${ROUTES.MEDICINE_MAIN}/${medicineItem.id}`}>
+            <Link href={`${ROUTE_URLS.MEDICINE_ROOT}/${medicineItem.id}`}>
               <Button variant="secondary" title={COMMON_LABELS.EDIT}>
                 <PencilIcon />
               </Button>

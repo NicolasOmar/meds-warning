@@ -1,25 +1,38 @@
-export enum ROUTES {
+export enum ROUTE_URLS {
   HOME = '/',
-  MEDICINE_MAIN = '/medicine',
+  MEDICINE_ROOT = '/medicine',
   MEDICINE_CREATE = '/medicine/create',
   MEDICINE_LIST = '/medicine/list',
-  PRESENTATION_MAIN = '/presentation',
+  PRESENTATION_ROOT = '/presentation',
   PRESENTATION_CREATE = '/presentation/create',
-  PRESENTATION_LIST = '/presentation/list'
+  PRESENTATION_LIST = '/presentation/list',
+  SETTINGS_ROOT = '/settings'
+}
+
+enum ROUTE_NAMES {
+  HOME = 'Home',
+  MEDICINE = 'Medicine',
+  MEDICINE_CREATE = 'Add Medicine',
+  MEDICINE_LIST = 'Medicine List',
+  PRESENTATION = 'Presentation',
+  PRESENTATION_CREATE = 'Add Presentation',
+  PRESENTATION_LIST = 'Presentation List',
+  SETTINGS = 'Settings'
 }
 
 export const MAIN_ROUTES_OBJS = [
-  { name: 'Home', path: ROUTES.HOME },
-  { name: 'Medicine', path: ROUTES.MEDICINE_MAIN },
-  { name: 'Presentation', path: ROUTES.PRESENTATION_MAIN }
+  { name: ROUTE_NAMES.HOME, path: ROUTE_URLS.HOME },
+  { name: ROUTE_NAMES.MEDICINE, path: ROUTE_URLS.MEDICINE_ROOT },
+  { name: ROUTE_NAMES.PRESENTATION, path: ROUTE_URLS.PRESENTATION_ROOT },
+  { name: ROUTE_NAMES.SETTINGS, path: ROUTE_URLS.SETTINGS_ROOT }
 ]
 
 export const MEDICINE_MAIN_ROUTES_OBJS = [
-  { name: 'Add a new medicine', path: ROUTES.MEDICINE_CREATE },
-  { name: 'See all created ones', path: ROUTES.MEDICINE_LIST }
+  { name: ROUTE_NAMES.MEDICINE_CREATE, path: ROUTE_URLS.MEDICINE_CREATE },
+  { name: ROUTE_NAMES.MEDICINE_LIST, path: ROUTE_URLS.MEDICINE_LIST }
 ]
 
 export const PRESENTATION_MAIN_ROUTES_OBJS = [
-  { name: 'Add a new presentation', path: ROUTES.PRESENTATION_CREATE },
-  { name: 'See all created ones', path: ROUTES.PRESENTATION_LIST }
+  { name: ROUTE_NAMES.PRESENTATION_CREATE, path: ROUTE_URLS.PRESENTATION_CREATE },
+  { name: ROUTE_NAMES.PRESENTATION_LIST, path: ROUTE_URLS.PRESENTATION_LIST }
 ]

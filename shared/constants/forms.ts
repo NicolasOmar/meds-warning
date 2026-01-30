@@ -45,3 +45,17 @@ export enum PRESENTATION_FORM_ERRORS {
   DESCRIPTION_MAX = 'Description must be at most 100 characters',
   ALREADY_CREATED = 'A presentation with this description already exists'
 }
+
+export enum SETTINGS_FORM_LABELS {
+  TITLE = 'Settings',
+  DAYS_TO_NOTIFY = 'Days to Notify:',
+  DAYS_TO_NOTIFY_PLACEHOLDER = 'Enter number of days',
+  SUBMIT_BUTTON = 'Save Settings',
+  UPDATE_SUCCESS = 'Settings updated successfully!'
+}
+
+export enum SETTINGS_FORM_ERRORS {
+  DAYS_TO_NOTIFY_REQUIRED = 'Days to Notify is required and must be a number',
+  DAYS_TO_NOTIFY_MIN = 'Days to Notify must be at least 1',
+  DAYS_TO_NOTIFY_MAX = 'Days to Notify must be at most 365'
+}

@@ -26,3 +26,9 @@ export type ExpirationDateActionState = BaseActionState & {
     expirationDate?: string[]
   }
 }
+
+export type SettingsActionState = BaseActionState & {
+  errors?: {
+    daysToNotify?: string[]
+  }
+}

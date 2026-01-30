@@ -3,12 +3,12 @@ import { redirect } from 'next/navigation'
 // SHARED
 import { BaseActionState } from '@shared-types/states'
 
-export const handleCommonFormState = (redirectPath: string, state?: BaseActionState) => {
+export const handleCommonFormState = (redirectPath: string | null, state?: BaseActionState) => {
   if (state?.message) {
     const toastAction = state.success ? toast.success : toast.error
     toastAction(state.message)
 
-    if (state.success) {
+    if (state.success && redirectPath) {
       redirect(redirectPath)
     }
   }

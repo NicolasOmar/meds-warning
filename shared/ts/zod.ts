@@ -1,7 +1,11 @@
 // CORE
 import * as z from 'zod'
 // CONSTANTS
-import { MEDICINE_FORM_ERRORS, PRESENTATION_FORM_ERRORS } from '@shared-constants/forms'
+import {
+  MEDICINE_FORM_ERRORS,
+  PRESENTATION_FORM_ERRORS,
+  SETTINGS_FORM_ERRORS
+} from '@shared-constants/forms'
 
 export const MedicineSchema = z.object({
   id: z.number().int().optional(),
@@ -35,3 +39,14 @@ export const MedicinePresentationSchema = z.object({
 })
 
 export type MedicinePresentationType = z.infer<typeof MedicinePresentationSchema>
+
+export const SettingsSchema = z.object({
+  id: z.number().int().optional(),
+  daysToNotify: z
+    .number(SETTINGS_FORM_ERRORS.DAYS_TO_NOTIFY_REQUIRED)
+    .int()
+    .min(1, SETTINGS_FORM_ERRORS.DAYS_TO_NOTIFY_MIN)
+    .max(365, SETTINGS_FORM_ERRORS.DAYS_TO_NOTIFY_MAX)
+})
+
+export type SettingsType = z.infer<typeof SettingsSchema>

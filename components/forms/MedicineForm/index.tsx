@@ -15,7 +15,7 @@ import { MEDICINE_FORM_LABELS } from '@shared-constants/forms'
 import { MedicinePresentationType, MedicineType } from '@shared-types/zod'
 import { MedicineActionState } from '@shared-types/states'
 import { handleCommonFormState } from '@shared-functions/forms'
-import { ROUTES } from '@shared-constants/routes'
+import { ROUTE_URLS } from '@shared-constants/routes'
 
 interface MedicineFormProps {
   presentationsList: MedicinePresentationType[]
@@ -71,7 +71,7 @@ const MedicineForm: FC<MedicineFormProps> = ({ presentationsList, medicineData }
   const [state, medicineFormAction, isPending] = useActionState(customMedicineFormAction, {})
 
   useEffect(() => {
-    handleCommonFormState(ROUTES.MEDICINE_LIST, state)
+    handleCommonFormState(ROUTE_URLS.MEDICINE_LIST, state)
   }, [state])
 
   return (
