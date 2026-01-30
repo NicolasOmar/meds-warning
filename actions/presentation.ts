@@ -9,7 +9,7 @@ import { MedicineActionState, PresentationActionState } from '@shared-types/stat
 import { MedicinePresentationSchema, MedicinePresentationType } from '@shared-types/zod'
 import { parseEmptyFormValueToNull } from '@shared-functions/helpers'
 import { PRESENTATION_FORM_ERRORS, PRESENTATION_FORM_LABELS } from '@shared-constants/forms'
-import { ROUTES } from '@shared-constants/routes'
+import { ROUTE_URLS } from '@shared-constants/routes'
 import { MEDICINE_PRESENTATION_TABLE_LABELS } from '@shared-constants/tables'
 
 export async function handlePresentationAction(
@@ -58,7 +58,7 @@ export async function handlePresentationAction(
       })
     }
 
-    revalidatePath(ROUTES.PRESENTATION_LIST)
+    revalidatePath(ROUTE_URLS.PRESENTATION_LIST)
 
     return {
       message: id
@@ -95,7 +95,7 @@ export async function deletePresentation(presentationId: number): Promise<Medici
       where: { id: presentationId }
     })
 
-    revalidatePath(ROUTES.PRESENTATION_LIST)
+    revalidatePath(ROUTE_URLS.PRESENTATION_LIST)
 
     return { message: MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_SUCCESS, success: true }
   } catch (error: unknown) {

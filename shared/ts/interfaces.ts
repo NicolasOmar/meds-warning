@@ -5,7 +5,7 @@ export interface BaseLayoutProps {
 }
 
 export interface LayoutTempalteProps extends BaseLayoutProps {
-  paths: {
+  paths?: {
     name: string
     path: string
   }[]

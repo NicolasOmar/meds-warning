@@ -13,7 +13,7 @@ import { MEDICINE_PRESENTATION_TABLE_LABELS } from '@shared-constants/tables'
 import { MedicinePresentationType } from '@shared-types/zod'
 import { Button } from '@base-components/button'
 import { COMMON_LABELS } from '@shared-constants/common'
-import { ROUTES } from '@shared-constants/routes'
+import { ROUTE_URLS } from '@shared-constants/routes'
 import { PencilIcon, TrashIcon } from 'lucide-react'
 
 interface MedicinePresentationTableProps {
@@ -37,7 +37,7 @@ const MedicinePresentationTable: FC<MedicinePresentationTableProps> = ({ present
         description: presentationItem.description,
         actions: (
           <section className="flex gap-2">
-            <Link href={`${ROUTES.PRESENTATION_MAIN}/${presentationItem.id}`}>
+            <Link href={`${ROUTE_URLS.PRESENTATION_ROOT}/${presentationItem.id}`}>
               <Button variant="secondary" title={COMMON_LABELS.EDIT}>
                 <PencilIcon />
               </Button>

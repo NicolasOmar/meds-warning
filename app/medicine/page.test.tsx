@@ -3,30 +3,30 @@ import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 // COMPONENTS
-import MedicineHomePage from './page'
+import MedicineRootPage from './page'
 // SHARED
 import { MEDICINE_PAGE_LABELS } from '@shared-constants/pages'
 
-describe('[MedicineHomePage]', () => {
+describe('[MedicineRootPage]', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
 
   test('renders the welcome message', () => {
-    render(<MedicineHomePage />)
+    render(<MedicineRootPage />)
 
     expect(screen.getByText(MEDICINE_PAGE_LABELS.WELCOME_MESSAGE)).toBeInTheDocument()
   })
 
   test('renders main section with children text', () => {
-    render(<MedicineHomePage />)
+    render(<MedicineRootPage />)
 
     const welcomeText = screen.getByText(MEDICINE_PAGE_LABELS.WELCOME_MESSAGE)
     expect(welcomeText).toBeInTheDocument()
   })
 
   test('renders outer section with correct styling', () => {
-    const { container } = render(<MedicineHomePage />)
+    const { container } = render(<MedicineRootPage />)
 
     const outerSection = container.querySelector('section')
     expect(outerSection).toHaveClass(
@@ -39,7 +39,7 @@ describe('[MedicineHomePage]', () => {
   })
 
   test('renders complete page structure', () => {
-    const { container } = render(<MedicineHomePage />)
+    const { container } = render(<MedicineRootPage />)
 
     const sections = container.querySelectorAll('section')
     expect(sections.length).toBeGreaterThanOrEqual(1)
@@ -47,33 +47,33 @@ describe('[MedicineHomePage]', () => {
   })
 
   test('renders page with correct layout hierarchy', () => {
-    const { container } = render(<MedicineHomePage />)
+    const { container } = render(<MedicineRootPage />)
 
     const outerSection = container.querySelector('section')
     expect(outerSection).toBeInTheDocument()
   })
 
   test('renders welcome message text correctly', () => {
-    render(<MedicineHomePage />)
+    render(<MedicineRootPage />)
 
     const messageText = screen.getByText(MEDICINE_PAGE_LABELS.WELCOME_MESSAGE)
     expect(messageText.textContent).toBe(MEDICINE_PAGE_LABELS.WELCOME_MESSAGE)
   })
 
-  test('component exports MedicineHomePage as default', () => {
+  test('component exports MedicineRootPage as default', () => {
     // Verify the component is defined and renders
-    const component = <MedicineHomePage />
+    const component = <MedicineRootPage />
     expect(component).toBeDefined()
   })
 
   test('renders without errors', () => {
     expect(() => {
-      render(<MedicineHomePage />)
+      render(<MedicineRootPage />)
     }).not.toThrow()
   })
 
   test('renders a single outer section container', () => {
-    const { container } = render(<MedicineHomePage />)
+    const { container } = render(<MedicineRootPage />)
 
     const outerSection = container.querySelector('section')
     expect(outerSection).toBeInTheDocument()

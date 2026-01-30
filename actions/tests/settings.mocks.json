@@ -1,0 +1,32 @@
+{
+  "validSettingsData": {
+    "daysToNotify": 30
+  },
+  "validSettingsData2": {
+    "daysToNotify": 15
+  },
+  "validSettingsData3": {
+    "daysToNotify": 60
+  },
+  "minDaysSettingsData": {
+    "daysToNotify": 1
+  },
+  "maxDaysSettingsData": {
+    "daysToNotify": 365
+  },
+  "invalidMinDaysSettingsData": {
+    "daysToNotify": 0
+  },
+  "invalidMaxDaysSettingsData": {
+    "daysToNotify": 366
+  },
+  "invalidNegativeDaysSettingsData": {
+    "daysToNotify": -5
+  },
+  "invalidStringDaysSettingsData": {
+    "daysToNotify": "abc"
+  },
+  "emptyDaysSettingsData": {
+    "daysToNotify": ""
+  }
+}

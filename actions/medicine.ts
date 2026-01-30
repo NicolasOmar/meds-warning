@@ -9,7 +9,7 @@ import { ExpirationDateActionState, MedicineActionState } from '@shared-types/st
 import { MEDICINE_FORM_LABELS } from '@shared-constants/forms'
 import { COMMON_FORM_ERRORS } from '@shared-constants/common'
 import { MEDICINE_TABLE_ERRORS, MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
-import { ROUTES } from '@shared-constants/routes'
+import { ROUTE_URLS } from '@shared-constants/routes'
 import { parseEmptyFormValueToNull } from '@shared-functions/helpers'
 
 export async function handleMedicineAction(
@@ -64,7 +64,7 @@ export async function handleMedicineAction(
       })
     }
 
-    revalidatePath(ROUTES.MEDICINE_LIST)
+    revalidatePath(ROUTE_URLS.MEDICINE_LIST)
 
     return {
       message: id ? MEDICINE_FORM_LABELS.UPDATE_SUCCESS : MEDICINE_FORM_LABELS.CREATE_SUCCESS,
@@ -89,7 +89,7 @@ export async function deleteMedicine(id: number): Promise<MedicineActionState> {
       where: { id }
     })
 
-    revalidatePath(ROUTES.MEDICINE_LIST)
+    revalidatePath(ROUTE_URLS.MEDICINE_LIST)
 
     return { message: MEDICINE_TABLE_LABELS.DELETE_SUCCESS, success: true }
   } catch (error: unknown) {
@@ -134,7 +134,7 @@ export async function handleExpirationDateAction(
       data: { expirationDate }
     })
 
-    revalidatePath(ROUTES.MEDICINE_LIST)
+    revalidatePath(ROUTE_URLS.MEDICINE_LIST)
 
     return {
       message: MEDICINE_FORM_LABELS.UPDATE_SUCCESS,
