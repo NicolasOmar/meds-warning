@@ -2,6 +2,7 @@
 import * as z from 'zod'
 // SHARED
 import { COMMON_FORM_ERRORS } from '@shared-constants/common'
+import { SETTINGS_FORM_LABELS } from '@shared-constants/forms'
 import { SettingsActionState } from '@shared-types/states'
 import { SettingsSchema } from '@shared-types/zod'
 import { ROUTE_URLS } from '@shared-constants/routes'
@@ -47,7 +48,7 @@ export async function updateSettings(
 
   // Simulate successful update
   return {
-    message: 'Settings updated successfully',
+    message: SETTINGS_FORM_LABELS.UPDATE_SUCCESS,
     success: true
   }
 }
