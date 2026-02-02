@@ -1,3 +1,15 @@
+# [1.11.0](https://github.com/NicolasOmar/meds-warning/compare/v1.10.0...v1.11.0) (2026-02-02)
+
+
+### Bug Fixes
+
+* first iteration for user form to create it ([f4717b8](https://github.com/NicolasOmar/meds-warning/commit/f4717b82c40e84b7936de801db868c36d5b801b0))
+
+
+### Features
+
+* Merge pull request [#70](https://github.com/NicolasOmar/meds-warning/issues/70)/[#69](https://github.com/NicolasOmar/meds-warning/issues/69) from NicolasOmar/feature/create-an-user ([44b4d5b](https://github.com/NicolasOmar/meds-warning/commit/44b4d5b465971b8b5a1e9a0b7d366fc176b15e14))
+
 # [1.10.0](https://github.com/NicolasOmar/meds-warning/compare/v1.9.2...v1.10.0) (2026-01-30)
 
 
