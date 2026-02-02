@@ -59,3 +59,36 @@ export enum SETTINGS_FORM_ERRORS {
   DAYS_TO_NOTIFY_MIN = 'Days to Notify must be at least 1',
   DAYS_TO_NOTIFY_MAX = 'Days to Notify must be at most 365'
 }
+
+export enum USER_FORM_LABELS {
+  TITLE = 'User Information',
+  NAME = 'Name:',
+  NAME_PLACEHOLDER = 'John',
+  LAST_NAME = 'Last Name:',
+  LAST_NAME_PLACEHOLDER = 'Doe',
+  PASSWORD = 'Password:',
+  PASSWORD_PLACEHOLDER = 'Enter your password',
+  EMAIL = 'Email:',
+  EMAIL_PLACEHOLDER = 'john.doe@example.com',
+  DAYS_TO_NOTIFY = 'Days to Notify:',
+  DAYS_TO_NOTIFY_PLACEHOLDER = '30',
+  SUBMIT_BUTTON = 'Create User',
+  CREATE_SUCCESS = 'User created successfully!',
+  UPDATE_SUCCESS = 'User updated successfully!'
+}
+
+export enum USER_FORM_ERRORS {
+  NAME_REQUIRED = 'Name is required',
+  NAME_MIN = 'Name must be at least 1 character',
+  NAME_MAX = 'Name must be at most 100 characters',
+  LAST_NAME_MAX = 'Last name must be at most 100 characters',
+  PASSWORD_REQUIRED = 'Password is required',
+  PASSWORD_MIN = 'Password must be at least 8 characters',
+  PASSWORD_MAX = 'Password must be at most 100 characters',
+  EMAIL_REQUIRED = 'Email is required',
+  EMAIL_INVALID = 'Email must be a valid email address',
+  EMAIL_MAX = 'Email must be at most 100 characters',
+  DAYS_TO_NOTIFY_REQUIRED = 'Days to Notify is required and must be a number',
+  DAYS_TO_NOTIFY_MIN = 'Days to Notify must be at least 1',
+  DAYS_TO_NOTIFY_MAX = 'Days to Notify must be at most 365'
+}

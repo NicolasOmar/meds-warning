@@ -4,9 +4,11 @@ import * as z from 'zod'
 import {
   MEDICINE_FORM_ERRORS,
   PRESENTATION_FORM_ERRORS,
-  SETTINGS_FORM_ERRORS
+  SETTINGS_FORM_ERRORS,
+  USER_FORM_ERRORS
 } from '@shared-constants/forms'
 
+// MEDCINE SCHEMA
 export const MedicineSchema = z.object({
   id: z.number().int().optional(),
   name: z
@@ -50,3 +52,24 @@ export const SettingsSchema = z.object({
 })
 
 export type SettingsType = z.infer<typeof SettingsSchema>
+
+export const UserSchema = z.object({
+  id: z.number().int().optional(),
+  name: z
+    .string(USER_FORM_ERRORS.NAME_REQUIRED)
+    .min(1, USER_FORM_ERRORS.NAME_MIN)
+    .max(100, USER_FORM_ERRORS.NAME_MAX),
+  lastName: z.string().max(100, USER_FORM_ERRORS.LAST_NAME_MAX).nullable(),
+  password: z
+    .string(USER_FORM_ERRORS.PASSWORD_REQUIRED)
+    .min(8, USER_FORM_ERRORS.PASSWORD_MIN)
+    .max(100, USER_FORM_ERRORS.PASSWORD_MAX),
+  email: z.email(USER_FORM_ERRORS.EMAIL_INVALID).max(100, USER_FORM_ERRORS.EMAIL_MAX),
+  daysToNotify: z
+    .number(USER_FORM_ERRORS.DAYS_TO_NOTIFY_REQUIRED)
+    .int()
+    .min(1, USER_FORM_ERRORS.DAYS_TO_NOTIFY_MIN)
+    .max(365, USER_FORM_ERRORS.DAYS_TO_NOTIFY_MAX)
+})
+
+export type UserType = z.infer<typeof UserSchema>

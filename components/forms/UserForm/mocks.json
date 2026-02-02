@@ -1,0 +1,26 @@
+{
+  "mockUserDataError": {
+    "id": 1,
+    "name": "John",
+    "lastName": "Doe",
+    "password": "password123",
+    "email": "john.doe@example.com",
+    "daysToNotify": 30
+  },
+  "mockUserDataNullFields": {
+    "id": 1,
+    "name": "Test",
+    "lastName": null,
+    "password": "testpass",
+    "email": "test@example.com",
+    "daysToNotify": 30
+  },
+  "fullUserData": {
+    "id": 1,
+    "name": "Jane",
+    "lastName": "Smith",
+    "password": "securepass123",
+    "email": "jane.smith@example.com",
+    "daysToNotify": 45
+  }
+}
