@@ -2,6 +2,7 @@
 import * as z from 'zod'
 // CONSTANTS
 import {
+  LOGIN_FORM_ERRORS,
   MEDICINE_FORM_ERRORS,
   PRESENTATION_FORM_ERRORS,
   SETTINGS_FORM_ERRORS,
@@ -73,3 +74,14 @@ export const UserSchema = z.object({
 })
 
 export type UserType = z.infer<typeof UserSchema>
+
+export const LoginSchema = z.object({
+  email: z
+    .string({ message: LOGIN_FORM_ERRORS.EMAIL_REQUIRED })
+    .email(LOGIN_FORM_ERRORS.EMAIL_INVALID),
+  password: z
+    .string({ message: LOGIN_FORM_ERRORS.PASSWORD_REQUIRED })
+    .min(8, LOGIN_FORM_ERRORS.PASSWORD_MIN)
+})
+
+export type LoginType = z.infer<typeof LoginSchema>

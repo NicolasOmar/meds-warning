@@ -3,6 +3,7 @@
 import * as z from 'zod'
 import { prisma } from '@prisma/index'
 import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 // SHARED
 import { UserSchema } from '@shared-types/zod'
 import { UserActionState } from '@shared-types/states'
@@ -10,6 +11,7 @@ import { USER_FORM_LABELS } from '@shared-constants/forms'
 import { COMMON_FORM_ERRORS } from '@shared-constants/common'
 import { ROUTE_URLS } from '@shared-constants/routes'
 import { parseEmptyFormValueToNull } from '@shared-functions/helpers'
+import { hashPassword, generateJWT, setAuthCookie } from '@shared-functions/auth'
 
 export async function handleUserAction(
   _: UserActionState,
@@ -34,27 +36,43 @@ export async function handleUserAction(
     }
   }
 
+  const hashedPassword = await hashPassword(validatedUserObject.data.password)
+
   const userData = {
     name: validatedUserObject.data.name,
     lastName: validatedUserObject.data.lastName,
-    password: validatedUserObject.data.password,
+    password: hashedPassword,
     email: validatedUserObject.data.email,
     daysToNotify: validatedUserObject.data.daysToNotify
   }
 
   try {
+    let user
+
     if (id) {
-      await prisma.userForm.update({
+      user = await prisma.userForm.update({
         where: { id: +id },
         data: userData
       })
     } else {
-      await prisma.userForm.create({
+      user = await prisma.userForm.create({
         data: userData
       })
+
+      const token = generateJWT({
+        userId: user.id,
+        email: user.email,
+        name: user.name
+      })
+
+      await setAuthCookie(token)
     }
 
     revalidatePath(ROUTE_URLS.USER_LIST)
+
+    if (!id) {
+      redirect(ROUTE_URLS.MEDICINE_LIST)
+    }
 
     return {
       message: id ? USER_FORM_LABELS.UPDATE_SUCCESS : USER_FORM_LABELS.CREATE_SUCCESS,

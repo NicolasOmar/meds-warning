@@ -10,6 +10,16 @@ vi.mock('next/cache', () => ({
   revalidatePath: vi.fn()
 }))
 
+vi.mock('next/navigation', () => ({
+  redirect: vi.fn()
+}))
+
+vi.mock('@shared-functions/auth', () => ({
+  hashPassword: vi.fn((password: string) => Promise.resolve(`hashed_${password}`)),
+  generateJWT: vi.fn(() => 'test-token'),
+  setAuthCookie: vi.fn()
+}))
+
 // MOCKS
 import {
   validUserData,
@@ -80,7 +90,13 @@ describe('User Actions', () => {
       await handleUserAction({}, formData)
 
       expect(prisma.userForm.create).toHaveBeenCalledWith({
-        data: validUserData
+        data: {
+          name: validUserData.name,
+          lastName: validUserData.lastName,
+          password: `hashed_${validUserData.password}`,
+          email: validUserData.email,
+          daysToNotify: validUserData.daysToNotify
+        }
       })
     })
 
@@ -239,7 +255,13 @@ describe('User Actions', () => {
 
       expect(prisma.userForm.update).toHaveBeenCalledWith({
         where: { id: 1 },
-        data: validUserData2
+        data: {
+          name: validUserData2.name,
+          lastName: validUserData2.lastName,
+          password: `hashed_${validUserData2.password}`,
+          email: validUserData2.email,
+          daysToNotify: validUserData2.daysToNotify
+        }
       })
     })
 

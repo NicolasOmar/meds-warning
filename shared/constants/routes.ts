@@ -1,5 +1,7 @@
 export enum ROUTE_URLS {
   HOME = '/',
+  LOGIN = '/login',
+  LOGOUT = '/logout',
   MEDICINE_ROOT = '/medicine',
   MEDICINE_CREATE = '/medicine/create',
   MEDICINE_LIST = '/medicine/list',
