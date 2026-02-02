@@ -1,0 +1,72 @@
+{
+  "validUserData": {
+    "name": "John",
+    "lastName": "Doe",
+    "password": "password123",
+    "email": "john.doe@example.com",
+    "daysToNotify": 30
+  },
+  "validUserData2": {
+    "name": "Jane",
+    "lastName": "Smith",
+    "password": "securepass456",
+    "email": "jane.smith@example.com",
+    "daysToNotify": 45
+  },
+  "validUserDataNoLastName": {
+    "name": "Alice",
+    "lastName": null,
+    "password": "alicepass789",
+    "email": "alice@example.com",
+    "daysToNotify": 60
+  },
+  "minDaysUserData": {
+    "name": "Bob",
+    "lastName": "Builder",
+    "password": "bobpass123",
+    "email": "bob@example.com",
+    "daysToNotify": 1
+  },
+  "maxDaysUserData": {
+    "name": "Charlie",
+    "lastName": "Brown",
+    "password": "charliepass123",
+    "email": "charlie@example.com",
+    "daysToNotify": 365
+  },
+  "invalidEmailUserData": {
+    "name": "Invalid",
+    "lastName": "User",
+    "password": "password123",
+    "email": "notanemail",
+    "daysToNotify": 30
+  },
+  "invalidMinDaysUserData": {
+    "name": "Invalid",
+    "lastName": "Days",
+    "password": "password123",
+    "email": "invalid@example.com",
+    "daysToNotify": 0
+  },
+  "invalidMaxDaysUserData": {
+    "name": "Invalid",
+    "lastName": "Days",
+    "password": "password123",
+    "email": "invalid@example.com",
+    "daysToNotify": 366
+  },
+  "invalidPasswordShortUserData": {
+    "name": "Invalid",
+    "lastName": "Pass",
+    "password": "short",
+    "email": "invalid@example.com",
+    "daysToNotify": 30
+  },
+  "emptyNameUserData": {
+    "name": "",
+    "lastName": "User",
+    "password": "password123",
+    "email": "empty@example.com",
+    "daysToNotify": 30
+  }
+}

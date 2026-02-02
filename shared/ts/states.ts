@@ -32,3 +32,13 @@ export type SettingsActionState = BaseActionState & {
     daysToNotify?: string[]
   }
 }
+
+export type UserActionState = BaseActionState & {
+  errors?: {
+    name?: string[]
+    lastName?: string[]
+    password?: string[]
+    email?: string[]
+    daysToNotify?: string[]
+  }
+}

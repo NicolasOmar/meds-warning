@@ -6,7 +6,10 @@ export enum ROUTE_URLS {
   PRESENTATION_ROOT = '/presentation',
   PRESENTATION_CREATE = '/presentation/create',
   PRESENTATION_LIST = '/presentation/list',
-  SETTINGS_ROOT = '/settings'
+  SETTINGS_ROOT = '/settings',
+  USER_ROOT = '/user',
+  USER_CREATE = '/user/create',
+  USER_LIST = '/user/list'
 }
 
 enum ROUTE_NAMES {
@@ -17,14 +20,18 @@ enum ROUTE_NAMES {
   PRESENTATION = 'Presentation',
   PRESENTATION_CREATE = 'Add Presentation',
   PRESENTATION_LIST = 'Presentation List',
-  SETTINGS = 'Settings'
+  SETTINGS = 'Settings',
+  USER = 'User',
+  USER_CREATE = 'Add User',
+  USER_LIST = 'User List'
 }
 
 export const MAIN_ROUTES_OBJS = [
   { name: ROUTE_NAMES.HOME, path: ROUTE_URLS.HOME },
   { name: ROUTE_NAMES.MEDICINE, path: ROUTE_URLS.MEDICINE_ROOT },
   { name: ROUTE_NAMES.PRESENTATION, path: ROUTE_URLS.PRESENTATION_ROOT },
-  { name: ROUTE_NAMES.SETTINGS, path: ROUTE_URLS.SETTINGS_ROOT }
+  { name: ROUTE_NAMES.SETTINGS, path: ROUTE_URLS.SETTINGS_ROOT },
+  { name: ROUTE_NAMES.USER, path: ROUTE_URLS.USER_ROOT }
 ]
 
 export const MEDICINE_MAIN_ROUTES_OBJS = [
@@ -35,4 +42,9 @@ export const MEDICINE_MAIN_ROUTES_OBJS = [
 export const PRESENTATION_MAIN_ROUTES_OBJS = [
   { name: ROUTE_NAMES.PRESENTATION_CREATE, path: ROUTE_URLS.PRESENTATION_CREATE },
   { name: ROUTE_NAMES.PRESENTATION_LIST, path: ROUTE_URLS.PRESENTATION_LIST }
+]
+
+export const USER_MAIN_ROUTES_OBJS = [
+  { name: ROUTE_NAMES.USER_CREATE, path: ROUTE_URLS.USER_CREATE },
+  { name: ROUTE_NAMES.USER_LIST, path: ROUTE_URLS.USER_LIST }
 ]
