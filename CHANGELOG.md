@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/NicolasOmar/meds-warning/compare/v1.11.0...v1.11.1) (2026-02-03)
+
+
+### Bug Fixes
+
+* updating dependencies ([c1aeb95](https://github.com/NicolasOmar/meds-warning/commit/c1aeb958eb2182aae18fcb73d63c22874c2664d9))
+
 # [1.11.0](https://github.com/NicolasOmar/meds-warning/compare/v1.10.0...v1.11.0) (2026-02-02)
 
 
