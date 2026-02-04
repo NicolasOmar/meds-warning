@@ -43,7 +43,7 @@ const HomeLayout: FC<BaseLayoutProps> = async ({ children }) => {
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased grid grid-cols-6`}>
         {session && !isPublicRoute && (
-          <header className="m-4 col-span-full justify-self-center">
+          <header className="flex gap-4 m-4 col-span-full justify-self-center">
             <ButtonGroup>
               {MAIN_ROUTES_OBJS.map(({ name, path }, routeId) => {
                 return (
@@ -57,12 +57,12 @@ const HomeLayout: FC<BaseLayoutProps> = async ({ children }) => {
                   </Button>
                 )
               })}
-              <form action={handleLogoutAction}>
-                <Button type="submit" variant="destructive">
-                  Logout
-                </Button>
-              </form>
             </ButtonGroup>
+            <form action={handleLogoutAction}>
+              <Button type="submit" variant="destructive">
+                Logout
+              </Button>
+            </form>
           </header>
         )}
         <section className="col-span-full md:col-span-1 md:col-start-2 md:col-span-4">

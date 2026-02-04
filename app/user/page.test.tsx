@@ -1,81 +1,32 @@
 // CORE
-import { describe, test, expect, vi, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { describe, test, expect, vi } from 'vitest'
+import { render } from '@testing-library/react'
 import '@testing-library/jest-dom'
 // COMPONENTS
 import UserRootPage from './page'
 // SHARED
-import { USER_PAGE_LABELS } from '@shared-constants/pages'
+import { ROUTE_URLS } from '@shared-constants/routes'
+
+const mockRedirect = vi.fn()
+
+vi.mock('next/navigation', () => ({
+  redirect: (...args: unknown[]) => {
+    mockRedirect(...args)
+    throw new Error('NEXT_REDIRECT')
+  }
+}))
 
 describe('[UserRootPage]', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
+  test('redirects to USER_CREATE route and calls redirect with correct path', () => {
+    expect(() => {
+      render(<UserRootPage />)
+    }).toThrow('NEXT_REDIRECT')
 
-  test('renders the welcome message', () => {
-    render(<UserRootPage />)
-
-    expect(screen.getByText(USER_PAGE_LABELS.WELCOME_MESSAGE)).toBeInTheDocument()
-  })
-
-  test('renders main section with children text', () => {
-    render(<UserRootPage />)
-
-    const welcomeText = screen.getByText(USER_PAGE_LABELS.WELCOME_MESSAGE)
-    expect(welcomeText).toBeInTheDocument()
-  })
-
-  test('renders outer section with correct styling', () => {
-    const { container } = render(<UserRootPage />)
-
-    const outerSection = container.querySelector('section')
-    expect(outerSection).toHaveClass(
-      'flex',
-      'flex-col',
-      'min-h-screen',
-      'justify-start',
-      'items-center'
-    )
-  })
-
-  test('renders complete page structure', () => {
-    const { container } = render(<UserRootPage />)
-
-    const sections = container.querySelectorAll('section')
-    expect(sections.length).toBeGreaterThanOrEqual(1)
-    expect(screen.getByText(USER_PAGE_LABELS.WELCOME_MESSAGE)).toBeInTheDocument()
-  })
-
-  test('renders page with correct layout hierarchy', () => {
-    const { container } = render(<UserRootPage />)
-
-    const outerSection = container.querySelector('section')
-    expect(outerSection).toBeInTheDocument()
-  })
-
-  test('renders welcome message text correctly', () => {
-    render(<UserRootPage />)
-
-    const messageText = screen.getByText(USER_PAGE_LABELS.WELCOME_MESSAGE)
-    expect(messageText.textContent).toBe(USER_PAGE_LABELS.WELCOME_MESSAGE)
+    expect(mockRedirect).toHaveBeenCalledWith(ROUTE_URLS.USER_CREATE)
   })
 
   test('component exports UserRootPage as default', () => {
-    const component = <UserRootPage />
-    expect(component).toBeDefined()
-  })
-
-  test('renders without errors', () => {
-    expect(() => {
-      render(<UserRootPage />)
-    }).not.toThrow()
-  })
-
-  test('renders a single outer section container', () => {
-    const { container } = render(<UserRootPage />)
-
-    const outerSection = container.querySelector('section')
-    expect(outerSection).toBeInTheDocument()
-    expect(outerSection?.className).toContain('flex')
+    expect(UserRootPage).toBeDefined()
+    expect(typeof UserRootPage).toBe('function')
   })
 })
