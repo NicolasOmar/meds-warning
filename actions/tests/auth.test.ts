@@ -7,7 +7,7 @@ import { COMMON_FORM_ERRORS } from '@shared-constants/common'
 
 vi.mock('@prisma/index', () => ({
   prisma: {
-    userForm: {
+    user: {
       findUnique: vi.fn()
     }
   }

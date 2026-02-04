@@ -45,8 +45,7 @@ describe('[User]', () => {
       USER_FORM_LABELS.NAME,
       USER_FORM_LABELS.LAST_NAME,
       USER_FORM_LABELS.EMAIL,
-      USER_FORM_LABELS.PASSWORD,
-      USER_FORM_LABELS.DAYS_TO_NOTIFY
+      USER_FORM_LABELS.PASSWORD
     ]
 
     render(<User />)
@@ -76,8 +75,7 @@ describe('[User]', () => {
       USER_FORM_LABELS.NAME_PLACEHOLDER,
       USER_FORM_LABELS.LAST_NAME_PLACEHOLDER,
       USER_FORM_LABELS.EMAIL_PLACEHOLDER,
-      USER_FORM_LABELS.PASSWORD_PLACEHOLDER,
-      USER_FORM_LABELS.DAYS_TO_NOTIFY_PLACEHOLDER
+      USER_FORM_LABELS.PASSWORD_PLACEHOLDER
     ]
 
     render(<User />)
@@ -122,11 +120,9 @@ describe('[User]', () => {
 
     const nameInput = screen.getByDisplayValue(mockUserDataError.name)
     const emailInput = screen.getByDisplayValue(mockUserDataError.email)
-    const daysInput = screen.getByDisplayValue(mockUserDataError.daysToNotify.toString())
 
     expect(nameInput).toBeInTheDocument()
     expect(emailInput).toBeInTheDocument()
-    expect(daysInput).toBeInTheDocument()
   })
 
   test('displays error messages from state.errors', () => {
@@ -143,7 +139,6 @@ describe('[User]', () => {
     expect(screen.getByText(USER_FORM_LABELS.LAST_NAME)).toBeInTheDocument()
     expect(screen.getByText(USER_FORM_LABELS.EMAIL)).toBeInTheDocument()
     expect(screen.getByText(USER_FORM_LABELS.PASSWORD)).toBeInTheDocument()
-    expect(screen.getByText(USER_FORM_LABELS.DAYS_TO_NOTIFY)).toBeInTheDocument()
   })
 
   test('renders form inputs without initial user data', () => {
@@ -171,7 +166,6 @@ describe('[User]', () => {
 
     expect(screen.getByDisplayValue(fullUserData.name)).toBeInTheDocument()
     expect(screen.getByDisplayValue(fullUserData.email)).toBeInTheDocument()
-    expect(screen.getByDisplayValue(fullUserData.daysToNotify.toString())).toBeInTheDocument()
   })
 
   test('password field has correct input type', () => {
@@ -186,15 +180,9 @@ describe('[User]', () => {
     expect(emailInput).toHaveAttribute('type', 'email')
   })
 
-  test('daysToNotify field has correct input type', () => {
-    render(<User />)
-    const daysInput = screen.getByLabelText(USER_FORM_LABELS.DAYS_TO_NOTIFY)
-    expect(daysInput).toHaveAttribute('type', 'number')
-  })
-
-  test('renders daysToNotify with default value when no userData provided', () => {
-    render(<User />)
-    const daysInput = screen.getByDisplayValue('30')
-    expect(daysInput).toBeInTheDocument()
+  test('lastName field is optional and renders empty when not provided', () => {
+    render(<User userData={mockUserDataNullFields} />)
+    const lastNameInput = screen.getByLabelText(USER_FORM_LABELS.LAST_NAME) as HTMLInputElement
+    expect(lastNameInput.value).toBe('')
   })
 })

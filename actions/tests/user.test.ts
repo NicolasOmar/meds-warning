@@ -28,7 +28,6 @@ import {
   minDaysUserData,
   maxDaysUserData,
   invalidEmailUserData,
-  invalidMinDaysUserData,
   invalidMaxDaysUserData,
   invalidPasswordShortUserData,
   emptyNameUserData
@@ -51,7 +50,7 @@ const populateFormData = (
 
 vi.mock('@prisma/index', () => ({
   prisma: {
-    userForm: {
+    user: {
       create: vi.fn(),
       update: vi.fn(),
       findMany: vi.fn()
@@ -149,24 +148,19 @@ describe('User Actions', () => {
       expect(prisma.user.create).not.toHaveBeenCalled()
     })
 
-    test('returns error when daysToNotify is below minimum (0)', async () => {
-      const formData = populateFormData(invalidMinDaysUserData)
-      const result = await handleUserAction({}, formData)
+    test('always sets daysToNotify to default value of 30 regardless of formData', async () => {
+      vi.mocked(prisma.user.create).mockResolvedValue({
+        id: 1,
+        ...invalidMaxDaysUserData,
+        daysToNotify: 30
+      })
 
-      expect(result.success).toBe(false)
-      expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
-      expect(result.errors?.daysToNotify).toBeDefined()
-      expect(prisma.user.create).not.toHaveBeenCalled()
-    })
-
-    test('returns error when daysToNotify exceeds maximum (366)', async () => {
       const formData = populateFormData(invalidMaxDaysUserData)
-      const result = await handleUserAction({}, formData)
+      await handleUserAction({}, formData)
 
-      expect(result.success).toBe(false)
-      expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
-      expect(result.errors?.daysToNotify).toBeDefined()
-      expect(prisma.user.create).not.toHaveBeenCalled()
+      expect(prisma.user.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({ daysToNotify: 30 })
+      })
     })
 
     test('returns error when password is too short', async () => {
@@ -190,27 +184,23 @@ describe('User Actions', () => {
       expect(prisma.user.create).not.toHaveBeenCalled()
     })
 
-    test('converts string number to number type for daysToNotify', async () => {
+    test('generates JWT and sets auth cookie on successful creation', async () => {
       vi.mocked(prisma.user.create).mockResolvedValue({
         id: 1,
         ...validUserData
       })
 
-      const formData = new FormData()
-      formData.append('name', validUserData.name)
-      formData.append('lastName', validUserData.lastName)
-      formData.append('password', validUserData.password)
-      formData.append('email', validUserData.email)
-      formData.append('daysToNotify', '45')
+      const { generateJWT, setAuthCookie } = await import('@shared-functions/auth')
 
-      const result = await handleUserAction({}, formData)
+      const formData = populateFormData(validUserData)
+      await handleUserAction({}, formData)
 
-      expect(result.success).toBe(true)
-      expect(prisma.user.create).toHaveBeenCalledWith({
-        data: expect.objectContaining({
-          daysToNotify: 45
-        })
+      expect(generateJWT).toHaveBeenCalledWith({
+        userId: 1,
+        email: validUserData.email,
+        name: validUserData.name
       })
+      expect(setAuthCookie).toHaveBeenCalledWith('test-token')
     })
 
     test('returns success state with correct message', async () => {
@@ -260,7 +250,7 @@ describe('User Actions', () => {
           lastName: validUserData2.lastName,
           password: `hashed_${validUserData2.password}`,
           email: validUserData2.email,
-          daysToNotify: validUserData2.daysToNotify
+          daysToNotify: 30
         }
       })
     })
@@ -366,18 +356,19 @@ describe('User Actions', () => {
       expect(result.success).toBe(true)
     })
 
-    test('returns error when daysToNotify is a decimal number', async () => {
-      const formData = new FormData()
-      formData.append('name', 'Test')
-      formData.append('password', 'password123')
-      formData.append('email', 'test@example.com')
-      formData.append('daysToNotify', '30.7')
+    test('does not generate JWT or set cookie on update mode', async () => {
+      vi.mocked(prisma.user.update).mockResolvedValue({
+        id: 1,
+        ...validUserData
+      })
 
-      const result = await handleUserAction({}, formData)
+      const { generateJWT, setAuthCookie } = await import('@shared-functions/auth')
 
-      expect(result.success).toBe(false)
-      expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
-      expect(prisma.user.create).not.toHaveBeenCalled()
+      const formData = populateFormData(validUserData)
+      await handleUserAction({}, formData, '1')
+
+      expect(generateJWT).not.toHaveBeenCalled()
+      expect(setAuthCookie).not.toHaveBeenCalled()
     })
 
     test('handles missing required fields', async () => {
