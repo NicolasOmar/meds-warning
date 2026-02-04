@@ -42,7 +42,7 @@ describe('Auth Actions', () => {
         daysToNotify: 30
       }
 
-      vi.mocked(prisma.userForm.findUnique).mockResolvedValue(mockUser)
+      vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser)
 
       const { comparePassword, generateJWT, setAuthCookie } = await import('@shared-functions/auth')
       vi.mocked(comparePassword).mockResolvedValue(true)
@@ -92,7 +92,7 @@ describe('Auth Actions', () => {
     })
 
     test('returns error for non-existent user', async () => {
-      vi.mocked(prisma.userForm.findUnique).mockResolvedValue(null)
+      vi.mocked(prisma.user.findUnique).mockResolvedValue(null)
 
       const formData = new FormData()
       formData.append('email', 'nonexistent@example.com')
@@ -114,7 +114,7 @@ describe('Auth Actions', () => {
         daysToNotify: 30
       }
 
-      vi.mocked(prisma.userForm.findUnique).mockResolvedValue(mockUser)
+      vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser)
 
       const { comparePassword } = await import('@shared-functions/auth')
       vi.mocked(comparePassword).mockResolvedValue(false)
@@ -131,7 +131,7 @@ describe('Auth Actions', () => {
 
     test('handles database error', async () => {
       const dbError = new Error('Database connection failed')
-      vi.mocked(prisma.userForm.findUnique).mockRejectedValue(dbError)
+      vi.mocked(prisma.user.findUnique).mockRejectedValue(dbError)
 
       const formData = new FormData()
       formData.append('email', 'test@example.com')
@@ -145,7 +145,7 @@ describe('Auth Actions', () => {
 
     test('handles error with no message', async () => {
       const error = new Error()
-      vi.mocked(prisma.userForm.findUnique).mockRejectedValue(error)
+      vi.mocked(prisma.user.findUnique).mockRejectedValue(error)
 
       const formData = new FormData()
       formData.append('email', 'test@example.com')

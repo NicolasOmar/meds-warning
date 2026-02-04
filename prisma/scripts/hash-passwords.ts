@@ -5,7 +5,7 @@ import { hashPassword } from '../../shared/functions/auth'
 async function hashExistingPasswords() {
   console.log('Starting password hashing script...')
 
-  const users = await prisma.userForm.findMany()
+  const users = await prisma.user.findMany()
 
   if (users.length === 0) {
     console.log('No users found in database')
@@ -17,7 +17,7 @@ async function hashExistingPasswords() {
   for (const user of users) {
     const hashedPassword = await hashPassword(user.password)
 
-    await prisma.userForm.update({
+    await prisma.user.update({
       where: { id: user.id },
       data: { password: hashedPassword }
     })

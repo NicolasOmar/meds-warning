@@ -1,4 +1,4 @@
-model UserForm {
+model User {
   id            Int     @id @default(autoincrement())
   name          String
   lastName      String?

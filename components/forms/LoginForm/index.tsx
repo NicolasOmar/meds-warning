@@ -39,7 +39,7 @@ const LoginForm: FC = () => {
 
   useEffect(() => {
     if (state.success) {
-      router.push(ROUTE_URLS.MEDICINE_LIST)
+      router.push(ROUTE_URLS.HOME)
     }
   }, [state, router])
 

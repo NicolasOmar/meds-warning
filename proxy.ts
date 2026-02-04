@@ -3,7 +3,7 @@ import { AUTH_CONSTANTS, PUBLIC_ROUTES } from '@shared-constants/auth'
 import { ROUTE_URLS } from '@shared-constants/routes'
 import { verifyJWT } from '@shared-functions/auth'
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   const response = NextResponse.next()

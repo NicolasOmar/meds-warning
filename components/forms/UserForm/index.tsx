@@ -51,7 +51,7 @@ const generateUserFormStructure = () => ({
   }
 })
 
-const UserForm: FC<UserFormProps> = ({ userData }) => {
+const User: FC<UserFormProps> = ({ userData }) => {
   const userFormStructure = generateUserFormStructure()
   const customUserFormAction = (state: UserActionState, formData: FormData) =>
     handleUserAction(state, formData, userData?.id?.toString())
@@ -82,11 +82,11 @@ const UserForm: FC<UserFormProps> = ({ userData }) => {
             value={userData?.email ?? ''}
           />
           <CustomInput {...userFormStructure.password} message={state.errors?.password} />
-          <CustomInput
+          {/* <CustomInput
             {...userFormStructure.daysToNotify}
             message={state.errors?.daysToNotify}
             value={userData?.daysToNotify?.toString() ?? '30'}
-          />
+          /> */}
         </FieldSet>
       </FieldGroup>
 
@@ -97,4 +97,4 @@ const UserForm: FC<UserFormProps> = ({ userData }) => {
   )
 }
 
-export default UserForm
+export default User

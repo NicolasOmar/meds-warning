@@ -2,7 +2,6 @@
 // CORE
 import * as z from 'zod'
 import { prisma } from '@prisma/index'
-import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 // SHARED
 import { UserSchema } from '@shared-types/zod'
@@ -23,9 +22,7 @@ export async function handleUserAction(
     lastName: parseEmptyFormValueToNull(formData.get('lastName')),
     password: parseEmptyFormValueToNull(formData.get('password')),
     email: parseEmptyFormValueToNull(formData.get('email')),
-    daysToNotify: parseEmptyFormValueToNull(formData.get('daysToNotify'))
-      ? +(formData.get('daysToNotify') as string)
-      : null
+    daysToNotify: 30
   })
 
   if (!validatedUserObject.success) {
@@ -50,12 +47,12 @@ export async function handleUserAction(
     let user
 
     if (id) {
-      user = await prisma.userForm.update({
+      user = await prisma.user.update({
         where: { id: +id },
         data: userData
       })
     } else {
-      user = await prisma.userForm.create({
+      user = await prisma.user.create({
         data: userData
       })
 
@@ -68,10 +65,8 @@ export async function handleUserAction(
       await setAuthCookie(token)
     }
 
-    revalidatePath(ROUTE_URLS.USER_LIST)
-
     if (!id) {
-      redirect(ROUTE_URLS.MEDICINE_LIST)
+      redirect(ROUTE_URLS.HOME)
     }
 
     return {
@@ -92,7 +87,7 @@ export async function handleUserAction(
 }
 
 export async function getUsers(email?: string) {
-  return await prisma.userForm.findMany({
+  return await prisma.user.findMany({
     where: {
       email: {
         contains: email ?? '',

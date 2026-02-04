@@ -35,7 +35,7 @@ export async function handleLoginAction(
   }
 
   try {
-    const user = await prisma.userForm.findUnique({
+    const user = await prisma.user.findUnique({
       where: { email: validatedLoginObject.data.email }
     })
 
