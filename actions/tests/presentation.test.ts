@@ -12,6 +12,10 @@ vi.mock('next/cache', () => ({
   revalidatePath: vi.fn()
 }))
 
+vi.mock('@shared-functions/auth', () => ({
+  getSession: vi.fn().mockResolvedValue({ user: { id: 1, email: 'test@test.com', name: 'Test' } })
+}))
+
 // MOCKS
 import {
   presentationCreationResponse,
@@ -105,7 +109,7 @@ describe('Presentation Actions', () => {
       expect(result.errors).toBeUndefined()
       expect(prisma.medicinePresentation.create).not.toHaveBeenCalled()
       expect(prisma.medicinePresentation.findFirst).toHaveBeenCalledWith({
-        where: { description: 'Tablet' }
+        where: { description: 'Tablet', userId: 1 }
       })
     })
 
@@ -237,7 +241,7 @@ describe('Presentation Actions', () => {
       await handlePresentationAction({}, formData, '2')
 
       expect(prisma.medicinePresentation.update).toHaveBeenCalledWith({
-        where: { id: 2 },
+        where: { id: 2, userId: 1 },
         data: expect.any(Object)
       })
     })
@@ -307,7 +311,7 @@ describe('Presentation Actions', () => {
       expect(result.message).toBe(MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_SUCCESS)
       expect(result.success).toBe(true)
       expect(prisma.medicinePresentation.delete).toHaveBeenCalledWith({
-        where: { id: 1 }
+        where: { id: 1, userId: 1 }
       })
     })
 
@@ -394,7 +398,7 @@ describe('Presentation Actions', () => {
       const result = await getPresentations()
 
       expect(result).toHaveLength(3)
-      expect(prisma.medicinePresentation.findMany).toHaveBeenCalled()
+      expect(prisma.medicinePresentation.findMany).toHaveBeenCalledWith({ where: { userId: 1 } })
     })
 
     test('returns empty array when no presentations exist', async () => {

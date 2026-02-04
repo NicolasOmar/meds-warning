@@ -1,4 +1,0 @@
-model Settings {
-  id              Int      @id @default(autoincrement())
-  daysToNotify    Int      @default(30)
-}

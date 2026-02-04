@@ -11,6 +11,10 @@ vi.mock('next/cache', () => ({
   revalidatePath: vi.fn()
 }))
 
+vi.mock('@shared-functions/auth', () => ({
+  getSession: vi.fn().mockResolvedValue({ user: { id: 1, email: 'test@test.com', name: 'Test' } })
+}))
+
 // MOCKS
 import {
   validSettingsData,
@@ -43,8 +47,8 @@ const populateFormData = (
 // Mock dependencies
 vi.mock('@prisma/index', () => ({
   prisma: {
-    settings: {
-      updateMany: vi.fn()
+    user: {
+      update: vi.fn()
     }
   }
 }))
@@ -55,8 +59,15 @@ describe('Settings Actions', () => {
   })
 
   describe('[updateSettings]', () => {
-    test('updates settings with valid data and calls prisma.settings.updateMany', async () => {
-      vi.mocked(prisma.settings.updateMany).mockResolvedValue({ count: 1 })
+    test('updates settings with valid data and calls prisma.user.update', async () => {
+      vi.mocked(prisma.user.update).mockResolvedValue({
+        id: 1,
+        name: 'Test',
+        lastName: null,
+        password: 'hashed',
+        daysToNotify: 30,
+        email: 'test@test.com'
+      })
 
       const formData = populateFormData(validSettingsData)
       const result = await updateSettings({}, formData)
@@ -64,16 +75,24 @@ describe('Settings Actions', () => {
       expect(result.message).toBe(SETTINGS_FORM_LABELS.UPDATE_SUCCESS)
       expect(result.success).toBe(true)
       expect(result.errors).toBeUndefined()
-      expect(prisma.settings.updateMany).toHaveBeenCalled()
+      expect(prisma.user.update).toHaveBeenCalled()
     })
 
-    test('calls prisma.settings.updateMany with correct parameters', async () => {
-      vi.mocked(prisma.settings.updateMany).mockResolvedValue({ count: 1 })
+    test('calls prisma.user.update with correct parameters', async () => {
+      vi.mocked(prisma.user.update).mockResolvedValue({
+        id: 1,
+        name: 'Test',
+        lastName: null,
+        password: 'hashed',
+        daysToNotify: 30,
+        email: 'test@test.com'
+      })
 
       const formData = populateFormData(validSettingsData)
       await updateSettings({}, formData)
 
-      expect(prisma.settings.updateMany).toHaveBeenCalledWith({
+      expect(prisma.user.update).toHaveBeenCalledWith({
+        where: { id: 1 },
         data: {
           daysToNotify: validSettingsData.daysToNotify
         }
@@ -81,14 +100,22 @@ describe('Settings Actions', () => {
     })
 
     test('updates settings with different valid daysToNotify value', async () => {
-      vi.mocked(prisma.settings.updateMany).mockResolvedValue({ count: 1 })
+      vi.mocked(prisma.user.update).mockResolvedValue({
+        id: 1,
+        name: 'Test',
+        lastName: null,
+        password: 'hashed',
+        daysToNotify: 30,
+        email: 'test@test.com'
+      })
 
       const formData = populateFormData(validSettingsData2)
       const result = await updateSettings({}, formData)
 
       expect(result.message).toBe(SETTINGS_FORM_LABELS.UPDATE_SUCCESS)
       expect(result.success).toBe(true)
-      expect(prisma.settings.updateMany).toHaveBeenCalledWith({
+      expect(prisma.user.update).toHaveBeenCalledWith({
+        where: { id: 1 },
         data: {
           daysToNotify: validSettingsData2.daysToNotify
         }
@@ -96,13 +123,21 @@ describe('Settings Actions', () => {
     })
 
     test('updates settings with another valid daysToNotify value', async () => {
-      vi.mocked(prisma.settings.updateMany).mockResolvedValue({ count: 1 })
+      vi.mocked(prisma.user.update).mockResolvedValue({
+        id: 1,
+        name: 'Test',
+        lastName: null,
+        password: 'hashed',
+        daysToNotify: 30,
+        email: 'test@test.com'
+      })
 
       const formData = populateFormData(validSettingsData3)
       const result = await updateSettings({}, formData)
 
       expect(result.success).toBe(true)
-      expect(prisma.settings.updateMany).toHaveBeenCalledWith({
+      expect(prisma.user.update).toHaveBeenCalledWith({
+        where: { id: 1 },
         data: {
           daysToNotify: validSettingsData3.daysToNotify
         }
@@ -110,14 +145,22 @@ describe('Settings Actions', () => {
     })
 
     test('updates settings with minimum valid days value (1)', async () => {
-      vi.mocked(prisma.settings.updateMany).mockResolvedValue({ count: 1 })
+      vi.mocked(prisma.user.update).mockResolvedValue({
+        id: 1,
+        name: 'Test',
+        lastName: null,
+        password: 'hashed',
+        daysToNotify: 30,
+        email: 'test@test.com'
+      })
 
       const formData = populateFormData(minDaysSettingsData)
       const result = await updateSettings({}, formData)
 
       expect(result.message).toBe(SETTINGS_FORM_LABELS.UPDATE_SUCCESS)
       expect(result.success).toBe(true)
-      expect(prisma.settings.updateMany).toHaveBeenCalledWith({
+      expect(prisma.user.update).toHaveBeenCalledWith({
+        where: { id: 1 },
         data: {
           daysToNotify: minDaysSettingsData.daysToNotify
         }
@@ -125,14 +168,22 @@ describe('Settings Actions', () => {
     })
 
     test('updates settings with maximum valid days value (365)', async () => {
-      vi.mocked(prisma.settings.updateMany).mockResolvedValue({ count: 1 })
+      vi.mocked(prisma.user.update).mockResolvedValue({
+        id: 1,
+        name: 'Test',
+        lastName: null,
+        password: 'hashed',
+        daysToNotify: 30,
+        email: 'test@test.com'
+      })
 
       const formData = populateFormData(maxDaysSettingsData)
       const result = await updateSettings({}, formData)
 
       expect(result.message).toBe(SETTINGS_FORM_LABELS.UPDATE_SUCCESS)
       expect(result.success).toBe(true)
-      expect(prisma.settings.updateMany).toHaveBeenCalledWith({
+      expect(prisma.user.update).toHaveBeenCalledWith({
+        where: { id: 1 },
         data: {
           daysToNotify: maxDaysSettingsData.daysToNotify
         }
@@ -147,7 +198,7 @@ describe('Settings Actions', () => {
       expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
       expect(result.errors).toBeDefined()
       expect(result.errors?.daysToNotify).toBeDefined()
-      expect(prisma.settings.updateMany).not.toHaveBeenCalled()
+      expect(prisma.user.update).not.toHaveBeenCalled()
     })
 
     test('returns error when daysToNotify exceeds maximum (366)', async () => {
@@ -158,7 +209,7 @@ describe('Settings Actions', () => {
       expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
       expect(result.errors).toBeDefined()
       expect(result.errors?.daysToNotify).toBeDefined()
-      expect(prisma.settings.updateMany).not.toHaveBeenCalled()
+      expect(prisma.user.update).not.toHaveBeenCalled()
     })
 
     test('returns error when daysToNotify is negative', async () => {
@@ -169,11 +220,18 @@ describe('Settings Actions', () => {
       expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
       expect(result.errors).toBeDefined()
       expect(result.errors?.daysToNotify).toBeDefined()
-      expect(prisma.settings.updateMany).not.toHaveBeenCalled()
+      expect(prisma.user.update).not.toHaveBeenCalled()
     })
 
     test('converts string number to number type', async () => {
-      vi.mocked(prisma.settings.updateMany).mockResolvedValue({ count: 1 })
+      vi.mocked(prisma.user.update).mockResolvedValue({
+        id: 1,
+        name: 'Test',
+        lastName: null,
+        password: 'hashed',
+        daysToNotify: 30,
+        email: 'test@test.com'
+      })
 
       const formData = new FormData()
       formData.append('daysToNotify', '45')
@@ -181,7 +239,8 @@ describe('Settings Actions', () => {
       const result = await updateSettings({}, formData)
 
       expect(result.success).toBe(true)
-      expect(prisma.settings.updateMany).toHaveBeenCalledWith({
+      expect(prisma.user.update).toHaveBeenCalledWith({
+        where: { id: 1 },
         data: {
           daysToNotify: 45
         }
@@ -196,7 +255,7 @@ describe('Settings Actions', () => {
       expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
       expect(result.errors).toBeDefined()
       expect(result.errors?.daysToNotify).toBeDefined()
-      expect(prisma.settings.updateMany).not.toHaveBeenCalled()
+      expect(prisma.user.update).not.toHaveBeenCalled()
     })
 
     test('returns error when daysToNotify is empty string', async () => {
@@ -207,11 +266,18 @@ describe('Settings Actions', () => {
       expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
       expect(result.errors).toBeDefined()
       expect(result.errors?.daysToNotify).toBeDefined()
-      expect(prisma.settings.updateMany).not.toHaveBeenCalled()
+      expect(prisma.user.update).not.toHaveBeenCalled()
     })
 
     test('returns success state with correct message', async () => {
-      vi.mocked(prisma.settings.updateMany).mockResolvedValue({ count: 1 })
+      vi.mocked(prisma.user.update).mockResolvedValue({
+        id: 1,
+        name: 'Test',
+        lastName: null,
+        password: 'hashed',
+        daysToNotify: 30,
+        email: 'test@test.com'
+      })
 
       const formData = populateFormData(validSettingsData)
       const result = await updateSettings({}, formData)
@@ -226,7 +292,7 @@ describe('Settings Actions', () => {
   describe('[updateSettings] - Error Handling', () => {
     test('handles database error on settings update', async () => {
       const dbError = new Error('Database connection failed')
-      vi.mocked(prisma.settings.updateMany).mockRejectedValueOnce(dbError)
+      vi.mocked(prisma.user.update).mockRejectedValueOnce(dbError)
 
       const formData = populateFormData(validSettingsData)
       const result = await updateSettings({}, formData)
@@ -238,7 +304,7 @@ describe('Settings Actions', () => {
 
     test('handles Prisma constraint error', async () => {
       const constraintError = new Error('Constraint validation failed')
-      vi.mocked(prisma.settings.updateMany).mockRejectedValueOnce(constraintError)
+      vi.mocked(prisma.user.update).mockRejectedValueOnce(constraintError)
 
       const formData = populateFormData(validSettingsData)
       const result = await updateSettings({}, formData)
@@ -249,7 +315,7 @@ describe('Settings Actions', () => {
 
     test('handles generic runtime error', async () => {
       const runtimeError = new Error('Transaction timeout')
-      vi.mocked(prisma.settings.updateMany).mockRejectedValueOnce(runtimeError)
+      vi.mocked(prisma.user.update).mockRejectedValueOnce(runtimeError)
 
       const formData = populateFormData(validSettingsData)
       const result = await updateSettings({}, formData)
@@ -260,7 +326,7 @@ describe('Settings Actions', () => {
 
     test('handles error with no message', async () => {
       const error = new Error()
-      vi.mocked(prisma.settings.updateMany).mockRejectedValueOnce(error)
+      vi.mocked(prisma.user.update).mockRejectedValueOnce(error)
 
       const formData = populateFormData(validSettingsData)
       const result = await updateSettings({}, formData)
@@ -270,7 +336,7 @@ describe('Settings Actions', () => {
     })
 
     test('handles non-Error exceptions', async () => {
-      vi.mocked(prisma.settings.updateMany).mockRejectedValueOnce('Unexpected error')
+      vi.mocked(prisma.user.update).mockRejectedValueOnce('Unexpected error')
 
       const formData = populateFormData(validSettingsData)
       const result = await updateSettings({}, formData)
@@ -281,7 +347,7 @@ describe('Settings Actions', () => {
 
     test('handles database timeout error', async () => {
       const timeoutError = new Error('Query timeout exceeded')
-      vi.mocked(prisma.settings.updateMany).mockRejectedValueOnce(timeoutError)
+      vi.mocked(prisma.user.update).mockRejectedValueOnce(timeoutError)
 
       const formData = populateFormData(validSettingsData)
       const result = await updateSettings({}, formData)
@@ -292,7 +358,7 @@ describe('Settings Actions', () => {
 
     test('handles network connection error', async () => {
       const networkError = new Error('Network connection lost')
-      vi.mocked(prisma.settings.updateMany).mockRejectedValueOnce(networkError)
+      vi.mocked(prisma.user.update).mockRejectedValueOnce(networkError)
 
       const formData = populateFormData(validSettingsData)
       const result = await updateSettings({}, formData)
@@ -303,7 +369,7 @@ describe('Settings Actions', () => {
 
     test('handles empty error message with fallback', async () => {
       const emptyError = new Error('')
-      vi.mocked(prisma.settings.updateMany).mockRejectedValueOnce(emptyError)
+      vi.mocked(prisma.user.update).mockRejectedValueOnce(emptyError)
 
       const formData = populateFormData(validSettingsData)
       const result = await updateSettings({}, formData)
@@ -315,7 +381,14 @@ describe('Settings Actions', () => {
 
   describe('[updateSettings] - Edge Cases', () => {
     test('handles FormData with extra fields gracefully', async () => {
-      vi.mocked(prisma.settings.updateMany).mockResolvedValue({ count: 1 })
+      vi.mocked(prisma.user.update).mockResolvedValue({
+        id: 1,
+        name: 'Test',
+        lastName: null,
+        password: 'hashed',
+        daysToNotify: 30,
+        email: 'test@test.com'
+      })
 
       const formData = new FormData()
       formData.append('daysToNotify', '30')
@@ -325,7 +398,8 @@ describe('Settings Actions', () => {
       const result = await updateSettings({}, formData)
 
       expect(result.success).toBe(true)
-      expect(prisma.settings.updateMany).toHaveBeenCalledWith({
+      expect(prisma.user.update).toHaveBeenCalledWith({
+        where: { id: 1 },
         data: {
           daysToNotify: 30
         }
@@ -342,7 +416,7 @@ describe('Settings Actions', () => {
       expect(result.success).toBe(false)
       expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
       expect(result.errors).toBeDefined()
-      expect(prisma.settings.updateMany).not.toHaveBeenCalled()
+      expect(prisma.user.update).not.toHaveBeenCalled()
     })
 
     test('handles missing daysToNotify field', async () => {
@@ -353,7 +427,7 @@ describe('Settings Actions', () => {
       expect(result.success).toBe(false)
       expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
       expect(result.errors).toBeDefined()
-      expect(prisma.settings.updateMany).not.toHaveBeenCalled()
+      expect(prisma.user.update).not.toHaveBeenCalled()
     })
 
     test('validates field errors include correct error message for min value', async () => {

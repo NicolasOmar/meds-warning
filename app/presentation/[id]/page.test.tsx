@@ -14,6 +14,10 @@ vi.mock('next/navigation', () => ({
   notFound: vi.fn()
 }))
 
+vi.mock('@shared-functions/auth', () => ({
+  getSession: vi.fn().mockResolvedValue({ user: { id: 1, email: 'test@test.com', name: 'Test' } })
+}))
+
 // Mock prisma
 vi.mock('@prisma/index', () => ({
   prisma: {
@@ -49,7 +53,7 @@ describe('[UpdatePresentationPage]', () => {
     await UpdatePresentationPage({ params })
 
     expect(prisma.medicinePresentation.findFirst).toHaveBeenCalledWith({
-      where: { id: 1 }
+      where: { id: 1, userId: 1 }
     })
   })
 

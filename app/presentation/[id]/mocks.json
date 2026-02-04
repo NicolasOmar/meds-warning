@@ -1,10 +1,12 @@
 {
   "firstPresentationResponse": {
     "id": 1,
+    "userId": 1,
     "description": "Tablet"
   },
   "secondPresentationResponse": {
     "id": 2,
+    "userId": 1,
     "description": "Capsule"
   }
 }

@@ -15,6 +15,10 @@ import {
   emptyPresentationListResponse
 } from './mocks.json'
 
+vi.mock('@shared-functions/auth', () => ({
+  getSession: vi.fn().mockResolvedValue({ user: { id: 1, email: 'test@test.com', name: 'Test' } })
+}))
+
 // Mock prisma
 vi.mock('@prisma/index', () => ({
   prisma: {
@@ -92,7 +96,7 @@ describe('[ListMedicinePresentationPage]', () => {
 
     await ListMedicinePresentationPage({})
 
-    expect(prisma.medicinePresentation.findMany).toHaveBeenCalledWith()
+    expect(prisma.medicinePresentation.findMany).toHaveBeenCalledWith({ where: { userId: 1 } })
   })
 
   test('displays no data message when presentation list is empty', async () => {

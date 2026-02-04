@@ -1,10 +1,11 @@
 {
   "presentationList": [
-    { "id": 1, "description": "Tablet" },
-    { "id": 2, "description": "Capsule" }
+    { "id": 1, "userId": 1, "description": "Tablet" },
+    { "id": 2, "userId": 1, "description": "Capsule" }
   ],
   "firstMedicineResponse": {
     "id": 1,
+    "userId": 1,
     "name": "Aspirin",
     "laboratory": "Bayer",
     "presentation": 1,
@@ -15,6 +16,7 @@
   },
   "nullMedicineResponse": {
     "id": 5,
+    "userId": 1,
     "name": "Medicine Name",
     "laboratory": null,
     "presentation": 1,

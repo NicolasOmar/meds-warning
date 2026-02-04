@@ -1,8 +1,10 @@
 model User {
-  id            Int     @id @default(autoincrement())
-  name          String
-  lastName      String?
-  password      String
-  daysToNotify  Int     @default(30)
-  email         String  @unique
+  id                    Int                    @id @default(autoincrement())
+  name                  String
+  lastName              String?
+  password              String
+  daysToNotify          Int                    @default(30)
+  email                 String                 @unique
+  medicines             Medicine[]
+  medicinePresentations MedicinePresentation[]
 }
