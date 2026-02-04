@@ -3,6 +3,7 @@ export enum COMMON_LABELS {
   DELETE = 'Delete',
   EDIT = 'Edit',
   SAVE = 'Save',
+  SAVE_CHANGES = 'Save Changes',
   CONFIRM = 'Confirm',
   CANCEL = 'Cancel'
 }

@@ -54,6 +54,9 @@ vi.mock('@prisma/index', () => ({
       create: vi.fn(),
       update: vi.fn(),
       findMany: vi.fn()
+    },
+    medicinePresentation: {
+      createMany: vi.fn()
     }
   }
 }))

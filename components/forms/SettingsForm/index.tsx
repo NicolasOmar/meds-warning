@@ -12,6 +12,10 @@ import { SETTINGS_FORM_LABELS } from '@shared-constants/forms'
 import { handleCommonFormState } from '@shared-functions/forms'
 import { SettingsActionState } from '@shared-types/states'
 
+interface SettingsFormProps {
+  userDaysToNotify: number
+}
+
 const generateSettingsFormStructure = () => ({
   daysToNotify: {
     name: 'daysToNotify',
@@ -21,7 +25,7 @@ const generateSettingsFormStructure = () => ({
   }
 })
 
-const SettingsForm: FC = () => {
+const SettingsForm: FC<SettingsFormProps> = ({ userDaysToNotify }) => {
   const settingsFormStructure = generateSettingsFormStructure()
   const [state, settingsActionForm, isPending] = useActionState<SettingsActionState, FormData>(
     updateSettings,
@@ -39,7 +43,7 @@ const SettingsForm: FC = () => {
         <CustomInput
           {...settingsFormStructure.daysToNotify}
           message={state.errors?.daysToNotify}
-          // value={settingsFormStructure.daysToNotify.value || ""}
+          value={userDaysToNotify.toString()}
         />
       </FieldGroup>
 

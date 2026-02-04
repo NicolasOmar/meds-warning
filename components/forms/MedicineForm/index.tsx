@@ -16,6 +16,7 @@ import { MedicinePresentationType, MedicineType } from '@shared-types/zod'
 import { MedicineActionState } from '@shared-types/states'
 import { handleCommonFormState } from '@shared-functions/forms'
 import { ROUTE_URLS } from '@shared-constants/routes'
+import { COMMON_LABELS } from '@shared-constants/common'
 
 interface MedicineFormProps {
   presentationsList: MedicinePresentationType[]
@@ -125,7 +126,7 @@ const MedicineForm: FC<MedicineFormProps> = ({ presentationsList, medicineData }
       </FieldGroup>
 
       <Button type="submit" disabled={isPending}>
-        {MEDICINE_FORM_LABELS.SUBMIT_BUTTON}
+        {medicineData ? COMMON_LABELS.SAVE_CHANGES : MEDICINE_FORM_LABELS.SUBMIT_BUTTON}
       </Button>
     </form>
   )

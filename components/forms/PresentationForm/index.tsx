@@ -13,6 +13,7 @@ import { PRESENTATION_FORM_LABELS } from '@shared-constants/forms'
 import { MedicinePresentationType } from '@shared-types/zod'
 import { handleCommonFormState } from '@shared-functions/forms'
 import { ROUTE_URLS } from '@shared-constants/routes'
+import { COMMON_LABELS } from '@shared-constants/common'
 
 interface PresentationFormProps {
   presentationData?: MedicinePresentationType
@@ -52,7 +53,7 @@ const PresentationForm: FC<PresentationFormProps> = ({ presentationData }) => {
       </FieldGroup>
 
       <Button type="submit" disabled={isPending}>
-        {PRESENTATION_FORM_LABELS.SUBMIT_BUTTON}
+        {presentationData ? COMMON_LABELS.SAVE_CHANGES : PRESENTATION_FORM_LABELS.SUBMIT_BUTTON}
       </Button>
     </form>
   )

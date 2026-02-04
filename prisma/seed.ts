@@ -2,7 +2,7 @@ import { prisma } from '.'
 import { hashPassword } from '../shared/functions/auth'
 
 async function main() {
-  const hashedPassword = await hashPassword('password123')
+  const hashedPassword = await hashPassword('seed')
 
   const seedUser = await prisma.user.create({
     data: {

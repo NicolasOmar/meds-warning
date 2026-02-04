@@ -44,16 +44,23 @@ export async function handleUserAction(
   }
 
   try {
-    let user
-
     if (id) {
-      user = await prisma.user.update({
+      await prisma.user.update({
         where: { id: +id },
         data: userData
       })
     } else {
-      user = await prisma.user.create({
+      const user = await prisma.user.create({
         data: userData
+      })
+
+      await prisma.medicinePresentation.createMany({
+        data: [
+          { description: 'Pills', userId: user.id },
+          { description: 'Injection', userId: user.id },
+          { description: 'Topical', userId: user.id },
+          { description: 'Inhalation', userId: user.id }
+        ]
       })
 
       const token = generateJWT({
