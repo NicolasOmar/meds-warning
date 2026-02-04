@@ -1,3 +1,18 @@
+# [1.12.0](https://github.com/NicolasOmar/meds-warning/compare/v1.11.1...v1.12.0) (2026-02-04)
+
+
+### Bug Fixes
+
+* first approach to login page with its testing included. wip ([e09da6a](https://github.com/NicolasOmar/meds-warning/commit/e09da6af7a77623903fd7fb34ba2e8a177b10d49))
+* reworking structure of medicines and its presentations according logged used new schema ([f00ca86](https://github.com/NicolasOmar/meds-warning/commit/f00ca860ea3df03f65c8993e92416a369ac9df5a))
+* reworking structure of medicines and its presentations according logged used new schema ([939858c](https://github.com/NicolasOmar/meds-warning/commit/939858c4f0cd01d774599f2fce597a463c2fed27))
+* updating dependencies ([ff92312](https://github.com/NicolasOmar/meds-warning/commit/ff9231260ecce6b10a72cd44c7002b2e305dacb2))
+
+
+### Features
+
+* Merge pull request [#72](https://github.com/NicolasOmar/meds-warning/issues/72)/[#71](https://github.com/NicolasOmar/meds-warning/issues/71) from NicolasOmar/feature/restructure-application-according-new-flow ([d13d942](https://github.com/NicolasOmar/meds-warning/commit/d13d9427b64768a0704f07742e823c89aee111c9))
+
 ## [1.11.1](https://github.com/NicolasOmar/meds-warning/compare/v1.11.0...v1.11.1) (2026-02-03)
 
 
