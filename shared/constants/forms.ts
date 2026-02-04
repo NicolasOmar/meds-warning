@@ -92,3 +92,22 @@ export enum USER_FORM_ERRORS {
   DAYS_TO_NOTIFY_MIN = 'Days to Notify must be at least 1',
   DAYS_TO_NOTIFY_MAX = 'Days to Notify must be at most 365'
 }
+
+export enum LOGIN_FORM_LABELS {
+  TITLE = 'Login',
+  EMAIL = 'Email:',
+  EMAIL_PLACEHOLDER = 'your.email@example.com',
+  PASSWORD = 'Password:',
+  PASSWORD_PLACEHOLDER = 'Enter your password',
+  SUBMIT_BUTTON = 'Log in',
+  CREATE_ACCOUNT = 'Create account',
+  SUCCESS = 'Login successful!'
+}
+
+export enum LOGIN_FORM_ERRORS {
+  EMAIL_REQUIRED = 'Email is required',
+  EMAIL_INVALID = 'Email must be a valid email address',
+  PASSWORD_REQUIRED = 'Password is required',
+  PASSWORD_MIN = 'Password must be at least 8 characters',
+  INVALID_CREDENTIALS = 'Invalid email or password'
+}

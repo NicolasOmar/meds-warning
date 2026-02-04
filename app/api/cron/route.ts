@@ -10,41 +10,37 @@ export async function GET(request: NextRequest) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
 
-  const medicineList = await prisma.medicine.findMany()
-
   const mailgun = new Mailgun(FormData)
   const mg = mailgun.client({
     username: 'api',
     key: process.env.MAILGUN_API!
-    // When you have an EU-domain, you must specify the endpoint:
-    // url: "https://api.eu.mailgun.net"
   })
-  try {
-    const userSettings = await prisma.settings.findFirst()
-    const mailList = await Promise.all(
-      medicineList
-        .map(async medicine => {
-          if (medicine.expirationDate === null) {
-            return null
-          }
 
+  try {
+    const users = await prisma.user.findMany({
+      include: { medicines: true }
+    })
+
+    const allMailPromises = users.flatMap(user =>
+      user.medicines
+        .filter(medicine => medicine.expirationDate !== null)
+        .map(medicine => {
           const expirationDateInAdvance =
-            medicine.expirationDate!.getTime() -
-            (userSettings?.daysToNotify ?? 0) * 24 * 60 * 60 * 1000
-          const todayDateInAdvance =
-            new Date().getTime() + (userSettings?.daysToNotify ?? 0) * 24 * 60 * 60 * 1000
+            medicine.expirationDate!.getTime() - user.daysToNotify * 24 * 60 * 60 * 1000
+          const todayDateInAdvance = new Date().getTime() + user.daysToNotify * 24 * 60 * 60 * 1000
 
           return expirationDateInAdvance === todayDateInAdvance
             ? mg.messages.create(process.env.MAILGUN_MAIL_SENDER!, {
                 from: `Mailgun Sandbox <postmaster@${process.env.MAILGUN_MAIL_SENDER}>`,
-                to: [`Recipient <${process.env.MAILGUN_MAIL_RECIPIENT}>`],
+                to: [`Recipient <${user.email}>`],
                 subject: 'Your medicine is about to expire!',
                 text: `Dear user, your medicine ${medicine.name} is about to expire. Please take necessary action.`
               })
             : null
         })
-        .filter(mailToSend => mailToSend !== null)
     )
+
+    const mailList = (await Promise.all(allMailPromises)).filter(result => result !== null)
 
     return NextResponse.json({ success: true, data: mailList }, { status: 200 })
   } catch (error) {

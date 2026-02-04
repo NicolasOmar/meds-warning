@@ -7,11 +7,15 @@ model Medicine {
   usedFor               String?               @db.VarChar(75)
   sideEffects           String?               @db.VarChar(100)
   comments              String?               @db.VarChar(200)
+  userId               Int
   medicinePresentation  MedicinePresentation  @relation(fields: [presentation], references: [id])
+  user                  User                  @relation(fields: [userId], references: [id])
 }
 
 model MedicinePresentation {
   id          Int         @id @default(autoincrement())
   description String      @db.VarChar(75)
+  userId     Int
   medicines   Medicine[]
+  user        User        @relation(fields: [userId], references: [id])
 }

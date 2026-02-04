@@ -5,26 +5,43 @@ import '@testing-library/jest-dom'
 // COMPONENTS
 import SettingsRootPage from './page'
 
-// Mock SettingsForm component
+vi.mock('@shared-functions/auth', () => ({
+  getSession: vi.fn().mockResolvedValue({ user: { id: 1, email: 'test@test.com', name: 'Test' } })
+}))
+
+vi.mock('@prisma/index', () => ({
+  prisma: {
+    user: {
+      findUnique: vi.fn().mockResolvedValue({ id: 1, daysToNotify: 45 })
+    }
+  }
+}))
+
 vi.mock('@form-components/SettingsForm', () => ({
-  default: () => <div>Mocked SettingsForm</div>
+  default: ({ userDaysToNotify }: { userDaysToNotify: number }) => (
+    <div>Mocked SettingsForm {userDaysToNotify}</div>
+  )
 }))
 
 describe('[SettingsRootPage]', () => {
-  test('renders the page without crashing', () => {
-    render(<SettingsRootPage />)
+  test('renders SettingsForm with user daysToNotify from database', async () => {
+    const component = await SettingsRootPage({})
+    render(component)
 
-    expect(screen.getByText('Mocked SettingsForm')).toBeInTheDocument()
+    expect(screen.getByText('Mocked SettingsForm 45')).toBeInTheDocument()
   })
 
-  test('renders SettingsForm component', () => {
-    render(<SettingsRootPage />)
+  test('calls prisma.user.findUnique with session user id', async () => {
+    const { prisma } = await import('@prisma/index')
 
-    const form = screen.getByText('Mocked SettingsForm')
-    expect(form).toBeInTheDocument()
+    await SettingsRootPage({})
+
+    expect(prisma.user.findUnique).toHaveBeenCalledWith({
+      where: { id: 1 }
+    })
   })
 
-  test('is a functional component', () => {
+  test('is an async functional component', () => {
     expect(typeof SettingsRootPage).toBe('function')
   })
 })

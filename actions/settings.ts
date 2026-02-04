@@ -8,6 +8,7 @@ import { SettingsSchema } from '@shared-types/zod'
 import { ROUTE_URLS } from '@shared-constants/routes'
 import { prisma } from '@prisma/index'
 import { revalidatePath } from 'next/cache'
+import { getSession } from '@shared-functions/auth'
 
 export async function updateSettings(
   _: SettingsActionState,
@@ -26,8 +27,11 @@ export async function updateSettings(
     }
   }
 
+  const session = await getSession()
+
   try {
-    await prisma.settings.updateMany({
+    await prisma.user.update({
+      where: { id: session!.user.id },
       data: {
         daysToNotify: validatedSettingsObject.data.daysToNotify
       }

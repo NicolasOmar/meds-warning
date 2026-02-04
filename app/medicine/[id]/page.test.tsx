@@ -14,6 +14,10 @@ vi.mock('next/navigation', () => ({
   notFound: vi.fn()
 }))
 
+vi.mock('@shared-functions/auth', () => ({
+  getSession: vi.fn().mockResolvedValue({ user: { id: 1, email: 'test@test.com', name: 'Test' } })
+}))
+
 // Mock prisma
 vi.mock('@prisma/index', () => ({
   prisma: {
@@ -27,7 +31,7 @@ vi.mock('@prisma/index', () => ({
 }))
 
 describe('[UpdateMedicinePage]', () => {
-  const avoidProps = new Set(['id', 'presentation', 'expirationDate'])
+  const avoidProps = new Set(['id', 'userId', 'presentation', 'expirationDate'])
 
   beforeEach(() => {
     vi.clearAllMocks()
@@ -61,7 +65,7 @@ describe('[UpdateMedicinePage]', () => {
     const params = Promise.resolve({ id: '1' })
     await UpdateMedicinePage({ params })
 
-    expect(prisma.medicinePresentation.findMany).toHaveBeenCalledWith({})
+    expect(prisma.medicinePresentation.findMany).toHaveBeenCalledWith({ where: { userId: 1 } })
   })
 
   test('calls prisma.medicine.findFirst with correct id parameter', async () => {
@@ -81,7 +85,7 @@ describe('[UpdateMedicinePage]', () => {
     await UpdateMedicinePage({ params })
 
     expect(prisma.medicine.findFirst).toHaveBeenCalledWith({
-      where: { id: 1 }
+      where: { id: 1, userId: 1 }
     })
   })
 

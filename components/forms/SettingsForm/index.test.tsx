@@ -43,7 +43,7 @@ describe('[SettingsForm]', () => {
   })
 
   test('renders form with all required elements and correct structure', () => {
-    render(<SettingsForm />)
+    render(<SettingsForm userDaysToNotify={30} />)
 
     const form = screen
       .getByRole('button', { name: SETTINGS_FORM_LABELS.SUBMIT_BUTTON })
@@ -63,14 +63,14 @@ describe('[SettingsForm]', () => {
   })
 
   test('input field has correct attributes and accessibility features', () => {
-    render(<SettingsForm />)
+    render(<SettingsForm userDaysToNotify={30} />)
 
     const input = screen.getByPlaceholderText(SETTINGS_FORM_LABELS.DAYS_TO_NOTIFY_PLACEHOLDER)
 
     expect(input).toHaveAttribute('type', 'number')
     expect(input).toHaveAttribute('placeholder', SETTINGS_FORM_LABELS.DAYS_TO_NOTIFY_PLACEHOLDER)
     expect(input).toHaveAttribute('id', 'daysToNotify')
-    expect(input).toHaveValue(null)
+    expect(input).toHaveValue(30)
   })
 
   test('displays success toast when message is provided and success is true', async () => {
@@ -81,7 +81,7 @@ describe('[SettingsForm]', () => {
       false
     ])
 
-    render(<SettingsForm />)
+    render(<SettingsForm userDaysToNotify={30} />)
 
     expect(mockToast.toast.success).toHaveBeenCalledWith(SETTINGS_FORM_LABELS.UPDATE_SUCCESS)
   })
@@ -94,7 +94,7 @@ describe('[SettingsForm]', () => {
       false
     ])
 
-    render(<SettingsForm />)
+    render(<SettingsForm userDaysToNotify={30} />)
 
     expect(mockToast.toast.error).toHaveBeenCalledWith('Error occurred')
   })
@@ -106,7 +106,7 @@ describe('[SettingsForm]', () => {
       false
     ])
 
-    render(<SettingsForm />)
+    render(<SettingsForm userDaysToNotify={30} />)
 
     expect(screen.getByText('Invalid number')).toBeInTheDocument()
   })
@@ -114,7 +114,7 @@ describe('[SettingsForm]', () => {
   test('submit button state changes based on form pending status', () => {
     mockUseActionState.mockReturnValue([{}, vi.fn(), true])
 
-    render(<SettingsForm />)
+    render(<SettingsForm userDaysToNotify={30} />)
 
     const submitButton = screen.getByRole('button', { name: SETTINGS_FORM_LABELS.SUBMIT_BUTTON })
     expect(submitButton).toBeDisabled()

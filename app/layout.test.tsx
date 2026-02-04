@@ -1,29 +1,54 @@
 // CORE
 import { describe, test, expect, vi, beforeEach } from 'vitest'
+import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
+import type { ReactNode } from 'react'
+// COMPONENTS
+import HomeLayout from './layout'
+// SHARED
 import { ROOT_LAYOUT_LABELS } from '@shared-constants/pages'
+import { MAIN_ROUTES_OBJS } from '@shared-constants/routes'
+import { PUBLIC_ROUTES } from '@shared-constants/auth'
+import { getSession } from '@shared-functions/auth'
 
-// Types for font configuration
-interface FontConfig {
-  variable: string
-  subsets: string[]
-}
+const mockHeadersGet = vi.fn()
 
-interface FontResult {
-  variable: string
-  subsets?: string[]
-}
-
-// Mock Next.js fonts
 vi.mock('next/font/google', () => ({
-  Geist: ({ variable, subsets }: FontConfig): FontResult => ({
-    variable,
-    subsets
-  }),
-  Geist_Mono: ({ variable, subsets }: FontConfig): FontResult => ({
-    variable,
-    subsets
-  })
+  Geist: () => ({ variable: '--font-geist-sans' }),
+  Geist_Mono: () => ({ variable: '--font-geist-mono' })
+}))
+
+vi.mock('next/link', () => ({
+  __esModule: true,
+  default: ({
+    href,
+    children,
+    className
+  }: {
+    href: string
+    children: ReactNode
+    className?: string
+  }) => (
+    <a href={href} className={className}>
+      {children}
+    </a>
+  )
+}))
+
+vi.mock('next/headers', () => ({
+  headers: () => ({ get: mockHeadersGet })
+}))
+
+vi.mock('@shared-functions/auth', () => ({
+  getSession: vi.fn()
+}))
+
+vi.mock('@actions/auth', () => ({
+  handleLogoutAction: vi.fn()
+}))
+
+vi.mock('@base-components/sonner', () => ({
+  Toaster: () => null
 }))
 
 describe('[HomeLayout]', () => {
@@ -31,60 +56,62 @@ describe('[HomeLayout]', () => {
     vi.clearAllMocks()
   })
 
-  test('layout component file exists and is importable', async () => {
-    const layoutModule = await import('./layout')
-    expect(layoutModule).toBeDefined()
-  })
-
-  test('metadata has correct title', async () => {
+  test('metadata exports correct title and description', async () => {
     const { metadata } = await import('./layout')
-    expect(metadata.title).toBeTruthy()
     expect(metadata.title).toEqual(ROOT_LAYOUT_LABELS.METADATA_TITLE)
+    expect(metadata.description).toEqual(ROOT_LAYOUT_LABELS.METADATA_DESCRIPTION)
   })
 
-  test('metadata has correct description', async () => {
-    const { metadata } = await import('./layout')
-    expect(metadata.description).toBeTruthy()
-    expect(metadata.description).toContain(ROOT_LAYOUT_LABELS.METADATA_DESCRIPTION)
-  })
-
-  test('component is exported as default', async () => {
-    const layoutModule = await import('./layout')
-    expect(layoutModule.default).toBeDefined()
-  })
-
-  test('component is a React functional component', async () => {
-    const layoutModule = await import('./layout')
-    const Component = layoutModule.default
-    expect(typeof Component).toBe('function')
-  })
-
-  test('component receives BaseLayoutProps interface with children', async () => {
-    // Verify the component accepts children prop
-    const layoutModule = await import('./layout')
-    const Component = layoutModule.default
-    expect(Component.length).toBeGreaterThanOrEqual(1)
-  })
-
-  test('Geist font is configured with correct variable', async () => {
-    const geistModule = await import('next/font/google')
-    const geistResult = geistModule.Geist({
-      variable: '--font-geist-sans',
-      subsets: ['latin']
+  test('renders nav links with correct hrefs and logout button when authenticated on non-public route', async () => {
+    vi.mocked(getSession).mockResolvedValueOnce({
+      user: { id: 1, email: 'test@test.com', name: 'Test' }
     })
-    expect(geistResult).toBeDefined()
-    expect(geistResult.variable).toBeDefined()
-    expect(geistResult.variable).toBe('--font-geist-sans')
+    mockHeadersGet.mockReturnValue('/medicine')
+
+    const component = await HomeLayout({ children: <div>Child</div> })
+    render(component)
+
+    MAIN_ROUTES_OBJS.forEach(({ name, path }) => {
+      expect(screen.getByText(name).closest('a')).toHaveAttribute('href', path)
+    })
+    expect(screen.getByText('Logout')).toBeInTheDocument()
   })
 
-  test('Geist Mono font is configured with correct variable', async () => {
-    const geistModule = await import('next/font/google')
-    const geistMonoResult = geistModule.Geist_Mono({
-      variable: '--font-geist-mono',
-      subsets: ['latin']
+  test('hides entire header on public route even with active session', async () => {
+    vi.mocked(getSession).mockResolvedValueOnce({
+      user: { id: 1, email: 'test@test.com', name: 'Test' }
     })
-    expect(geistMonoResult).toBeDefined()
-    expect(geistMonoResult.variable).toBeDefined()
-    expect(geistMonoResult.variable).toBe('--font-geist-mono')
+    mockHeadersGet.mockReturnValue(PUBLIC_ROUTES[0])
+
+    const component = await HomeLayout({ children: <div>Child</div> })
+    render(component)
+
+    expect(screen.queryByText('Logout')).not.toBeInTheDocument()
+    MAIN_ROUTES_OBJS.forEach(({ name }) => {
+      expect(screen.queryByText(name)).not.toBeInTheDocument()
+    })
+  })
+
+  test('hides header when no session and still renders children', async () => {
+    vi.mocked(getSession).mockResolvedValueOnce(null)
+    mockHeadersGet.mockReturnValue('/medicine')
+
+    const component = await HomeLayout({ children: <div>Unauthenticated Content</div> })
+    render(component)
+
+    expect(screen.queryByText('Logout')).not.toBeInTheDocument()
+    expect(screen.getByText('Unauthenticated Content')).toBeInTheDocument()
+  })
+
+  test('falls back to "/" when x-pathname header is missing and shows header for authenticated users', async () => {
+    vi.mocked(getSession).mockResolvedValueOnce({
+      user: { id: 1, email: 'test@test.com', name: 'Test' }
+    })
+    mockHeadersGet.mockReturnValue(null)
+
+    const component = await HomeLayout({ children: <div>Child</div> })
+    render(component)
+
+    expect(screen.getByText('Logout')).toBeInTheDocument()
   })
 })

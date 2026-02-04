@@ -10,6 +10,16 @@ vi.mock('next/cache', () => ({
   revalidatePath: vi.fn()
 }))
 
+vi.mock('next/navigation', () => ({
+  redirect: vi.fn()
+}))
+
+vi.mock('@shared-functions/auth', () => ({
+  hashPassword: vi.fn((password: string) => Promise.resolve(`hashed_${password}`)),
+  generateJWT: vi.fn(() => 'test-token'),
+  setAuthCookie: vi.fn()
+}))
+
 // MOCKS
 import {
   validUserData,
@@ -18,7 +28,6 @@ import {
   minDaysUserData,
   maxDaysUserData,
   invalidEmailUserData,
-  invalidMinDaysUserData,
   invalidMaxDaysUserData,
   invalidPasswordShortUserData,
   emptyNameUserData
@@ -41,10 +50,13 @@ const populateFormData = (
 
 vi.mock('@prisma/index', () => ({
   prisma: {
-    userForm: {
+    user: {
       create: vi.fn(),
       update: vi.fn(),
       findMany: vi.fn()
+    },
+    medicinePresentation: {
+      createMany: vi.fn()
     }
   }
 }))
@@ -55,8 +67,8 @@ describe('User Actions', () => {
   })
 
   describe('[handleUserAction] - Create Mode', () => {
-    test('creates user with valid data and calls prisma.userForm.create', async () => {
-      vi.mocked(prisma.userForm.create).mockResolvedValue({
+    test('creates user with valid data and calls prisma.user.create', async () => {
+      vi.mocked(prisma.user.create).mockResolvedValue({
         id: 1,
         ...validUserData
       })
@@ -67,11 +79,11 @@ describe('User Actions', () => {
       expect(result.message).toBe(USER_FORM_LABELS.CREATE_SUCCESS)
       expect(result.success).toBe(true)
       expect(result.errors).toBeUndefined()
-      expect(prisma.userForm.create).toHaveBeenCalled()
+      expect(prisma.user.create).toHaveBeenCalled()
     })
 
-    test('calls prisma.userForm.create with correct parameters', async () => {
-      vi.mocked(prisma.userForm.create).mockResolvedValue({
+    test('calls prisma.user.create with correct parameters', async () => {
+      vi.mocked(prisma.user.create).mockResolvedValue({
         id: 1,
         ...validUserData
       })
@@ -79,13 +91,19 @@ describe('User Actions', () => {
       const formData = populateFormData(validUserData)
       await handleUserAction({}, formData)
 
-      expect(prisma.userForm.create).toHaveBeenCalledWith({
-        data: validUserData
+      expect(prisma.user.create).toHaveBeenCalledWith({
+        data: {
+          name: validUserData.name,
+          lastName: validUserData.lastName,
+          password: `hashed_${validUserData.password}`,
+          email: validUserData.email,
+          daysToNotify: validUserData.daysToNotify
+        }
       })
     })
 
     test('creates user with null lastName', async () => {
-      vi.mocked(prisma.userForm.create).mockResolvedValue({
+      vi.mocked(prisma.user.create).mockResolvedValue({
         id: 1,
         ...validUserDataNoLastName
       })
@@ -94,11 +112,11 @@ describe('User Actions', () => {
       const result = await handleUserAction({}, formData)
 
       expect(result.success).toBe(true)
-      expect(prisma.userForm.create).toHaveBeenCalled()
+      expect(prisma.user.create).toHaveBeenCalled()
     })
 
     test('creates user with minimum valid days value (1)', async () => {
-      vi.mocked(prisma.userForm.create).mockResolvedValue({
+      vi.mocked(prisma.user.create).mockResolvedValue({
         id: 1,
         ...minDaysUserData
       })
@@ -111,7 +129,7 @@ describe('User Actions', () => {
     })
 
     test('creates user with maximum valid days value (365)', async () => {
-      vi.mocked(prisma.userForm.create).mockResolvedValue({
+      vi.mocked(prisma.user.create).mockResolvedValue({
         id: 1,
         ...maxDaysUserData
       })
@@ -130,27 +148,22 @@ describe('User Actions', () => {
       expect(result.success).toBe(false)
       expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
       expect(result.errors?.email).toBeDefined()
-      expect(prisma.userForm.create).not.toHaveBeenCalled()
+      expect(prisma.user.create).not.toHaveBeenCalled()
     })
 
-    test('returns error when daysToNotify is below minimum (0)', async () => {
-      const formData = populateFormData(invalidMinDaysUserData)
-      const result = await handleUserAction({}, formData)
+    test('always sets daysToNotify to default value of 30 regardless of formData', async () => {
+      vi.mocked(prisma.user.create).mockResolvedValue({
+        id: 1,
+        ...invalidMaxDaysUserData,
+        daysToNotify: 30
+      })
 
-      expect(result.success).toBe(false)
-      expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
-      expect(result.errors?.daysToNotify).toBeDefined()
-      expect(prisma.userForm.create).not.toHaveBeenCalled()
-    })
-
-    test('returns error when daysToNotify exceeds maximum (366)', async () => {
       const formData = populateFormData(invalidMaxDaysUserData)
-      const result = await handleUserAction({}, formData)
+      await handleUserAction({}, formData)
 
-      expect(result.success).toBe(false)
-      expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
-      expect(result.errors?.daysToNotify).toBeDefined()
-      expect(prisma.userForm.create).not.toHaveBeenCalled()
+      expect(prisma.user.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({ daysToNotify: 30 })
+      })
     })
 
     test('returns error when password is too short', async () => {
@@ -161,7 +174,7 @@ describe('User Actions', () => {
       expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
       expect(result.errors?.password).toBeDefined()
       expect(result.errors?.password).toContain(USER_FORM_ERRORS.PASSWORD_MIN)
-      expect(prisma.userForm.create).not.toHaveBeenCalled()
+      expect(prisma.user.create).not.toHaveBeenCalled()
     })
 
     test('returns error when name is empty', async () => {
@@ -171,34 +184,30 @@ describe('User Actions', () => {
       expect(result.success).toBe(false)
       expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
       expect(result.errors?.name).toBeDefined()
-      expect(prisma.userForm.create).not.toHaveBeenCalled()
+      expect(prisma.user.create).not.toHaveBeenCalled()
     })
 
-    test('converts string number to number type for daysToNotify', async () => {
-      vi.mocked(prisma.userForm.create).mockResolvedValue({
+    test('generates JWT and sets auth cookie on successful creation', async () => {
+      vi.mocked(prisma.user.create).mockResolvedValue({
         id: 1,
         ...validUserData
       })
 
-      const formData = new FormData()
-      formData.append('name', validUserData.name)
-      formData.append('lastName', validUserData.lastName)
-      formData.append('password', validUserData.password)
-      formData.append('email', validUserData.email)
-      formData.append('daysToNotify', '45')
+      const { generateJWT, setAuthCookie } = await import('@shared-functions/auth')
 
-      const result = await handleUserAction({}, formData)
+      const formData = populateFormData(validUserData)
+      await handleUserAction({}, formData)
 
-      expect(result.success).toBe(true)
-      expect(prisma.userForm.create).toHaveBeenCalledWith({
-        data: expect.objectContaining({
-          daysToNotify: 45
-        })
+      expect(generateJWT).toHaveBeenCalledWith({
+        userId: 1,
+        email: validUserData.email,
+        name: validUserData.name
       })
+      expect(setAuthCookie).toHaveBeenCalledWith('test-token')
     })
 
     test('returns success state with correct message', async () => {
-      vi.mocked(prisma.userForm.create).mockResolvedValue({
+      vi.mocked(prisma.user.create).mockResolvedValue({
         id: 1,
         ...validUserData
       })
@@ -214,8 +223,8 @@ describe('User Actions', () => {
   })
 
   describe('[handleUserAction] - Update Mode', () => {
-    test('updates user with valid data and calls prisma.userForm.update', async () => {
-      vi.mocked(prisma.userForm.update).mockResolvedValue({
+    test('updates user with valid data and calls prisma.user.update', async () => {
+      vi.mocked(prisma.user.update).mockResolvedValue({
         id: 1,
         ...validUserData2
       })
@@ -225,11 +234,11 @@ describe('User Actions', () => {
 
       expect(result.message).toBe(USER_FORM_LABELS.UPDATE_SUCCESS)
       expect(result.success).toBe(true)
-      expect(prisma.userForm.update).toHaveBeenCalled()
+      expect(prisma.user.update).toHaveBeenCalled()
     })
 
-    test('calls prisma.userForm.update with correct parameters', async () => {
-      vi.mocked(prisma.userForm.update).mockResolvedValue({
+    test('calls prisma.user.update with correct parameters', async () => {
+      vi.mocked(prisma.user.update).mockResolvedValue({
         id: 1,
         ...validUserData2
       })
@@ -237,14 +246,20 @@ describe('User Actions', () => {
       const formData = populateFormData(validUserData2)
       await handleUserAction({}, formData, '1')
 
-      expect(prisma.userForm.update).toHaveBeenCalledWith({
+      expect(prisma.user.update).toHaveBeenCalledWith({
         where: { id: 1 },
-        data: validUserData2
+        data: {
+          name: validUserData2.name,
+          lastName: validUserData2.lastName,
+          password: `hashed_${validUserData2.password}`,
+          email: validUserData2.email,
+          daysToNotify: 30
+        }
       })
     })
 
     test('converts string id to number for update query', async () => {
-      vi.mocked(prisma.userForm.update).mockResolvedValue({
+      vi.mocked(prisma.user.update).mockResolvedValue({
         id: 5,
         ...validUserData
       })
@@ -252,14 +267,14 @@ describe('User Actions', () => {
       const formData = populateFormData(validUserData)
       await handleUserAction({}, formData, '5')
 
-      expect(prisma.userForm.update).toHaveBeenCalledWith({
+      expect(prisma.user.update).toHaveBeenCalledWith({
         where: { id: 5 },
         data: expect.any(Object)
       })
     })
 
-    test('does not call prisma.userForm.update when id is undefined', async () => {
-      vi.mocked(prisma.userForm.create).mockResolvedValue({
+    test('does not call prisma.user.update when id is undefined', async () => {
+      vi.mocked(prisma.user.create).mockResolvedValue({
         id: 1,
         ...validUserData
       })
@@ -267,15 +282,15 @@ describe('User Actions', () => {
       const formData = populateFormData(validUserData)
       await handleUserAction({}, formData)
 
-      expect(prisma.userForm.update).not.toHaveBeenCalled()
-      expect(prisma.userForm.create).toHaveBeenCalled()
+      expect(prisma.user.update).not.toHaveBeenCalled()
+      expect(prisma.user.create).toHaveBeenCalled()
     })
   })
 
   describe('[handleUserAction] - Error Handling', () => {
     test('handles database error on user creation', async () => {
       const dbError = new Error('Database connection failed')
-      vi.mocked(prisma.userForm.create).mockRejectedValueOnce(dbError)
+      vi.mocked(prisma.user.create).mockRejectedValueOnce(dbError)
 
       const formData = populateFormData(validUserData)
       const result = await handleUserAction({}, formData)
@@ -287,7 +302,7 @@ describe('User Actions', () => {
 
     test('handles Prisma constraint error', async () => {
       const constraintError = new Error('Unique constraint failed on email')
-      vi.mocked(prisma.userForm.create).mockRejectedValueOnce(constraintError)
+      vi.mocked(prisma.user.create).mockRejectedValueOnce(constraintError)
 
       const formData = populateFormData(validUserData)
       const result = await handleUserAction({}, formData)
@@ -298,7 +313,7 @@ describe('User Actions', () => {
 
     test('handles error with no message', async () => {
       const error = new Error()
-      vi.mocked(prisma.userForm.create).mockRejectedValueOnce(error)
+      vi.mocked(prisma.user.create).mockRejectedValueOnce(error)
 
       const formData = populateFormData(validUserData)
       const result = await handleUserAction({}, formData)
@@ -308,7 +323,7 @@ describe('User Actions', () => {
     })
 
     test('handles non-Error exceptions', async () => {
-      vi.mocked(prisma.userForm.create).mockRejectedValueOnce('Unexpected error')
+      vi.mocked(prisma.user.create).mockRejectedValueOnce('Unexpected error')
 
       const formData = populateFormData(validUserData)
       const result = await handleUserAction({}, formData)
@@ -319,7 +334,7 @@ describe('User Actions', () => {
 
     test('handles database error on user update', async () => {
       const dbError = new Error('Update failed')
-      vi.mocked(prisma.userForm.update).mockRejectedValueOnce(dbError)
+      vi.mocked(prisma.user.update).mockRejectedValueOnce(dbError)
 
       const formData = populateFormData(validUserData)
       const result = await handleUserAction({}, formData, '1')
@@ -331,7 +346,7 @@ describe('User Actions', () => {
 
   describe('[handleUserAction] - Edge Cases', () => {
     test('handles FormData with extra fields gracefully', async () => {
-      vi.mocked(prisma.userForm.create).mockResolvedValue({
+      vi.mocked(prisma.user.create).mockResolvedValue({
         id: 1,
         ...validUserData
       })
@@ -344,18 +359,19 @@ describe('User Actions', () => {
       expect(result.success).toBe(true)
     })
 
-    test('returns error when daysToNotify is a decimal number', async () => {
-      const formData = new FormData()
-      formData.append('name', 'Test')
-      formData.append('password', 'password123')
-      formData.append('email', 'test@example.com')
-      formData.append('daysToNotify', '30.7')
+    test('does not generate JWT or set cookie on update mode', async () => {
+      vi.mocked(prisma.user.update).mockResolvedValue({
+        id: 1,
+        ...validUserData
+      })
 
-      const result = await handleUserAction({}, formData)
+      const { generateJWT, setAuthCookie } = await import('@shared-functions/auth')
 
-      expect(result.success).toBe(false)
-      expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
-      expect(prisma.userForm.create).not.toHaveBeenCalled()
+      const formData = populateFormData(validUserData)
+      await handleUserAction({}, formData, '1')
+
+      expect(generateJWT).not.toHaveBeenCalled()
+      expect(setAuthCookie).not.toHaveBeenCalled()
     })
 
     test('handles missing required fields', async () => {
@@ -366,7 +382,7 @@ describe('User Actions', () => {
 
       expect(result.success).toBe(false)
       expect(result.message).toBe(COMMON_FORM_ERRORS.FORM_INPUTS_ERROR)
-      expect(prisma.userForm.create).not.toHaveBeenCalled()
+      expect(prisma.user.create).not.toHaveBeenCalled()
     })
   })
 
@@ -376,21 +392,21 @@ describe('User Actions', () => {
         { id: 1, ...validUserData },
         { id: 2, ...validUserData2 }
       ]
-      vi.mocked(prisma.userForm.findMany).mockResolvedValue(mockUsers)
+      vi.mocked(prisma.user.findMany).mockResolvedValue(mockUsers)
 
       const result = await getUsers()
 
       expect(result).toEqual(mockUsers)
-      expect(prisma.userForm.findMany).toHaveBeenCalled()
+      expect(prisma.user.findMany).toHaveBeenCalled()
     })
 
     test('filters users by email', async () => {
       const mockUsers = [{ id: 1, ...validUserData }]
-      vi.mocked(prisma.userForm.findMany).mockResolvedValue(mockUsers)
+      vi.mocked(prisma.user.findMany).mockResolvedValue(mockUsers)
 
       await getUsers('john')
 
-      expect(prisma.userForm.findMany).toHaveBeenCalledWith({
+      expect(prisma.user.findMany).toHaveBeenCalledWith({
         where: {
           email: {
             contains: 'john',
@@ -401,20 +417,20 @@ describe('User Actions', () => {
     })
 
     test('returns empty array when no users exist', async () => {
-      vi.mocked(prisma.userForm.findMany).mockResolvedValue([])
+      vi.mocked(prisma.user.findMany).mockResolvedValue([])
 
       const result = await getUsers()
 
       expect(result).toEqual([])
-      expect(prisma.userForm.findMany).toHaveBeenCalled()
+      expect(prisma.user.findMany).toHaveBeenCalled()
     })
 
-    test('calls prisma.userForm.findMany with correct parameters', async () => {
-      vi.mocked(prisma.userForm.findMany).mockResolvedValue([])
+    test('calls prisma.user.findMany with correct parameters', async () => {
+      vi.mocked(prisma.user.findMany).mockResolvedValue([])
 
       await getUsers('test@example.com')
 
-      expect(prisma.userForm.findMany).toHaveBeenCalledWith({
+      expect(prisma.user.findMany).toHaveBeenCalledWith({
         where: {
           email: {
             contains: 'test@example.com',
@@ -425,11 +441,11 @@ describe('User Actions', () => {
     })
 
     test('handles empty email parameter', async () => {
-      vi.mocked(prisma.userForm.findMany).mockResolvedValue([])
+      vi.mocked(prisma.user.findMany).mockResolvedValue([])
 
       await getUsers('')
 
-      expect(prisma.userForm.findMany).toHaveBeenCalledWith({
+      expect(prisma.user.findMany).toHaveBeenCalledWith({
         where: {
           email: {
             contains: '',
@@ -441,7 +457,7 @@ describe('User Actions', () => {
 
     test('handles database error on getUsers', async () => {
       const dbError = new Error('Database error')
-      vi.mocked(prisma.userForm.findMany).mockRejectedValueOnce(dbError)
+      vi.mocked(prisma.user.findMany).mockRejectedValueOnce(dbError)
 
       await expect(getUsers()).rejects.toThrow('Database error')
     })

@@ -42,3 +42,10 @@ export type UserActionState = BaseActionState & {
     daysToNotify?: string[]
   }
 }
+
+export type LoginActionState = BaseActionState & {
+  errors?: {
+    email?: string[]
+    password?: string[]
+  }
+}

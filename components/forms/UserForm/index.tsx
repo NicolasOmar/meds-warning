@@ -31,17 +31,17 @@ const generateUserFormStructure = () => ({
     type: 'text',
     placeholder: USER_FORM_LABELS.LAST_NAME_PLACEHOLDER
   },
-  password: {
-    name: 'password',
-    label: USER_FORM_LABELS.PASSWORD,
-    type: 'password',
-    placeholder: USER_FORM_LABELS.PASSWORD_PLACEHOLDER
-  },
   email: {
     name: 'email',
     label: USER_FORM_LABELS.EMAIL,
     type: 'email',
     placeholder: USER_FORM_LABELS.EMAIL_PLACEHOLDER
+  },
+  password: {
+    name: 'password',
+    label: USER_FORM_LABELS.PASSWORD,
+    type: 'password',
+    placeholder: USER_FORM_LABELS.PASSWORD_PLACEHOLDER
   },
   daysToNotify: {
     name: 'daysToNotify',
@@ -51,7 +51,7 @@ const generateUserFormStructure = () => ({
   }
 })
 
-const UserForm: FC<UserFormProps> = ({ userData }) => {
+const User: FC<UserFormProps> = ({ userData }) => {
   const userFormStructure = generateUserFormStructure()
   const customUserFormAction = (state: UserActionState, formData: FormData) =>
     handleUserAction(state, formData, userData?.id?.toString())
@@ -81,16 +81,12 @@ const UserForm: FC<UserFormProps> = ({ userData }) => {
             message={state.errors?.email}
             value={userData?.email ?? ''}
           />
-          <CustomInput
-            {...userFormStructure.password}
-            message={state.errors?.password}
-            value={userData?.password ?? ''}
-          />
-          <CustomInput
+          <CustomInput {...userFormStructure.password} message={state.errors?.password} />
+          {/* <CustomInput
             {...userFormStructure.daysToNotify}
             message={state.errors?.daysToNotify}
             value={userData?.daysToNotify?.toString() ?? '30'}
-          />
+          /> */}
         </FieldSet>
       </FieldGroup>
 
@@ -101,4 +97,4 @@ const UserForm: FC<UserFormProps> = ({ userData }) => {
   )
 }
 
-export default UserForm
+export default User

@@ -1,12 +1,25 @@
 import { prisma } from '.'
+import { hashPassword } from '../shared/functions/auth'
 
 async function main() {
+  const hashedPassword = await hashPassword('seed')
+
+  const seedUser = await prisma.user.create({
+    data: {
+      name: 'Seed',
+      lastName: 'User',
+      email: 'seed@example.com',
+      password: hashedPassword,
+      daysToNotify: 30
+    }
+  })
+
   await prisma.medicinePresentation.createMany({
     data: [
-      { description: 'Pills' },
-      { description: 'Injection' },
-      { description: 'Topical' },
-      { description: 'Inhalation' }
+      { description: 'Pills', userId: seedUser.id },
+      { description: 'Injection', userId: seedUser.id },
+      { description: 'Topical', userId: seedUser.id },
+      { description: 'Inhalation', userId: seedUser.id }
     ]
   })
 }

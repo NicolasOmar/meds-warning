@@ -4,6 +4,10 @@ import { prisma } from '@prisma/index'
 // COMPONENT
 import MedicinePage from './page'
 
+vi.mock('@shared-functions/auth', () => ({
+  getSession: vi.fn().mockResolvedValue({ user: { id: 1, email: 'test@test.com', name: 'Test' } })
+}))
+
 // Mock Prisma
 vi.mock('@prisma/index', () => ({
   prisma: {

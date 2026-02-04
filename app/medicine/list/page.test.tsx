@@ -15,6 +15,10 @@ import {
   nullMedicineListResponse
 } from './mocks.json'
 
+vi.mock('@shared-functions/auth', () => ({
+  getSession: vi.fn().mockResolvedValue({ user: { id: 1, email: 'test@test.com', name: 'Test' } })
+}))
+
 // Mock prisma
 vi.mock('@prisma/index', () => ({
   prisma: {
@@ -25,7 +29,7 @@ vi.mock('@prisma/index', () => ({
 }))
 
 describe('[ListMedicinePage]', () => {
-  const avoidProps = new Set(['id', 'presentation', 'medicinePresentation'])
+  const avoidProps = new Set(['id', 'userId', 'presentation', 'medicinePresentation'])
 
   beforeEach(() => {
     vi.clearAllMocks()
@@ -133,6 +137,7 @@ describe('[ListMedicinePage]', () => {
     await ListMedicinePage({})
 
     expect(prisma.medicine.findMany).toHaveBeenCalledWith({
+      where: { userId: 1 },
       include: {
         medicinePresentation: true
       }

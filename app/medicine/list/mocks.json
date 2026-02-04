@@ -2,6 +2,7 @@
   "medicineListResponse": [
     {
         "id": 1,
+        "userId": 1,
         "name": "Test Medicine",
         "laboratory": "Test Lab",
         "presentation": 1,
@@ -17,6 +18,7 @@
   "secondMedicineListResponse": [
     {
         "id": 1,
+        "userId": 1,
         "name": "Aspirin",
         "laboratory": "Bayer",
         "presentation": 1,
@@ -32,6 +34,7 @@
   "nullMedicineListResponse": [
     {
       "id": 2,
+      "userId": 1,
       "name": "Ibuprofen",
       "laboratory": null,
       "presentation": 1,

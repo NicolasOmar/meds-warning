@@ -1,5 +1,7 @@
 export enum ROUTE_URLS {
   HOME = '/',
+  LOGIN = '/login',
+  LOGOUT = '/logout',
   MEDICINE_ROOT = '/medicine',
   MEDICINE_CREATE = '/medicine/create',
   MEDICINE_LIST = '/medicine/list',
@@ -30,8 +32,7 @@ export const MAIN_ROUTES_OBJS = [
   { name: ROUTE_NAMES.HOME, path: ROUTE_URLS.HOME },
   { name: ROUTE_NAMES.MEDICINE, path: ROUTE_URLS.MEDICINE_ROOT },
   { name: ROUTE_NAMES.PRESENTATION, path: ROUTE_URLS.PRESENTATION_ROOT },
-  { name: ROUTE_NAMES.SETTINGS, path: ROUTE_URLS.SETTINGS_ROOT },
-  { name: ROUTE_NAMES.USER, path: ROUTE_URLS.USER_ROOT }
+  { name: ROUTE_NAMES.SETTINGS, path: ROUTE_URLS.SETTINGS_ROOT }
 ]
 
 export const MEDICINE_MAIN_ROUTES_OBJS = [

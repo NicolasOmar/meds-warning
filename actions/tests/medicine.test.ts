@@ -16,6 +16,10 @@ vi.mock('next/cache', () => ({
   revalidatePath: vi.fn()
 }))
 
+vi.mock('@shared-functions/auth', () => ({
+  getSession: vi.fn().mockResolvedValue({ user: { id: 1, email: 'test@test.com', name: 'Test' } })
+}))
+
 // MOCKS
 import {
   medicineCreationResponse,
@@ -170,7 +174,7 @@ describe('Medicine Actions', () => {
 
       expect(prisma.medicine.update).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: { id: 2 },
+          where: { id: 2, userId: 1 },
           data: expect.any(Object)
         })
       )
@@ -204,6 +208,7 @@ describe('Medicine Actions', () => {
     test('updates medicine with only name and presentation field', async () => {
       vi.mocked(prisma.medicine.update).mockResolvedValue({
         id: medicineUpdateOnlyName.id,
+        userId: 1,
         name: medicineUpdateOnlyName.name,
         laboratory: null,
         presentation: +medicineUpdateOnlyName.presentation,
@@ -243,7 +248,7 @@ describe('Medicine Actions', () => {
       await handleMedicineAction({}, formData, '2')
 
       const callArgs = vi.mocked(prisma.medicine.update).mock.calls[0][0]
-      expect(callArgs.where).toEqual({ id: 2 })
+      expect(callArgs.where).toEqual({ id: 2, userId: 1 })
       expect(callArgs.data).toHaveProperty('name')
       expect(callArgs.data).toHaveProperty('presentation')
     })
@@ -334,7 +339,7 @@ describe('Medicine Actions', () => {
 
       expect(result.message).toBe(MEDICINE_TABLE_LABELS.DELETE_SUCCESS)
       expect(prisma.medicine.delete).toHaveBeenCalledWith({
-        where: { id: deleteableMedicineId }
+        where: { id: deleteableMedicineId, userId: 1 }
       })
     })
 
@@ -347,7 +352,7 @@ describe('Medicine Actions', () => {
       await deleteMedicine(deleteableMedicineId)
 
       expect(prisma.medicine.delete).toHaveBeenCalledWith({
-        where: { id: deleteableMedicineId }
+        where: { id: deleteableMedicineId, userId: 1 }
       })
     })
 
@@ -401,6 +406,7 @@ describe('Medicine Actions', () => {
       expect(result).toHaveLength(2)
       expect(prisma.medicine.findMany).toHaveBeenCalledWith({
         where: {
+          userId: 1,
           name: {
             contains: '',
             mode: 'insensitive'
@@ -423,6 +429,7 @@ describe('Medicine Actions', () => {
 
       expect(prisma.medicine.findMany).toHaveBeenCalledWith({
         where: {
+          userId: 1,
           name: {
             contains: '',
             mode: 'insensitive'
@@ -541,7 +548,7 @@ describe('Medicine Actions', () => {
 
       expect(prisma.medicine.update).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: { id: 42 },
+          where: { id: 42, userId: 1 },
           data: expect.any(Object)
         })
       )
@@ -562,7 +569,7 @@ describe('Medicine Actions', () => {
       expect(result.success).toBe(true)
       expect(prisma.medicine.update).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: { id: 1 },
+          where: { id: 1, userId: 1 },
           data: { expirationDate: null }
         })
       )
@@ -581,7 +588,7 @@ describe('Medicine Actions', () => {
       await handleExpirationDateAction({}, formData)
 
       const callArgs = vi.mocked(prisma.medicine.update).mock.calls[0][0]
-      expect(callArgs.where).toEqual({ id: 5 })
+      expect(callArgs.where).toEqual({ id: 5, userId: 1 })
       expect(callArgs.data).toHaveProperty('expirationDate')
       expect(callArgs.data.expirationDate).toBeInstanceOf(Date)
     })
@@ -674,7 +681,7 @@ describe('Medicine Actions', () => {
 
       expect(prisma.medicine.update).toHaveBeenCalledWith(
         expect.objectContaining({
-          where: { id: 123 }
+          where: { id: 123, userId: 1 }
         })
       )
     })

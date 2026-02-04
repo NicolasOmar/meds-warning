@@ -11,6 +11,7 @@ import { parseEmptyFormValueToNull } from '@shared-functions/helpers'
 import { PRESENTATION_FORM_ERRORS, PRESENTATION_FORM_LABELS } from '@shared-constants/forms'
 import { ROUTE_URLS } from '@shared-constants/routes'
 import { MEDICINE_PRESENTATION_TABLE_LABELS } from '@shared-constants/tables'
+import { getSession } from '@shared-functions/auth'
 
 export async function handlePresentationAction(
   _: PresentationActionState,
@@ -35,9 +36,11 @@ export async function handlePresentationAction(
     description: validatedPresentationObject.data.description
   }
 
+  const session = await getSession()
+
   try {
     const presentationAlreadyExists = await prisma.medicinePresentation.findFirst({
-      where: { description: presentationData.description }
+      where: { description: presentationData.description, userId: session!.user.id }
     })
 
     if (presentationAlreadyExists) {
@@ -49,12 +52,12 @@ export async function handlePresentationAction(
 
     if (id) {
       await prisma.medicinePresentation.update({
-        where: { id: +id },
+        where: { id: +id, userId: session!.user.id },
         data: presentationData
       })
     } else {
       await prisma.medicinePresentation.create({
-        data: presentationData
+        data: { ...presentationData, userId: session!.user.id }
       })
     }
 
@@ -80,19 +83,23 @@ export async function handlePresentationAction(
 }
 
 export async function deletePresentation(presentationId: number): Promise<MedicineActionState> {
+  const session = await getSession()
+
   try {
-    const availablePresentations = await prisma.medicine.findMany()
+    const availablePresentations = await prisma.medicine.findMany({
+      where: { userId: session!.user.id }
+    })
     const presentation = availablePresentations.find(
       presentationItem => presentationItem.presentation !== presentationId
     )
 
     await prisma.medicine.updateMany({
-      where: { presentation: presentationId },
+      where: { presentation: presentationId, userId: session!.user.id },
       data: { presentation: presentation!.id }
     })
 
     await prisma.medicinePresentation.delete({
-      where: { id: presentationId }
+      where: { id: presentationId, userId: session!.user.id }
     })
 
     revalidatePath(ROUTE_URLS.PRESENTATION_LIST)
@@ -113,5 +120,9 @@ export async function deletePresentation(presentationId: number): Promise<Medici
 }
 
 export async function getPresentations(): Promise<MedicinePresentationType[]> {
-  return prisma.medicinePresentation.findMany()
+  const session = await getSession()
+
+  return prisma.medicinePresentation.findMany({
+    where: { userId: session!.user.id }
+  })
 }

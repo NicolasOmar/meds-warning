@@ -1,22 +1,27 @@
 {
   "presentationCreationResponse": {
     "id": 1,
+    "userId": 1,
     "description": "Tablet"
   },
   "presentationCreationResponse2": {
     "id": 2,
+    "userId": 1,
     "description": "Capsule"
   },
   "presentationCreationResponse3": {
     "id": 3,
+    "userId": 1,
     "description": "Syrup"
   },
   "presentationWithLongDescriptionResponse": {
     "id": 4,
+    "userId": 1,
     "description": "Extended Release Tablet with Enteric Coating"
   },
   "presentationWithSpecialCharactersResponse": {
     "id": 5,
+    "userId": 1,
     "description": "Tablet (500mg)"
   },
   "missingRequiredFieldsData": {
@@ -34,14 +39,17 @@
   "presentationsListResponse": [
     {
       "id": 1,
+      "userId": 1,
       "description": "Tablet"
     },
     {
       "id": 2,
+      "userId": 1,
       "description": "Capsule"
     },
     {
       "id": 3,
+      "userId": 1,
       "description": "Syrup"
     }
   ],
@@ -54,6 +62,7 @@
   },
   "mockMedicineForDelete": {
     "id": 1,
+    "userId": 1,
     "name": "Test Med",
     "laboratory": null,
     "presentation": 2,
@@ -64,6 +73,7 @@
   },
   "mockMedicineForDelete2": {
     "id": 2,
+    "userId": 1,
     "name": "Test Med",
     "laboratory": null,
     "presentation": 2,

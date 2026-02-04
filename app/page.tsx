@@ -1,15 +1,22 @@
 // CORE
-import { FC } from 'react'
+import { redirect } from 'next/navigation'
 // SHARED
+import { ROUTE_URLS } from '@shared-constants/routes'
+import { getSession } from '@shared-functions/auth'
 import { ROOT_PAGE_LABELS } from '@shared-constants/pages'
 
-const RootPage: FC = () => {
+export default async function RootPage() {
+  const session = await getSession()
+
+  if (!session) {
+    redirect(ROUTE_URLS.LOGIN)
+  }
+
   return (
-    <section className="flex flex-col min-h-screen min-w-full justify-start items-center gap-5 py-16 px-8 font-sans dark:bg-black bg-white">
-      <p>{ROOT_PAGE_LABELS.WELCOME_MESSAGE}</p>
+    <section className="flex flex-col gap-3 mt-4">
+      <h1>{ROOT_PAGE_LABELS.WELCOME_MESSAGE}</h1>
       <p>{ROOT_PAGE_LABELS.FIRST_PARAGRAPH}</p>
+      <p>{ROOT_PAGE_LABELS.SECOND_PARAGRAPH}</p>
     </section>
   )
 }
-
-export default RootPage

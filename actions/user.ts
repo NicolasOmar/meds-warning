@@ -2,7 +2,7 @@
 // CORE
 import * as z from 'zod'
 import { prisma } from '@prisma/index'
-import { revalidatePath } from 'next/cache'
+import { redirect } from 'next/navigation'
 // SHARED
 import { UserSchema } from '@shared-types/zod'
 import { UserActionState } from '@shared-types/states'
@@ -10,6 +10,7 @@ import { USER_FORM_LABELS } from '@shared-constants/forms'
 import { COMMON_FORM_ERRORS } from '@shared-constants/common'
 import { ROUTE_URLS } from '@shared-constants/routes'
 import { parseEmptyFormValueToNull } from '@shared-functions/helpers'
+import { hashPassword, generateJWT, setAuthCookie } from '@shared-functions/auth'
 
 export async function handleUserAction(
   _: UserActionState,
@@ -21,9 +22,7 @@ export async function handleUserAction(
     lastName: parseEmptyFormValueToNull(formData.get('lastName')),
     password: parseEmptyFormValueToNull(formData.get('password')),
     email: parseEmptyFormValueToNull(formData.get('email')),
-    daysToNotify: parseEmptyFormValueToNull(formData.get('daysToNotify'))
-      ? +(formData.get('daysToNotify') as string)
-      : null
+    daysToNotify: 30
   })
 
   if (!validatedUserObject.success) {
@@ -34,27 +33,48 @@ export async function handleUserAction(
     }
   }
 
+  const hashedPassword = await hashPassword(validatedUserObject.data.password)
+
   const userData = {
     name: validatedUserObject.data.name,
     lastName: validatedUserObject.data.lastName,
-    password: validatedUserObject.data.password,
+    password: hashedPassword,
     email: validatedUserObject.data.email,
     daysToNotify: validatedUserObject.data.daysToNotify
   }
 
   try {
     if (id) {
-      await prisma.userForm.update({
+      await prisma.user.update({
         where: { id: +id },
         data: userData
       })
     } else {
-      await prisma.userForm.create({
+      const user = await prisma.user.create({
         data: userData
       })
+
+      await prisma.medicinePresentation.createMany({
+        data: [
+          { description: 'Pills', userId: user.id },
+          { description: 'Injection', userId: user.id },
+          { description: 'Topical', userId: user.id },
+          { description: 'Inhalation', userId: user.id }
+        ]
+      })
+
+      const token = generateJWT({
+        userId: user.id,
+        email: user.email,
+        name: user.name
+      })
+
+      await setAuthCookie(token)
     }
 
-    revalidatePath(ROUTE_URLS.USER_LIST)
+    if (!id) {
+      redirect(ROUTE_URLS.HOME)
+    }
 
     return {
       message: id ? USER_FORM_LABELS.UPDATE_SUCCESS : USER_FORM_LABELS.CREATE_SUCCESS,
@@ -74,7 +94,7 @@ export async function handleUserAction(
 }
 
 export async function getUsers(email?: string) {
-  return await prisma.userForm.findMany({
+  return await prisma.user.findMany({
     where: {
       email: {
         contains: email ?? '',
