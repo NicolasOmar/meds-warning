@@ -1,14 +1,9 @@
 // CORE
 import { FC } from 'react'
+import { redirect } from 'next/navigation'
 // SHARED
-import { PRESENTATION_PAGE_LABELS } from '@shared-constants/pages'
+import { ROUTE_URLS } from '@shared-constants/routes'
 
-const PresentationRootPage: FC = () => {
-  return (
-    <section className="flex flex-col items-center gap-4 py-8">
-      <p className="text-muted-foreground">{PRESENTATION_PAGE_LABELS.WELCOME_MESSAGE}</p>
-    </section>
-  )
-}
+const PresentationRootPage: FC = () => redirect(ROUTE_URLS.PRESENTATION_LIST)
 
 export default PresentationRootPage

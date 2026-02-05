@@ -59,7 +59,7 @@ const User: FC<UserFormProps> = ({ userData }) => {
   const [state, userFormAction, isPending] = useActionState(customUserFormAction, {})
 
   useEffect(() => {
-    handleCommonFormState(ROUTE_URLS.USER_LIST, state)
+    handleCommonFormState(ROUTE_URLS.HOME, state)
   }, [state])
 
   return (

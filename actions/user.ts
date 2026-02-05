@@ -2,13 +2,11 @@
 // CORE
 import * as z from 'zod'
 import { prisma } from '@prisma/index'
-import { redirect } from 'next/navigation'
 // SHARED
 import { UserSchema } from '@shared-types/zod'
 import { UserActionState } from '@shared-types/states'
 import { USER_FORM_LABELS } from '@shared-constants/forms'
 import { COMMON_FORM_ERRORS } from '@shared-constants/common'
-import { ROUTE_URLS } from '@shared-constants/routes'
 import { parseEmptyFormValueToNull } from '@shared-functions/helpers'
 import { hashPassword, generateJWT, setAuthCookie } from '@shared-functions/auth'
 
@@ -70,10 +68,6 @@ export async function handleUserAction(
       })
 
       await setAuthCookie(token)
-    }
-
-    if (!id) {
-      redirect(ROUTE_URLS.HOME)
     }
 
     return {
