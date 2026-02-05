@@ -5,7 +5,8 @@ export enum COMMON_LABELS {
   SAVE = 'Save',
   SAVE_CHANGES = 'Save Changes',
   CONFIRM = 'Confirm',
-  CANCEL = 'Cancel'
+  CANCEL = 'Cancel',
+  LOGOUT = 'Logout'
 }
 
 export enum COMMON_FORM_ERRORS {

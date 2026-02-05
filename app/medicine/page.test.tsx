@@ -29,13 +29,7 @@ describe('[MedicineRootPage]', () => {
     const { container } = render(<MedicineRootPage />)
 
     const outerSection = container.querySelector('section')
-    expect(outerSection).toHaveClass(
-      'flex',
-      'flex-col',
-      'min-h-screen',
-      'justify-start',
-      'items-center'
-    )
+    expect(outerSection).toHaveClass('flex', 'flex-col', 'items-center', 'gap-4', 'py-8')
   })
 
   test('renders complete page structure', () => {

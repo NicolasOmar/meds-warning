@@ -13,6 +13,7 @@ import { UserType } from '@shared-types/zod'
 import { UserActionState } from '@shared-types/states'
 import { handleCommonFormState } from '@shared-functions/forms'
 import { ROUTE_URLS } from '@shared-constants/routes'
+import { ROOT_LAYOUT_LABELS } from '@shared-constants/pages'
 
 interface UserFormProps {
   userData?: UserType
@@ -62,38 +63,40 @@ const User: FC<UserFormProps> = ({ userData }) => {
   }, [state])
 
   return (
-    <form action={userFormAction} className="flex flex-col gap-4">
-      <FieldGroup>
-        <FieldSet>
-          <FieldLegend>{USER_FORM_LABELS.TITLE}</FieldLegend>
-          <CustomInput
-            {...userFormStructure.name}
-            message={state.errors?.name}
-            value={userData?.name ?? ''}
-          />
-          <CustomInput
-            {...userFormStructure.lastName}
-            message={state.errors?.lastName}
-            value={userData?.lastName ?? ''}
-          />
-          <CustomInput
-            {...userFormStructure.email}
-            message={state.errors?.email}
-            value={userData?.email ?? ''}
-          />
-          <CustomInput {...userFormStructure.password} message={state.errors?.password} />
-          {/* <CustomInput
-            {...userFormStructure.daysToNotify}
-            message={state.errors?.daysToNotify}
-            value={userData?.daysToNotify?.toString() ?? '30'}
-          /> */}
-        </FieldSet>
-      </FieldGroup>
+    <div className="flex min-h-screen items-center justify-center px-4">
+      <div className="w-full max-w-md bg-card text-card-foreground rounded-lg shadow-sm border p-8">
+        <h1 className="text-xl font-semibold text-center text-primary mb-6">
+          {ROOT_LAYOUT_LABELS.METADATA_TITLE}
+        </h1>
+        <form action={userFormAction} className="flex flex-col gap-4">
+          <FieldGroup>
+            <FieldSet>
+              <FieldLegend>{USER_FORM_LABELS.TITLE}</FieldLegend>
+              <CustomInput
+                {...userFormStructure.name}
+                message={state.errors?.name}
+                value={userData?.name ?? ''}
+              />
+              <CustomInput
+                {...userFormStructure.lastName}
+                message={state.errors?.lastName}
+                value={userData?.lastName ?? ''}
+              />
+              <CustomInput
+                {...userFormStructure.email}
+                message={state.errors?.email}
+                value={userData?.email ?? ''}
+              />
+              <CustomInput {...userFormStructure.password} message={state.errors?.password} />
+            </FieldSet>
+          </FieldGroup>
 
-      <Button type="submit" disabled={isPending}>
-        {USER_FORM_LABELS.SUBMIT_BUTTON}
-      </Button>
-    </form>
+          <Button type="submit" disabled={isPending}>
+            {USER_FORM_LABELS.SUBMIT_BUTTON}
+          </Button>
+        </form>
+      </div>
+    </div>
   )
 }
 

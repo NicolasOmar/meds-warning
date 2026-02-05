@@ -5,8 +5,8 @@ import { MEDICINE_PAGE_LABELS } from '@shared-constants/pages'
 
 const MedicineRootPage: FC = () => {
   return (
-    <section className="flex flex-col min-h-screen min-w-full justify-start items-center gap-5 py-16 px-8 font-sans dark:bg-black bg-white">
-      {MEDICINE_PAGE_LABELS.WELCOME_MESSAGE}
+    <section className="flex flex-col items-center gap-4 py-8">
+      <p className="text-muted-foreground">{MEDICINE_PAGE_LABELS.WELCOME_MESSAGE}</p>
     </section>
   )
 }

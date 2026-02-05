@@ -101,7 +101,8 @@ export enum LOGIN_FORM_LABELS {
   PASSWORD_PLACEHOLDER = 'Enter your password',
   SUBMIT_BUTTON = 'Log in',
   CREATE_ACCOUNT = 'Create account',
-  SUCCESS = 'Login successful!'
+  SUCCESS = 'Login successful!',
+  SUBTITLE = 'Sign in to manage your medications'
 }
 
 export enum LOGIN_FORM_ERRORS {

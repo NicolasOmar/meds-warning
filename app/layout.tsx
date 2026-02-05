@@ -2,18 +2,17 @@
 import { FC } from 'react'
 import Link from 'next/link'
 import type { Metadata } from 'next'
-import { headers } from 'next/headers'
 // COMPONENTS
-import { ButtonGroup } from '@base-components/button-group'
 import { Button } from '@base-components/button'
+import { Separator } from '@base-components/separator'
 import { Toaster } from '@base-components/sonner'
 // SHARED
 import { ROOT_LAYOUT_LABELS } from '@shared-constants/pages'
-import { MAIN_ROUTES_OBJS } from '@shared-constants/routes'
+import { COMMON_LABELS } from '@shared-constants/common'
+import { MAIN_ROUTES_OBJS, ROUTE_URLS } from '@shared-constants/routes'
 import { BaseLayoutProps } from '@shared-types/interfaces'
 import { getSession } from '@shared-functions/auth'
 import { handleLogoutAction } from '@actions/auth'
-import { PUBLIC_ROUTES } from '@shared-constants/auth'
 // STYLES
 import { Geist, Geist_Mono } from 'next/font/google'
 import './globals.css'
@@ -35,39 +34,35 @@ export const metadata: Metadata = {
 
 const HomeLayout: FC<BaseLayoutProps> = async ({ children }) => {
   const session = await getSession()
-  const headersList = await headers()
-  const pathname = headersList.get('x-pathname') || '/'
-  const isPublicRoute = PUBLIC_ROUTES.includes(pathname)
 
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased grid grid-cols-6`}>
-        {session && !isPublicRoute && (
-          <header className="flex gap-4 m-4 col-span-full justify-self-center">
-            <ButtonGroup>
-              {MAIN_ROUTES_OBJS.map(({ name, path }, routeId) => {
-                return (
-                  <Button key={`layout-route-${routeId}`}>
-                    <Link
-                      href={path}
-                      className="text-2xl font-medium text-white-600 hover:underline"
-                    >
-                      {name}
-                    </Link>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
+      >
+        {session && session.user ? (
+          <header className="sticky top-0 z-10 w-full bg-background border-b">
+            <div className="flex h-14 items-center justify-between max-w-5xl mx-auto w-full px-6">
+              <Link href={ROUTE_URLS.HOME} className="text-lg font-semibold text-primary">
+                {ROOT_LAYOUT_LABELS.METADATA_TITLE}
+              </Link>
+              <nav className="flex items-center gap-1">
+                {MAIN_ROUTES_OBJS.map(({ name, path }, routeId) => (
+                  <Button key={`layout-route-${routeId}`} variant="ghost" size="sm" asChild>
+                    <Link href={path}>{name}</Link>
                   </Button>
-                )
-              })}
-            </ButtonGroup>
-            <form action={handleLogoutAction}>
-              <Button type="submit" variant="destructive">
-                Logout
-              </Button>
-            </form>
+                ))}
+                <Separator orientation="vertical" className="h-5 mx-2" />
+                <form action={handleLogoutAction}>
+                  <Button type="submit" variant="ghost" size="sm">
+                    {COMMON_LABELS.LOGOUT}
+                  </Button>
+                </form>
+              </nav>
+            </div>
           </header>
-        )}
-        <section className="col-span-full md:col-span-1 md:col-start-2 md:col-span-4">
-          {children}
-        </section>
+        ) : null}
+        <main className="flex-1 max-w-5xl w-full mx-auto px-6 py-8">{children}</main>
         <Toaster />
       </body>
     </html>
