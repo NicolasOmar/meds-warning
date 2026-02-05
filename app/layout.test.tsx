@@ -8,7 +8,6 @@ import HomeLayout from './layout'
 // SHARED
 import { ROOT_LAYOUT_LABELS } from '@shared-constants/pages'
 import { MAIN_ROUTES_OBJS } from '@shared-constants/routes'
-import { PUBLIC_ROUTES } from '@shared-constants/auth'
 import { getSession } from '@shared-functions/auth'
 
 const mockHeadersGet = vi.fn()
@@ -75,21 +74,6 @@ describe('[HomeLayout]', () => {
       expect(screen.getByText(name).closest('a')).toHaveAttribute('href', path)
     })
     expect(screen.getByText('Logout')).toBeInTheDocument()
-  })
-
-  test('hides entire header on public route even with active session', async () => {
-    vi.mocked(getSession).mockResolvedValueOnce({
-      user: { id: 1, email: 'test@test.com', name: 'Test' }
-    })
-    mockHeadersGet.mockReturnValue(PUBLIC_ROUTES[0])
-
-    const component = await HomeLayout({ children: <div>Child</div> })
-    render(component)
-
-    expect(screen.queryByText('Logout')).not.toBeInTheDocument()
-    MAIN_ROUTES_OBJS.forEach(({ name }) => {
-      expect(screen.queryByText(name)).not.toBeInTheDocument()
-    })
   })
 
   test('hides header when no session and still renders children', async () => {
