@@ -66,11 +66,13 @@ const MedicinePresentationTable: FC<MedicinePresentationTableProps> = ({ present
   )
 
   return (
-    <DataTable
-      title={MEDICINE_PRESENTATION_TABLE_LABELS.TITLE}
-      headers={MEDICINE_PRESENTATION_TABLE_LABELS.HEADERS.split(',')}
-      data={memoizedMedicineList}
-    />
+    <div className="bg-card text-card-foreground rounded-lg shadow-sm border p-6">
+      <DataTable
+        title={MEDICINE_PRESENTATION_TABLE_LABELS.TITLE}
+        headers={MEDICINE_PRESENTATION_TABLE_LABELS.HEADERS.split(',')}
+        data={memoizedMedicineList}
+      />
+    </div>
   )
 }
 

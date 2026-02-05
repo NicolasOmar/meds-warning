@@ -13,10 +13,10 @@ export default async function RootPage() {
   }
 
   return (
-    <section className="flex flex-col gap-3 mt-4">
-      <h1>{ROOT_PAGE_LABELS.WELCOME_MESSAGE}</h1>
-      <p>{ROOT_PAGE_LABELS.FIRST_PARAGRAPH}</p>
-      <p>{ROOT_PAGE_LABELS.SECOND_PARAGRAPH}</p>
+    <section className="flex flex-col gap-4">
+      <h1 className="text-2xl font-semibold">{ROOT_PAGE_LABELS.WELCOME_MESSAGE}</h1>
+      <p className="text-muted-foreground">{ROOT_PAGE_LABELS.FIRST_PARAGRAPH}</p>
+      <p className="text-muted-foreground">{ROOT_PAGE_LABELS.SECOND_PARAGRAPH}</p>
     </section>
   )
 }

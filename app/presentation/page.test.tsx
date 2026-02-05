@@ -1,25 +1,22 @@
+// CORE
 import { describe, test, expect, vi } from 'vitest'
-import { render, screen } from '@testing-library/react'
-import '@testing-library/jest-dom'
+import { render } from '@testing-library/react'
 // COMPONENTS
 import PresentationRootPage from './page'
-import { PRESENTATION_PAGE_LABELS } from '@shared-constants/pages'
+// SHARED
+import { ROUTE_URLS } from '@shared-constants/routes'
 
-// Mock Prisma to prevent import errors
-vi.mock('@prisma/index', () => ({
-  prisma: {}
+const mockRedirect = vi.fn()
+
+vi.mock('next/navigation', () => ({
+  redirect: (...args: unknown[]) => mockRedirect(...args)
 }))
 
 describe('[PresentationRootPage]', () => {
-  test('renders the welcome message', () => {
+  test('redirects exactly once to the presentation list route', () => {
     render(<PresentationRootPage />)
-    const welcome = screen.getByText(PRESENTATION_PAGE_LABELS.WELCOME_MESSAGE)
-    expect(welcome).toBeInTheDocument()
-  })
 
-  test('renders main section container', () => {
-    const { container } = render(<PresentationRootPage />)
-    const sections = container.querySelectorAll('section')
-    expect(sections.length).toBeGreaterThanOrEqual(1)
+    expect(mockRedirect).toHaveBeenCalledTimes(1)
+    expect(mockRedirect).toHaveBeenCalledWith(ROUTE_URLS.PRESENTATION_LIST)
   })
 })

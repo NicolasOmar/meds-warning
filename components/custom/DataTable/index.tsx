@@ -1,10 +1,8 @@
 // COMPONENTS
-import { FieldLabel } from '@base-components/field'
 import {
   Table,
   TableBody,
   TableCell,
-  // TableFooter,
   TableHead,
   TableHeader,
   TableRow
@@ -25,38 +23,34 @@ const DataTable = <T extends object>({
   data,
   noDataMessage = COMMON_TABLE_ERRORS.NO_DATA
 }: DataTableProps<T>) => {
-  return data.length > 0 ? (
+  return (
     <>
-      {title ? <FieldLabel>{title}</FieldLabel> : null}
-      <Table>
-        <TableHeader>
-          <TableRow>
-            {headers.map((header, index) => (
-              <TableHead key={`table-header-${index}`}>{header}</TableHead>
-            ))}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {data.map((dataSingleItem, index) => (
-            <TableRow key={`table-row-${index}`}>
-              {Object.values(dataSingleItem).map((itemValue, cellIndex) => (
-                <TableCell key={`table-cell-${index}-${cellIndex}`}>
-                  {itemValue === null ? '-' : (itemValue as string)}
-                </TableCell>
+      {title ? <h2 className="text-sm font-semibold mb-3">{title}</h2> : null}
+      {data.length > 0 ? (
+        <Table>
+          <TableHeader>
+            <TableRow>
+              {headers.map((header, index) => (
+                <TableHead key={`table-header-${index}`}>{header}</TableHead>
               ))}
             </TableRow>
-          ))}
-        </TableBody>
-        {/* <TableFooter>
-          <TableRow>
-            <TableCell colSpan={3}>Total</TableCell>
-            <TableCell className="text-right">$2,500.00</TableCell>
-          </TableRow>
-        </TableFooter> */}
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {data.map((dataSingleItem, index) => (
+              <TableRow key={`table-row-${index}`}>
+                {Object.values(dataSingleItem).map((itemValue, cellIndex) => (
+                  <TableCell key={`table-cell-${index}-${cellIndex}`}>
+                    {itemValue === null ? '-' : (itemValue as string)}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      ) : (
+        <p className="text-muted-foreground text-sm py-8 text-center">{noDataMessage}</p>
+      )}
     </>
-  ) : (
-    <p>{noDataMessage}</p>
   )
 }
 

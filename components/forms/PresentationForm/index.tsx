@@ -42,20 +42,22 @@ const PresentationForm: FC<PresentationFormProps> = ({ presentationData }) => {
   }, [state])
 
   return (
-    <form action={presentationFormAction} className="flex flex-col gap-4">
-      <FieldGroup>
-        <FieldLegend>{PRESENTATION_FORM_LABELS.TITLE}</FieldLegend>
-        <CustomInput
-          {...presentationFormStructure.description}
-          message={state.errors?.description}
-          value={presentationData?.description ?? ''}
-        />
-      </FieldGroup>
+    <div className="mx-auto w-full bg-card text-card-foreground rounded-lg shadow-sm border p-6">
+      <form action={presentationFormAction} className="flex flex-col gap-4">
+        <FieldGroup>
+          <FieldLegend>{PRESENTATION_FORM_LABELS.TITLE}</FieldLegend>
+          <CustomInput
+            {...presentationFormStructure.description}
+            message={state.errors?.description}
+            value={presentationData?.description ?? ''}
+          />
+        </FieldGroup>
 
-      <Button type="submit" disabled={isPending}>
-        {presentationData ? COMMON_LABELS.SAVE_CHANGES : PRESENTATION_FORM_LABELS.SUBMIT_BUTTON}
-      </Button>
-    </form>
+        <Button type="submit" disabled={isPending}>
+          {presentationData ? COMMON_LABELS.SAVE_CHANGES : PRESENTATION_FORM_LABELS.SUBMIT_BUTTON}
+        </Button>
+      </form>
+    </div>
   )
 }
 

@@ -50,16 +50,15 @@ describe('[MedicineLayout]', () => {
     expect(seeAllLink).toHaveAttribute('href', '/medicine/list')
   })
 
-  test('renders ButtonGroup component', () => {
-    const { container } = render(
+  test('renders navigation links as anchor elements', () => {
+    render(
       <MedicineLayout>
         <div>Children</div>
       </MedicineLayout>
     )
 
-    // ButtonGroup should be rendered (check for the structure)
-    const buttons = container.querySelectorAll('button')
-    expect(buttons.length).toBeGreaterThan(0)
+    const links = screen.getAllByRole('link')
+    expect(links.length).toBeGreaterThanOrEqual(2)
   })
 
   test('renders all route objects as buttons', () => {
@@ -124,15 +123,15 @@ describe('[MedicineLayout]', () => {
     expect(links.length).toBeGreaterThanOrEqual(2)
   })
 
-  test('renders text styling on links', () => {
+  test('renders navigation links with correct count', () => {
     render(
       <MedicineLayout>
         <div>Children</div>
       </MedicineLayout>
     )
 
-    const addMedicineLink = screen.getByText('Add a new medicine').closest('a')
-    expect(addMedicineLink).toHaveClass('text-2xl', 'font-medium')
+    const links = screen.getAllByRole('link')
+    expect(links.length).toBe(2)
   })
 
   test('renders complete navigation structure', () => {
@@ -142,22 +141,19 @@ describe('[MedicineLayout]', () => {
       </MedicineLayout>
     )
 
-    // Verify ButtonGroup wrapper exists
-    const buttons = container.querySelectorAll('button')
-
-    // Should have buttons for navigation
-    expect(buttons.length).toBeGreaterThan(0)
+    const links = container.querySelectorAll('a')
+    expect(links.length).toBeGreaterThan(0)
+    expect(screen.getByText('Test Nav')).toBeInTheDocument()
   })
 
-  test('renders ButtonGroup with self-center margin', () => {
+  test('renders section with correct layout classes', () => {
     const { container } = render(
       <MedicineLayout>
         <div>Children</div>
       </MedicineLayout>
     )
 
-    // Check for flex structure with correct alignment
     const mainSection = container.querySelector('section')
-    expect(mainSection).toHaveClass('flex', 'flex-col', 'justify-center')
+    expect(mainSection).toHaveClass('flex', 'flex-col', 'gap-6')
   })
 })

@@ -1,14 +1,9 @@
 // CORE
 import { FC } from 'react'
+import { redirect } from 'next/navigation'
 // SHARED
-import { MEDICINE_PAGE_LABELS } from '@shared-constants/pages'
+import { ROUTE_URLS } from '@shared-constants/routes'
 
-const MedicineRootPage: FC = () => {
-  return (
-    <section className="flex flex-col min-h-screen min-w-full justify-start items-center gap-5 py-16 px-8 font-sans dark:bg-black bg-white">
-      {MEDICINE_PAGE_LABELS.WELCOME_MESSAGE}
-    </section>
-  )
-}
+const MedicineRootPage: FC = () => redirect(ROUTE_URLS.MEDICINE_LIST)
 
 export default MedicineRootPage

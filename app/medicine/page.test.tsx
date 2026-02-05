@@ -1,82 +1,22 @@
 // CORE
-import { describe, test, expect, vi, beforeEach } from 'vitest'
-import { render, screen } from '@testing-library/react'
-import '@testing-library/jest-dom'
+import { describe, test, expect, vi } from 'vitest'
+import { render } from '@testing-library/react'
 // COMPONENTS
 import MedicineRootPage from './page'
 // SHARED
-import { MEDICINE_PAGE_LABELS } from '@shared-constants/pages'
+import { ROUTE_URLS } from '@shared-constants/routes'
+
+const mockRedirect = vi.fn()
+
+vi.mock('next/navigation', () => ({
+  redirect: (...args: unknown[]) => mockRedirect(...args)
+}))
 
 describe('[MedicineRootPage]', () => {
-  beforeEach(() => {
-    vi.clearAllMocks()
-  })
-
-  test('renders the welcome message', () => {
+  test('redirects exactly once to the medicine list route', () => {
     render(<MedicineRootPage />)
 
-    expect(screen.getByText(MEDICINE_PAGE_LABELS.WELCOME_MESSAGE)).toBeInTheDocument()
-  })
-
-  test('renders main section with children text', () => {
-    render(<MedicineRootPage />)
-
-    const welcomeText = screen.getByText(MEDICINE_PAGE_LABELS.WELCOME_MESSAGE)
-    expect(welcomeText).toBeInTheDocument()
-  })
-
-  test('renders outer section with correct styling', () => {
-    const { container } = render(<MedicineRootPage />)
-
-    const outerSection = container.querySelector('section')
-    expect(outerSection).toHaveClass(
-      'flex',
-      'flex-col',
-      'min-h-screen',
-      'justify-start',
-      'items-center'
-    )
-  })
-
-  test('renders complete page structure', () => {
-    const { container } = render(<MedicineRootPage />)
-
-    const sections = container.querySelectorAll('section')
-    expect(sections.length).toBeGreaterThanOrEqual(1)
-    expect(screen.getByText(MEDICINE_PAGE_LABELS.WELCOME_MESSAGE)).toBeInTheDocument()
-  })
-
-  test('renders page with correct layout hierarchy', () => {
-    const { container } = render(<MedicineRootPage />)
-
-    const outerSection = container.querySelector('section')
-    expect(outerSection).toBeInTheDocument()
-  })
-
-  test('renders welcome message text correctly', () => {
-    render(<MedicineRootPage />)
-
-    const messageText = screen.getByText(MEDICINE_PAGE_LABELS.WELCOME_MESSAGE)
-    expect(messageText.textContent).toBe(MEDICINE_PAGE_LABELS.WELCOME_MESSAGE)
-  })
-
-  test('component exports MedicineRootPage as default', () => {
-    // Verify the component is defined and renders
-    const component = <MedicineRootPage />
-    expect(component).toBeDefined()
-  })
-
-  test('renders without errors', () => {
-    expect(() => {
-      render(<MedicineRootPage />)
-    }).not.toThrow()
-  })
-
-  test('renders a single outer section container', () => {
-    const { container } = render(<MedicineRootPage />)
-
-    const outerSection = container.querySelector('section')
-    expect(outerSection).toBeInTheDocument()
-    expect(outerSection?.className).toContain('flex')
+    expect(mockRedirect).toHaveBeenCalledTimes(1)
+    expect(mockRedirect).toHaveBeenCalledWith(ROUTE_URLS.MEDICINE_LIST)
   })
 })

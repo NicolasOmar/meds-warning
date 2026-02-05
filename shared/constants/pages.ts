@@ -9,14 +9,6 @@ export enum ROOT_LAYOUT_LABELS {
   METADATA_DESCRIPTION = 'A web system to help users manage and track their medication expiration dates and remind them to renew them'
 }
 
-export enum MEDICINE_PAGE_LABELS {
-  WELCOME_MESSAGE = 'Welcome to the Medicine Page. Please select any of the options above to explore more.'
-}
-
-export enum PRESENTATION_PAGE_LABELS {
-  WELCOME_MESSAGE = 'Welcome to the Presentation Page. Please select any of the options above to explore more.'
-}
-
 export enum USER_PAGE_LABELS {
   WELCOME_MESSAGE = 'Welcome to the User Page. Please select any of the options above to explore more.'
 }

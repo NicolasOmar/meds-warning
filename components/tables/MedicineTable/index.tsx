@@ -5,6 +5,7 @@ import { deleteMedicine, getMedicines, handleExpirationDateAction } from '@actio
 import Link from 'next/link'
 // COMPONENTS
 import { toast } from 'sonner'
+import { CalendarSyncIcon, PencilIcon, TrashIcon } from 'lucide-react'
 import { Button } from '@base-components/button'
 import { DialogClose } from '@base-components/dialog'
 import DataTable from '@custom-components/DataTable'
@@ -19,7 +20,6 @@ import { ROUTE_URLS } from '@shared-constants/routes'
 import { debounce } from '@shared-functions/helpers'
 import { parseMedicineToDataItem } from '@shared-functions/parsers'
 import { handleCommonFormState } from '@shared-functions/forms'
-import { CalendarSyncIcon, PencilIcon, TrashIcon } from 'lucide-react'
 
 interface MedicineDataItem {
   id: number
@@ -77,25 +77,6 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
       toastAction(response.message)
     }
   }
-
-  // const handleExpirationDateChange = (event: React.FormEvent<HTMLFormElement>, medicineId: number, originalDate: string) => {
-  //   event.preventDefault()
-  //   event.stopPropagation()
-
-  //   const formElements = event.currentTarget.elements as HTMLCollection
-  //   const dateInput = formElements.namedItem('expirationDate') as HTMLInputElement
-  //   const newDate = parseStringDateToISOString(dateInput.value)
-
-  //   if (newDate === originalDate) {
-  //     toast.error('The new expiration date must be different from the original date.')
-  //     return
-  //   }
-  //   console.log({
-  //     medicineId,
-  //     dateInput: parseStringDateToISOString(dateInput.value),
-  //     originalDate
-  //   })
-  // }
 
   const handleSearchChange = (value: string) => {
     debouncedSearchRef.current(value)
@@ -171,7 +152,7 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
   )
 
   return (
-    <>
+    <div className="bg-card text-card-foreground rounded-lg shadow-sm border p-6 flex flex-col gap-4">
       <CustomInput
         type="search"
         name="searchMedicine"
@@ -183,7 +164,7 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
         headers={MEDICINE_TABLE_LABELS.HEADERS.split(',')}
         data={memoizedMedicineList}
       />
-    </>
+    </div>
   )
 }
 

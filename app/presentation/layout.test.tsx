@@ -42,13 +42,13 @@ describe('[PresentationLayout]', () => {
   test('renders with flex layout classes', () => {
     const { container } = render(<PresentationLayout>{mockChildren}</PresentationLayout>)
     const section = container.querySelector('section')
-    expect(section).toHaveClass('flex', 'flex-col', 'justify-center')
+    expect(section).toHaveClass('flex', 'flex-col', 'gap-6')
   })
 
-  test('renders ButtonGroup with navigation links', () => {
-    const { container } = render(<PresentationLayout>{mockChildren}</PresentationLayout>)
-    const buttons = container.querySelectorAll('button')
-    expect(buttons.length).toBeGreaterThan(0)
+  test('renders navigation links', () => {
+    render(<PresentationLayout>{mockChildren}</PresentationLayout>)
+    const links = screen.getAllByRole('link')
+    expect(links.length).toBeGreaterThan(0)
   })
 
   test('renders navigation links for all presentation routes', () => {
