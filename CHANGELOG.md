@@ -1,3 +1,16 @@
+# [1.13.0](https://github.com/NicolasOmar/meds-warning/compare/v1.12.0...v1.13.0) (2026-02-05)
+
+
+### Bug Fixes
+
+* adjusting route redirects in several pages and server logic ([7ac98f4](https://github.com/NicolasOmar/meds-warning/commit/7ac98f46f98b06f75aabf5057fdb2f5e2aab3a5c))
+
+
+### Features
+
+* first improvenets to base user interface ([c49de3a](https://github.com/NicolasOmar/meds-warning/commit/c49de3acef23e92d807eb4bd6c5e14b2c89f0214))
+* Merge pull request [#75](https://github.com/NicolasOmar/meds-warning/issues/75)/[#74](https://github.com/NicolasOmar/meds-warning/issues/74) from NicolasOmar/feature/improve-base-ui ([07f6e92](https://github.com/NicolasOmar/meds-warning/commit/07f6e92d30944afea70791e0516df973b2cf140b))
+
 # [1.12.0](https://github.com/NicolasOmar/meds-warning/compare/v1.11.1...v1.12.0) (2026-02-04)
 
 
