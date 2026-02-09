@@ -1,3 +1,11 @@
+## [1.13.1](https://github.com/NicolasOmar/meds-warning/compare/v1.13.0...v1.13.1) (2026-02-09)
+
+
+### Bug Fixes
+
+* updating bcryptjs types. major version ([1a39c8c](https://github.com/NicolasOmar/meds-warning/commit/1a39c8cdd91c66fdb86ebe33bd5c86c7a4e1f3d1))
+* updating majority of dependencies ([b1b2694](https://github.com/NicolasOmar/meds-warning/commit/b1b269455be18da784f8a1d5e8af412f0db46c7c))
+
 # [1.13.0](https://github.com/NicolasOmar/meds-warning/compare/v1.12.0...v1.13.0) (2026-02-05)
 
 
