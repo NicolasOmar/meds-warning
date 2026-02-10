@@ -6,17 +6,17 @@ import Link from 'next/link'
 import { deletePresentation } from '@actions/presentation'
 // COMPONENTS
 import { toast } from 'sonner'
+import { PencilIcon, TrashIcon } from 'lucide-react'
+import { DialogClose } from '@base-components/dialog'
 import DataTable from '@custom-components/DataTable'
 import CustomDialog from '@custom-components/CustomModal'
+import CustomSelect from '@custom-components/CustomSelect'
 // SHARED
 import { MEDICINE_PRESENTATION_TABLE_LABELS } from '@shared-constants/tables'
 import { MedicinePresentationType } from '@shared-types/zod'
 import { Button } from '@base-components/button'
 import { COMMON_LABELS } from '@shared-constants/common'
 import { ROUTE_URLS } from '@shared-constants/routes'
-import { PencilIcon, TrashIcon } from 'lucide-react'
-import CustomSelect from '@custom-components/CustomSelect'
-import { DialogClose } from '@base-components/dialog'
 
 interface MedicinePresentationTableProps {
   presentationList: MedicinePresentationType[]
@@ -24,13 +24,15 @@ interface MedicinePresentationTableProps {
 
 const MedicinePresentationTable: FC<MedicinePresentationTableProps> = ({ presentationList }) => {
   const handleDeleteClick = async (id: number, replacement?: number) => {
-    if (id && replacement !== undefined) {
+    if (id && replacement !== undefined && replacement !== 0) {
       const response = await deletePresentation(id, replacement)
       if (response.message) {
         const toastAction = response.errors ? toast.error : toast.success
 
         toastAction(response.message)
       }
+    } else {
+      toast.error(MEDICINE_PRESENTATION_TABLE_LABELS.MISSING_REPLACEMENT_ERROR)
     }
   }
 
@@ -62,9 +64,9 @@ const MedicinePresentationTable: FC<MedicinePresentationTableProps> = ({ present
                     }
                   >
                     <CustomSelect
-                      label="Replace with:"
+                      label={MEDICINE_PRESENTATION_TABLE_LABELS.REPLACE_LABEL}
                       name="replacement"
-                      selectLabel="Replace with:"
+                      selectLabel={MEDICINE_PRESENTATION_TABLE_LABELS.REPLACE_LABEL}
                       options={presentationList
                         .filter(item => item.id !== presentationItem.id)
                         .map(item => ({
@@ -77,12 +79,7 @@ const MedicinePresentationTable: FC<MedicinePresentationTableProps> = ({ present
                         <Button variant="outline" type="button">
                           {COMMON_LABELS.CANCEL}
                         </Button>
-                        <Button
-                          type="submit"
-                          onClick={() => handleDeleteClick(presentationItem.id!)}
-                        >
-                          {COMMON_LABELS.CONFIRM}
-                        </Button>
+                        <Button type="submit">{COMMON_LABELS.CONFIRM}</Button>
                       </DialogClose>
                     </section>
                   </form>
