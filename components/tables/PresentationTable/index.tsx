@@ -15,18 +15,22 @@ import { Button } from '@base-components/button'
 import { COMMON_LABELS } from '@shared-constants/common'
 import { ROUTE_URLS } from '@shared-constants/routes'
 import { PencilIcon, TrashIcon } from 'lucide-react'
+import CustomSelect from '@custom-components/CustomSelect'
+import { DialogClose } from '@base-components/dialog'
 
 interface MedicinePresentationTableProps {
   presentationList: MedicinePresentationType[]
 }
 
 const MedicinePresentationTable: FC<MedicinePresentationTableProps> = ({ presentationList }) => {
-  const handleDeleteClick = async (id: number) => {
-    const response = await deletePresentation(id)
-    if (response.message) {
-      const toastAction = response.errors ? toast.error : toast.success
+  const handleDeleteClick = async (id: number, replacement?: number) => {
+    if (id && replacement !== undefined) {
+      const response = await deletePresentation(id, replacement)
+      if (response.message) {
+        const toastAction = response.errors ? toast.error : toast.success
 
-      toastAction(response.message)
+        toastAction(response.message)
+      }
     }
   }
 
@@ -42,23 +46,49 @@ const MedicinePresentationTable: FC<MedicinePresentationTableProps> = ({ present
                 <PencilIcon />
               </Button>
             </Link>
-            <CustomDialog
-              initButton={{
-                text: <TrashIcon />,
-                title: COMMON_LABELS.DELETE
-              }}
-              title={`${COMMON_LABELS.DELETE} '${presentationItem.description}'`}
-              description={MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_QUESTION}
-              confirmButton={{
-                text: COMMON_LABELS.DELETE,
-                type: 'button',
-                onClick: () => handleDeleteClick(presentationItem.id!)
-              }}
-              cancelButton={{
-                text: COMMON_LABELS.CANCEL,
-                type: 'button'
-              }}
-            />
+            {presentationList.length > 1 ? (
+              <CustomDialog
+                initButton={{
+                  text: <TrashIcon />,
+                  title: COMMON_LABELS.DELETE
+                }}
+                title={`${COMMON_LABELS.DELETE} '${presentationItem.description}'`}
+                description={MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_QUESTION}
+                body={
+                  <form
+                    className="flex flex-col gap-4"
+                    action={formData =>
+                      handleDeleteClick(presentationItem.id!, Number(formData.get('replacement')))
+                    }
+                  >
+                    <CustomSelect
+                      label="Replace with:"
+                      name="replacement"
+                      selectLabel="Replace with:"
+                      options={presentationList
+                        .filter(item => item.id !== presentationItem.id)
+                        .map(item => ({
+                          label: item.description,
+                          value: item.id!.toString()
+                        }))}
+                    />
+                    <section className="flex justify-end">
+                      <DialogClose className="flex gap-x-2">
+                        <Button variant="outline" type="button">
+                          {COMMON_LABELS.CANCEL}
+                        </Button>
+                        <Button
+                          type="submit"
+                          onClick={() => handleDeleteClick(presentationItem.id!)}
+                        >
+                          {COMMON_LABELS.CONFIRM}
+                        </Button>
+                      </DialogClose>
+                    </section>
+                  </form>
+                }
+              />
+            ) : null}
           </section>
         )
       })),

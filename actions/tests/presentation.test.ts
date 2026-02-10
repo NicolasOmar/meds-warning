@@ -29,9 +29,7 @@ import {
   presentationWithLongDescription,
   presentationWithSpecialCharacters,
   presentationsListResponse,
-  emptyPresentationsListResponse,
-  mockMedicineForDelete,
-  mockMedicineForDelete2
+  emptyPresentationsListResponse
 } from './presentation.mocks.json'
 
 const populateFormData = (
@@ -299,14 +297,13 @@ describe('Presentation Actions', () => {
   })
 
   describe('[deletePresentation]', () => {
-    test('deletes presentation with valid id', async () => {
-      vi.mocked(prisma.medicine.findMany).mockResolvedValue([mockMedicineForDelete])
-      vi.mocked(prisma.medicine.updateMany).mockResolvedValue({ count: 0 })
+    test('deletes presentation with valid id and replacement', async () => {
+      vi.mocked(prisma.medicine.updateMany).mockResolvedValue({ count: 1 })
       vi.mocked(prisma.medicinePresentation.delete).mockResolvedValueOnce(
         presentationCreationResponse
       )
 
-      const result = await deletePresentation(1)
+      const result = await deletePresentation(1, 2)
 
       expect(result.message).toBe(MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_SUCCESS)
       expect(result.success).toBe(true)
@@ -315,74 +312,60 @@ describe('Presentation Actions', () => {
       })
     })
 
-    test('calls prisma.medicine.findMany before deletion', async () => {
-      vi.mocked(prisma.medicine.findMany).mockResolvedValue([mockMedicineForDelete])
-      vi.mocked(prisma.medicine.updateMany).mockResolvedValue({ count: 0 })
+    test('updates medicines referencing the deleted presentation with replacement', async () => {
+      vi.mocked(prisma.medicine.updateMany).mockResolvedValue({ count: 2 })
       vi.mocked(prisma.medicinePresentation.delete).mockResolvedValueOnce(
         presentationCreationResponse
       )
 
-      await deletePresentation(1)
-
-      expect(prisma.medicine.findMany).toHaveBeenCalled()
-    })
-
-    test('updates medicines referencing the deleted presentation', async () => {
-      vi.mocked(prisma.medicine.findMany).mockResolvedValue([mockMedicineForDelete2])
-      vi.mocked(prisma.medicine.updateMany).mockResolvedValue({ count: 1 })
-      vi.mocked(prisma.medicinePresentation.delete).mockResolvedValueOnce(
-        presentationCreationResponse
-      )
-
-      const result = await deletePresentation(1)
+      const result = await deletePresentation(1, 3)
 
       expect(result.success).toBe(true)
-      expect(prisma.medicine.updateMany).toHaveBeenCalled()
+      expect(prisma.medicine.updateMany).toHaveBeenCalledWith({
+        where: { presentation: 1, userId: 1 },
+        data: { presentation: 3 }
+      })
     })
 
     test('handles database error on delete', async () => {
-      vi.mocked(prisma.medicine.findMany).mockResolvedValue([mockMedicineForDelete])
       vi.mocked(prisma.medicine.updateMany).mockResolvedValue({ count: 0 })
       vi.mocked(prisma.medicinePresentation.delete).mockRejectedValueOnce(
         new Error('Record not found')
       )
 
-      const result = await deletePresentation(999)
+      const result = await deletePresentation(999, 2)
 
       expect(result.success).toBe(false)
       expect(result.message).toContain('Record not found')
     })
 
     test('handles error with no message on delete', async () => {
-      vi.mocked(prisma.medicine.findMany).mockResolvedValue([mockMedicineForDelete])
       vi.mocked(prisma.medicine.updateMany).mockResolvedValue({ count: 0 })
       vi.mocked(prisma.medicinePresentation.delete).mockRejectedValueOnce(new Error())
 
-      const result = await deletePresentation(1)
+      const result = await deletePresentation(1, 2)
 
       expect(result.success).toBe(false)
       expect(result.message).toBe(MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_ERROR)
     })
 
     test('handles non-Error exceptions on delete', async () => {
-      vi.mocked(prisma.medicine.findMany).mockResolvedValue([mockMedicineForDelete])
       vi.mocked(prisma.medicine.updateMany).mockResolvedValue({ count: 0 })
       vi.mocked(prisma.medicinePresentation.delete).mockRejectedValueOnce('Unknown error')
 
-      const result = await deletePresentation(1)
+      const result = await deletePresentation(1, 2)
 
       expect(result.success).toBe(false)
       expect(result.message).toBe(MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_ERROR)
     })
 
     test('returns success message after successful deletion', async () => {
-      vi.mocked(prisma.medicine.findMany).mockResolvedValue([mockMedicineForDelete])
       vi.mocked(prisma.medicine.updateMany).mockResolvedValue({ count: 0 })
       vi.mocked(prisma.medicinePresentation.delete).mockResolvedValueOnce(
         presentationCreationResponse
       )
 
-      const result = await deletePresentation(1)
+      const result = await deletePresentation(1, 2)
 
       expect(result.message).toBe(MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_SUCCESS)
       expect(result.success).toBe(true)

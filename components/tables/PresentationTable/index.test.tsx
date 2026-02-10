@@ -147,58 +147,69 @@ describe('[MedicinePresentationTable]', () => {
       expect(editButtons.length).toBe(multiplePresentationData.length)
     })
 
-    test('renders action buttons for all presentations', () => {
+    test('renders action buttons for presentations with multiple items', () => {
+      render(<MedicinePresentationTable presentationList={multiplePresentationData} />)
+
+      const editButtons = screen.getAllByTitle(COMMON_LABELS.EDIT)
+      const deleteButtons = screen.getAllByTitle(COMMON_LABELS.DELETE)
+
+      expect(editButtons.length).toBe(3)
+      expect(deleteButtons.length).toBe(3)
+    })
+
+    test('does not render delete button when only one presentation exists', () => {
       render(<MedicinePresentationTable presentationList={basicPresentationData} />)
 
       const editButton = screen.getByTitle(COMMON_LABELS.EDIT)
-      const deleteButton = screen.getByTitle(COMMON_LABELS.DELETE)
+      const deleteButton = screen.queryByTitle(COMMON_LABELS.DELETE)
 
       expect(editButton).toBeInTheDocument()
-      expect(deleteButton).toBeInTheDocument()
+      expect(deleteButton).not.toBeInTheDocument()
     })
 
-    test('renders delete dialog button for each presentation', async () => {
-      render(<MedicinePresentationTable presentationList={basicPresentationData} />)
+    test('renders delete dialog button for presentations with replacement options', async () => {
+      render(<MedicinePresentationTable presentationList={multiplePresentationData} />)
 
-      const deleteDialogButton = screen.getByRole('button', { name: COMMON_LABELS.DELETE })
-      expect(deleteDialogButton).toBeInTheDocument()
+      const deleteDialogButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
+      expect(deleteDialogButtons.length).toBeGreaterThan(0)
     })
 
-    test('displays delete confirmation dialog when delete button is clicked', async () => {
-      render(<MedicinePresentationTable presentationList={basicPresentationData} />)
+    test('displays delete confirmation dialog with replacement select when delete button is clicked', async () => {
+      render(<MedicinePresentationTable presentationList={multiplePresentationData} />)
 
-      const deleteButton = screen.getByRole('button', { name: COMMON_LABELS.DELETE })
-      fireEvent.click(deleteButton)
+      const deleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
+      fireEvent.click(deleteButtons[0])
 
       const confirmDeleteTitle = await screen.findByText(
         MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_QUESTION
       )
       expect(confirmDeleteTitle).toBeInTheDocument()
 
-      // Check for the description text (may be split across elements)
       const dialogContent = await screen.findByRole('dialog')
-      expect(dialogContent.textContent).toContain(basicPresentationData[0].description)
-      expect(dialogContent.textContent).toContain('This action cannot be undone')
+      expect(dialogContent.textContent).toContain(multiplePresentationData[0].description)
+      expect(dialogContent.textContent).toContain('Replace with:')
     })
 
-    test('calls deletePresentation action when delete is confirmed', async () => {
+    test('calls deletePresentation action with replacement when form is submitted', async () => {
       vi.mocked(deletePresentation).mockResolvedValueOnce({
         message: MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_SUCCESS,
         success: true
       })
 
-      const presentationId = basicPresentationData[0].id
-      render(<MedicinePresentationTable presentationList={basicPresentationData} />)
+      const presentationId = multiplePresentationData[0].id
 
-      const deleteButton = screen.getByRole('button', { name: COMMON_LABELS.DELETE })
-      fireEvent.click(deleteButton)
+      render(<MedicinePresentationTable presentationList={multiplePresentationData} />)
 
-      // Get the confirmation button (not the trigger button)
-      const allDeleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
-      fireEvent.click(allDeleteButtons[allDeleteButtons.length - 1])
+      const deleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
+      fireEvent.click(deleteButtons[0])
+
+      await waitFor(() => screen.findByRole('dialog'))
+
+      const confirmButton = screen.getByRole('button', { name: COMMON_LABELS.CONFIRM })
+      fireEvent.click(confirmButton)
 
       await waitFor(() => {
-        expect(deletePresentation).toHaveBeenCalledWith(presentationId)
+        expect(deletePresentation).toHaveBeenCalledWith(presentationId, expect.any(Number))
         expect(vi.mocked(toast.success)).toHaveBeenCalledWith(
           MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_SUCCESS
         )
@@ -211,13 +222,15 @@ describe('[MedicinePresentationTable]', () => {
         success: true
       })
 
-      render(<MedicinePresentationTable presentationList={basicPresentationData} />)
+      render(<MedicinePresentationTable presentationList={multiplePresentationData} />)
 
-      const deleteButton = screen.getByRole('button', { name: COMMON_LABELS.DELETE })
-      fireEvent.click(deleteButton)
+      const deleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
+      fireEvent.click(deleteButtons[0])
 
-      const allDeleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
-      fireEvent.click(allDeleteButtons[allDeleteButtons.length - 1])
+      await waitFor(() => screen.findByRole('dialog'))
+
+      const confirmButton = screen.getByRole('button', { name: COMMON_LABELS.CONFIRM })
+      fireEvent.click(confirmButton)
 
       await waitFor(() => {
         expect(vi.mocked(toast.success)).toHaveBeenCalledWith(
@@ -232,13 +245,15 @@ describe('[MedicinePresentationTable]', () => {
         errors: { name: ['Error occurred'] }
       })
 
-      render(<MedicinePresentationTable presentationList={basicPresentationData} />)
+      render(<MedicinePresentationTable presentationList={multiplePresentationData} />)
 
-      const deleteButton = screen.getByRole('button', { name: COMMON_LABELS.DELETE })
-      fireEvent.click(deleteButton)
+      const deleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
+      fireEvent.click(deleteButtons[0])
 
-      const allDeleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
-      fireEvent.click(allDeleteButtons[allDeleteButtons.length - 1])
+      await waitFor(() => screen.findByRole('dialog'))
+
+      const confirmButton = screen.getByRole('button', { name: COMMON_LABELS.CONFIRM })
+      fireEvent.click(confirmButton)
 
       await waitFor(() => {
         expect(deletePresentation).toHaveBeenCalled()
@@ -254,13 +269,15 @@ describe('[MedicinePresentationTable]', () => {
         errors: { name: ['Error'] }
       })
 
-      render(<MedicinePresentationTable presentationList={basicPresentationData} />)
+      render(<MedicinePresentationTable presentationList={multiplePresentationData} />)
 
-      const deleteButton = screen.getByRole('button', { name: COMMON_LABELS.DELETE })
-      fireEvent.click(deleteButton)
+      const deleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
+      fireEvent.click(deleteButtons[0])
 
-      const allDeleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
-      fireEvent.click(allDeleteButtons[allDeleteButtons.length - 1])
+      await waitFor(() => screen.findByRole('dialog'))
+
+      const confirmButton = screen.getByRole('button', { name: COMMON_LABELS.CONFIRM })
+      fireEvent.click(confirmButton)
 
       await waitFor(() => {
         expect(vi.mocked(toast.error)).toHaveBeenCalled()
@@ -275,24 +292,27 @@ describe('[MedicinePresentationTable]', () => {
 
       const dialogContent = await screen.findByRole('dialog')
       expect(dialogContent.textContent).toContain(multiplePresentationData[0].description)
-      expect(dialogContent.textContent).toContain('This action cannot be undone')
+      expect(dialogContent.textContent).toContain('Replace with:')
     })
 
     test('handles delete with no response message', async () => {
       vi.mocked(deletePresentation).mockResolvedValueOnce({})
 
-      const presentationId = basicPresentationData[0].id
-      render(<MedicinePresentationTable presentationList={basicPresentationData} />)
+      render(<MedicinePresentationTable presentationList={multiplePresentationData} />)
 
-      const deleteButton = screen.getByRole('button', { name: COMMON_LABELS.DELETE })
-      fireEvent.click(deleteButton)
+      const deleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
+      fireEvent.click(deleteButtons[0])
 
-      const allDeleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
-      fireEvent.click(allDeleteButtons[allDeleteButtons.length - 1])
+      await waitFor(() => screen.findByRole('dialog'))
 
-      // Should not throw error
+      const confirmButton = screen.getByRole('button', { name: COMMON_LABELS.CONFIRM })
+      fireEvent.click(confirmButton)
+
       await waitFor(() => {
-        expect(deletePresentation).toHaveBeenCalledWith(presentationId)
+        expect(deletePresentation).toHaveBeenCalledWith(
+          multiplePresentationData[0].id,
+          expect.any(Number)
+        )
       })
     })
   })
