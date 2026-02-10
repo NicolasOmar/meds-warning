@@ -74,13 +74,13 @@ const MedicinePresentationTable: FC<MedicinePresentationTableProps> = ({ present
                           value: item.id!.toString()
                         }))}
                     />
-                    <section className="flex justify-end">
-                      <DialogClose className="flex gap-x-2">
+                    <section className="flex justify-end gap-x-2">
+                      <DialogClose asChild>
                         <Button variant="outline" type="button">
                           {COMMON_LABELS.CANCEL}
                         </Button>
-                        <Button type="submit">{COMMON_LABELS.CONFIRM}</Button>
                       </DialogClose>
+                      <Button type="submit">{COMMON_LABELS.CONFIRM}</Button>
                     </section>
                   </form>
                 }

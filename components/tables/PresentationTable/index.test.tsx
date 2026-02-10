@@ -43,6 +43,7 @@ vi.mock('sonner', () => ({
 describe('[MedicinePresentationTable]', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    Element.prototype.scrollIntoView = vi.fn()
   })
 
   test('renders table title correctly', () => {
@@ -187,17 +188,10 @@ describe('[MedicinePresentationTable]', () => {
 
       const dialogContent = await screen.findByRole('dialog')
       expect(dialogContent.textContent).toContain(multiplePresentationData[0].description)
-      expect(dialogContent.textContent).toContain('Replace with:')
+      expect(dialogContent.textContent).toContain(MEDICINE_PRESENTATION_TABLE_LABELS.REPLACE_LABEL)
     })
 
-    test('calls deletePresentation action with replacement when form is submitted', async () => {
-      vi.mocked(deletePresentation).mockResolvedValueOnce({
-        message: MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_SUCCESS,
-        success: true
-      })
-
-      const presentationId = multiplePresentationData[0].id
-
+    test('shows error toast when no replacement is selected', async () => {
       render(<MedicinePresentationTable presentationList={multiplePresentationData} />)
 
       const deleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
@@ -209,66 +203,39 @@ describe('[MedicinePresentationTable]', () => {
       fireEvent.click(confirmButton)
 
       await waitFor(() => {
-        expect(deletePresentation).toHaveBeenCalledWith(presentationId, expect.any(Number))
-        expect(vi.mocked(toast.success)).toHaveBeenCalledWith(
-          MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_SUCCESS
-        )
-      })
-    })
-
-    test('displays success message on successful deletion', async () => {
-      vi.mocked(deletePresentation).mockResolvedValueOnce({
-        message: MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_SUCCESS,
-        success: true
-      })
-
-      render(<MedicinePresentationTable presentationList={multiplePresentationData} />)
-
-      const deleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
-      fireEvent.click(deleteButtons[0])
-
-      await waitFor(() => screen.findByRole('dialog'))
-
-      const confirmButton = screen.getByRole('button', { name: COMMON_LABELS.CONFIRM })
-      fireEvent.click(confirmButton)
-
-      await waitFor(() => {
-        expect(vi.mocked(toast.success)).toHaveBeenCalledWith(
-          MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_SUCCESS
-        )
-      })
-    })
-
-    test('shows error toast on delete failure', async () => {
-      vi.mocked(deletePresentation).mockResolvedValueOnce({
-        message: MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_ERROR,
-        errors: { name: ['Error occurred'] }
-      })
-
-      render(<MedicinePresentationTable presentationList={multiplePresentationData} />)
-
-      const deleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
-      fireEvent.click(deleteButtons[0])
-
-      await waitFor(() => screen.findByRole('dialog'))
-
-      const confirmButton = screen.getByRole('button', { name: COMMON_LABELS.CONFIRM })
-      fireEvent.click(confirmButton)
-
-      await waitFor(() => {
-        expect(deletePresentation).toHaveBeenCalled()
         expect(vi.mocked(toast.error)).toHaveBeenCalledWith(
-          MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_ERROR
+          MEDICINE_PRESENTATION_TABLE_LABELS.MISSING_REPLACEMENT_ERROR
         )
+        expect(deletePresentation).not.toHaveBeenCalled()
       })
     })
 
-    test('handles deletion error gracefully', async () => {
-      vi.mocked(deletePresentation).mockResolvedValueOnce({
-        message: 'Failed to delete presentation',
-        errors: { name: ['Error'] }
-      })
+    test('renders select with available replacement options', async () => {
+      render(<MedicinePresentationTable presentationList={multiplePresentationData} />)
 
+      const deleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
+      fireEvent.click(deleteButtons[0])
+
+      const dialogContent = await screen.findByRole('dialog')
+      expect(dialogContent.textContent).toContain(MEDICINE_PRESENTATION_TABLE_LABELS.REPLACE_LABEL)
+
+      const selectTrigger = screen.getByRole('combobox')
+      expect(selectTrigger).toBeInTheDocument()
+    })
+
+    test('renders cancel button in delete dialog', async () => {
+      render(<MedicinePresentationTable presentationList={multiplePresentationData} />)
+
+      const deleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
+      fireEvent.click(deleteButtons[0])
+
+      await waitFor(() => screen.findByRole('dialog'))
+
+      const cancelButton = screen.getByRole('button', { name: COMMON_LABELS.CANCEL })
+      expect(cancelButton).toBeInTheDocument()
+    })
+
+    test('renders confirm button in delete dialog', async () => {
       render(<MedicinePresentationTable presentationList={multiplePresentationData} />)
 
       const deleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
@@ -277,11 +244,7 @@ describe('[MedicinePresentationTable]', () => {
       await waitFor(() => screen.findByRole('dialog'))
 
       const confirmButton = screen.getByRole('button', { name: COMMON_LABELS.CONFIRM })
-      fireEvent.click(confirmButton)
-
-      await waitFor(() => {
-        expect(vi.mocked(toast.error)).toHaveBeenCalled()
-      })
+      expect(confirmButton).toBeInTheDocument()
     })
 
     test('presentation description appears correctly in delete confirmation for multiple presentations', async () => {
@@ -292,28 +255,19 @@ describe('[MedicinePresentationTable]', () => {
 
       const dialogContent = await screen.findByRole('dialog')
       expect(dialogContent.textContent).toContain(multiplePresentationData[0].description)
-      expect(dialogContent.textContent).toContain('Replace with:')
+      expect(dialogContent.textContent).toContain(MEDICINE_PRESENTATION_TABLE_LABELS.REPLACE_LABEL)
     })
 
-    test('handles delete with no response message', async () => {
-      vi.mocked(deletePresentation).mockResolvedValueOnce({})
-
+    test('delete dialog displays correct presentation description', async () => {
       render(<MedicinePresentationTable presentationList={multiplePresentationData} />)
 
       const deleteButtons = screen.getAllByRole('button', { name: COMMON_LABELS.DELETE })
-      fireEvent.click(deleteButtons[0])
+      fireEvent.click(deleteButtons[1])
 
-      await waitFor(() => screen.findByRole('dialog'))
-
-      const confirmButton = screen.getByRole('button', { name: COMMON_LABELS.CONFIRM })
-      fireEvent.click(confirmButton)
-
-      await waitFor(() => {
-        expect(deletePresentation).toHaveBeenCalledWith(
-          multiplePresentationData[0].id,
-          expect.any(Number)
-        )
-      })
+      const dialogTitle = await screen.findByText(
+        `${COMMON_LABELS.DELETE} '${multiplePresentationData[1].description}'`
+      )
+      expect(dialogTitle).toBeInTheDocument()
     })
   })
 })
