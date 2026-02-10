@@ -1,3 +1,16 @@
+# [1.14.0](https://github.com/NicolasOmar/meds-warning/compare/v1.13.1...v1.14.0) (2026-02-10)
+
+
+### Bug Fixes
+
+* adjusting user edit form to avoid showing its email ([21bd905](https://github.com/NicolasOmar/meds-warning/commit/21bd905b125b574675324d1f7c3e0683eeec95bf))
+* first iteration of user data editing ([3bf8ade](https://github.com/NicolasOmar/meds-warning/commit/3bf8ade61e0f82b3db48c09dcbfdaf69e40819e9))
+
+
+### Features
+
+* Merge pull request [#84](https://github.com/NicolasOmar/meds-warning/issues/84)/[#76](https://github.com/NicolasOmar/meds-warning/issues/76) from NicolasOmar/feature/update-logged-user-data ([8f9bbfe](https://github.com/NicolasOmar/meds-warning/commit/8f9bbfea6023eb47091a3acbcd4ca0f823bd0f86))
+
 ## [1.13.1](https://github.com/NicolasOmar/meds-warning/compare/v1.13.0...v1.13.1) (2026-02-09)
 
 
