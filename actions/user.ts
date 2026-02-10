@@ -13,7 +13,8 @@ import { hashPassword, generateJWT, setAuthCookie } from '@shared-functions/auth
 export async function handleUserAction(
   _: UserActionState,
   formData: FormData,
-  id?: string
+  id?: string,
+  email?: string
 ): Promise<UserActionState> {
   const isEditing = !!id
   const basePassword = 'placeholder'
@@ -24,7 +25,7 @@ export async function handleUserAction(
         name: parseEmptyFormValueToNull(formData.get('name')),
         lastName: parseEmptyFormValueToNull(formData.get('lastName')),
         password: basePassword,
-        email: parseEmptyFormValueToNull(formData.get('email')),
+        email: parseEmptyFormValueToNull(email ?? null),
         daysToNotify: baseDaysToNotify
       }
     : {

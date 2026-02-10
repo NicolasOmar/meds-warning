@@ -57,8 +57,8 @@ describe('[UserForm]', () => {
     })
   })
 
-  test('renders user inputs without password in edit mode', () => {
-    const labels = [USER_FORM_LABELS.NAME, USER_FORM_LABELS.LAST_NAME, USER_FORM_LABELS.EMAIL]
+  test('renders user inputs without email and password in edit mode', () => {
+    const labels = [USER_FORM_LABELS.NAME, USER_FORM_LABELS.LAST_NAME]
 
     render(<UserForm userData={mockUserDataError} />)
 
@@ -66,6 +66,9 @@ describe('[UserForm]', () => {
       const input = screen.getByLabelText(label)
       expect(input).toBeInTheDocument()
     })
+
+    const emailInput = screen.queryByLabelText(USER_FORM_LABELS.EMAIL)
+    expect(emailInput).not.toBeInTheDocument()
 
     const passwordInput = screen.queryByLabelText(USER_FORM_LABELS.PASSWORD)
     expect(passwordInput).not.toBeInTheDocument()
@@ -101,12 +104,8 @@ describe('[UserForm]', () => {
     })
   })
 
-  test('renders user inputs with correct placeholders in edit mode without password', () => {
-    const placeholders = [
-      USER_FORM_LABELS.NAME_PLACEHOLDER,
-      USER_FORM_LABELS.LAST_NAME_PLACEHOLDER,
-      USER_FORM_LABELS.EMAIL_PLACEHOLDER
-    ]
+  test('renders user inputs with correct placeholders in edit mode without email and password', () => {
+    const placeholders = [USER_FORM_LABELS.NAME_PLACEHOLDER, USER_FORM_LABELS.LAST_NAME_PLACEHOLDER]
 
     render(<UserForm userData={mockUserDataError} />)
 
@@ -114,6 +113,9 @@ describe('[UserForm]', () => {
       const input = screen.getByPlaceholderText(placeholder)
       expect(input).toBeInTheDocument()
     })
+
+    const emailInput = screen.queryByPlaceholderText(USER_FORM_LABELS.EMAIL_PLACEHOLDER)
+    expect(emailInput).not.toBeInTheDocument()
 
     const passwordInput = screen.queryByPlaceholderText(USER_FORM_LABELS.PASSWORD_PLACEHOLDER)
     expect(passwordInput).not.toBeInTheDocument()
@@ -152,10 +154,10 @@ describe('[UserForm]', () => {
     render(<UserForm userData={mockUserDataError} />)
 
     const nameInput = screen.getByDisplayValue(mockUserDataError.name)
-    const emailInput = screen.getByDisplayValue(mockUserDataError.email)
-
     expect(nameInput).toBeInTheDocument()
-    expect(emailInput).toBeInTheDocument()
+
+    const emailInput = screen.queryByDisplayValue(mockUserDataError.email)
+    expect(emailInput).not.toBeInTheDocument()
   })
 
   test('displays error messages from state.errors', () => {
@@ -174,12 +176,12 @@ describe('[UserForm]', () => {
     expect(screen.getByText(USER_FORM_LABELS.PASSWORD)).toBeInTheDocument()
   })
 
-  test('renders field labels without password in edit mode', () => {
+  test('renders field labels without email and password in edit mode', () => {
     render(<UserForm userData={mockUserDataError} />)
 
     expect(screen.getByText(USER_FORM_LABELS.NAME)).toBeInTheDocument()
     expect(screen.getByText(USER_FORM_LABELS.LAST_NAME)).toBeInTheDocument()
-    expect(screen.getByText(USER_FORM_LABELS.EMAIL)).toBeInTheDocument()
+    expect(screen.queryByText(USER_FORM_LABELS.EMAIL)).not.toBeInTheDocument()
     expect(screen.queryByText(USER_FORM_LABELS.PASSWORD)).not.toBeInTheDocument()
   })
 
@@ -203,11 +205,13 @@ describe('[UserForm]', () => {
     expect(emailField).toHaveAccessibleName()
   })
 
-  test('user data shows all form values populated', () => {
+  test('user data shows name field populated', () => {
     render(<UserForm userData={fullUserData} />)
 
     expect(screen.getByDisplayValue(fullUserData.name)).toBeInTheDocument()
-    expect(screen.getByDisplayValue(fullUserData.email)).toBeInTheDocument()
+
+    const emailInput = screen.queryByDisplayValue(fullUserData.email)
+    expect(emailInput).not.toBeInTheDocument()
   })
 
   test('password field has correct input type in create mode', () => {
@@ -234,16 +238,17 @@ describe('[UserForm]', () => {
     expect(lastNameInput.value).toBe('')
   })
 
-  test('email field is disabled in edit mode', () => {
+  test('email field is not rendered in edit mode', () => {
     render(<UserForm userData={fullUserData} />)
-    const emailInput = screen.getByLabelText(USER_FORM_LABELS.EMAIL) as HTMLInputElement
-    expect(emailInput).toBeDisabled()
+    const emailInput = screen.queryByLabelText(USER_FORM_LABELS.EMAIL)
+    expect(emailInput).not.toBeInTheDocument()
   })
 
-  test('email field is not disabled in create mode', () => {
+  test('email field is rendered in create mode', () => {
     render(<UserForm />)
-    const emailInput = screen.getByLabelText(USER_FORM_LABELS.EMAIL) as HTMLInputElement
-    expect(emailInput).not.toBeDisabled()
+    const emailInput = screen.getByLabelText(USER_FORM_LABELS.EMAIL)
+    expect(emailInput).toBeInTheDocument()
+    expect(emailInput).toHaveAttribute('type', 'email')
   })
 
   test('button shows "Create UserForm" in create mode', () => {

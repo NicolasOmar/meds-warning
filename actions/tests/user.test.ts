@@ -230,7 +230,7 @@ describe('User Actions', () => {
       })
 
       const formData = populateFormData(validUserData2, ['password'])
-      const result = await handleUserAction({}, formData, '1')
+      const result = await handleUserAction({}, formData, '1', validUserData2.email)
 
       expect(result.message).toBe(USER_FORM_LABELS.UPDATE_SUCCESS)
       expect(result.success).toBe(true)
@@ -244,7 +244,7 @@ describe('User Actions', () => {
       })
 
       const formData = populateFormData(validUserData2, ['password'])
-      await handleUserAction({}, formData, '1')
+      await handleUserAction({}, formData, '1', validUserData2.email)
 
       expect(prisma.user.update).toHaveBeenCalledWith({
         where: { id: 1 },
@@ -262,7 +262,7 @@ describe('User Actions', () => {
       })
 
       const formData = populateFormData(validUserData2, ['password'])
-      await handleUserAction({}, formData, '1')
+      await handleUserAction({}, formData, '1', validUserData2.email)
 
       const callArgs = vi.mocked(prisma.user.update).mock.calls[0][0]
       expect(callArgs.data).not.toHaveProperty('password')
@@ -277,7 +277,7 @@ describe('User Actions', () => {
       })
 
       const formData = populateFormData(validUserData, ['password'])
-      await handleUserAction({}, formData, '5')
+      await handleUserAction({}, formData, '5', validUserData.email)
 
       expect(prisma.user.update).toHaveBeenCalledWith({
         where: { id: 5 },
@@ -349,7 +349,7 @@ describe('User Actions', () => {
       vi.mocked(prisma.user.update).mockRejectedValueOnce(dbError)
 
       const formData = populateFormData(validUserData, ['password'])
-      const result = await handleUserAction({}, formData, '1')
+      const result = await handleUserAction({}, formData, '1', validUserData.email)
 
       expect(result.message).toBe('Update failed')
       expect(result.success).toBe(false)
@@ -380,7 +380,7 @@ describe('User Actions', () => {
       const { generateJWT, setAuthCookie } = await import('@shared-functions/auth')
 
       const formData = populateFormData(validUserData, ['password'])
-      await handleUserAction({}, formData, '1')
+      await handleUserAction({}, formData, '1', validUserData.email)
 
       expect(generateJWT).not.toHaveBeenCalled()
       expect(setAuthCookie).not.toHaveBeenCalled()

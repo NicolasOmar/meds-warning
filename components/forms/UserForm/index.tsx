@@ -49,7 +49,7 @@ const generateUserFormStructure = () => ({
 const UserForm: FC<UserFormProps> = ({ userData }) => {
   const userFormStructure = generateUserFormStructure()
   const customUserFormAction = (state: UserActionState, formData: FormData) =>
-    handleUserAction(state, formData, userData?.id?.toString())
+    handleUserAction(state, formData, userData?.id?.toString(), userData?.email)
   const [state, userFormAction, isPending] = useActionState(customUserFormAction, {})
 
   useEffect(() => {
@@ -73,12 +73,9 @@ const UserForm: FC<UserFormProps> = ({ userData }) => {
               message={state.errors?.lastName}
               value={userData?.lastName ?? ''}
             />
-            <CustomInput
-              {...userFormStructure.email}
-              message={state.errors?.email}
-              value={userData?.email ?? ''}
-              disabled={userData !== undefined}
-            />
+            {userData ? null : (
+              <CustomInput {...userFormStructure.email} message={state.errors?.email} />
+            )}
             {userData ? null : (
               <CustomInput {...userFormStructure.password} message={state.errors?.password} />
             )}
