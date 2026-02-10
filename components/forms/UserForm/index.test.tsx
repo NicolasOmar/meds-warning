@@ -234,16 +234,16 @@ describe('[UserForm]', () => {
     expect(lastNameInput.value).toBe('')
   })
 
-  test('email field is readonly in edit mode', () => {
+  test('email field is disabled in edit mode', () => {
     render(<UserForm userData={fullUserData} />)
     const emailInput = screen.getByLabelText(USER_FORM_LABELS.EMAIL) as HTMLInputElement
-    expect(emailInput).toHaveAttribute('readonly')
+    expect(emailInput).toBeDisabled()
   })
 
-  test('email field is not readonly in create mode', () => {
+  test('email field is not disabled in create mode', () => {
     render(<UserForm />)
     const emailInput = screen.getByLabelText(USER_FORM_LABELS.EMAIL) as HTMLInputElement
-    expect(emailInput).not.toHaveAttribute('readonly')
+    expect(emailInput).not.toBeDisabled()
   })
 
   test('button shows "Create UserForm" in create mode', () => {
