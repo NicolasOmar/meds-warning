@@ -40,4 +40,16 @@ describe('[CustomField]', () => {
     const input = screen.getByRole('textbox')
     expect(input).not.toBeRequired()
   })
+
+  test('renders input with readonly attribute when provided', () => {
+    render(<CustomField {...defaultProps} disabled={true} />)
+    const input = screen.getByRole('textbox')
+    expect(input).toHaveAttribute('readonly')
+  })
+
+  test('renders input without readonly attribute by default', () => {
+    render(<CustomField {...defaultProps} />)
+    const input = screen.getByRole('textbox')
+    expect(input).not.toHaveAttribute('readonly')
+  })
 })

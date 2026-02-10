@@ -13,7 +13,7 @@ import { UserType } from '@shared-types/zod'
 import { UserActionState } from '@shared-types/states'
 import { handleCommonFormState } from '@shared-functions/forms'
 import { ROUTE_URLS } from '@shared-constants/routes'
-import { ROOT_LAYOUT_LABELS } from '@shared-constants/pages'
+import { COMMON_LABELS } from '@shared-constants/common'
 
 interface UserFormProps {
   userData?: UserType
@@ -43,61 +43,54 @@ const generateUserFormStructure = () => ({
     label: USER_FORM_LABELS.PASSWORD,
     type: 'password',
     placeholder: USER_FORM_LABELS.PASSWORD_PLACEHOLDER
-  },
-  daysToNotify: {
-    name: 'daysToNotify',
-    label: USER_FORM_LABELS.DAYS_TO_NOTIFY,
-    type: 'number',
-    placeholder: USER_FORM_LABELS.DAYS_TO_NOTIFY_PLACEHOLDER
   }
 })
 
-const User: FC<UserFormProps> = ({ userData }) => {
+const UserForm: FC<UserFormProps> = ({ userData }) => {
   const userFormStructure = generateUserFormStructure()
   const customUserFormAction = (state: UserActionState, formData: FormData) =>
     handleUserAction(state, formData, userData?.id?.toString())
   const [state, userFormAction, isPending] = useActionState(customUserFormAction, {})
 
   useEffect(() => {
-    handleCommonFormState(ROUTE_URLS.HOME, state)
-  }, [state])
+    const redirectUrl = userData ? ROUTE_URLS.SETTINGS_ROOT : ROUTE_URLS.LOGIN
+    handleCommonFormState(redirectUrl, state)
+  }, [state, userData])
 
   return (
-    <div className="flex min-h-screen items-center justify-center px-4">
-      <div className="w-full max-w-md bg-card text-card-foreground rounded-lg shadow-sm border p-8">
-        <h1 className="text-xl font-semibold text-center text-primary mb-6">
-          {ROOT_LAYOUT_LABELS.METADATA_TITLE}
-        </h1>
-        <form action={userFormAction} className="flex flex-col gap-4">
-          <FieldGroup>
-            <FieldSet>
-              <FieldLegend>{USER_FORM_LABELS.TITLE}</FieldLegend>
-              <CustomInput
-                {...userFormStructure.name}
-                message={state.errors?.name}
-                value={userData?.name ?? ''}
-              />
-              <CustomInput
-                {...userFormStructure.lastName}
-                message={state.errors?.lastName}
-                value={userData?.lastName ?? ''}
-              />
-              <CustomInput
-                {...userFormStructure.email}
-                message={state.errors?.email}
-                value={userData?.email ?? ''}
-              />
+    <section className="mx-auto w-full bg-card text-card-foreground rounded-lg shadow-sm border p-6">
+      <form action={userFormAction} className="flex flex-col gap-4">
+        <FieldGroup>
+          <FieldSet>
+            <FieldLegend>{USER_FORM_LABELS.TITLE}</FieldLegend>
+            <CustomInput
+              {...userFormStructure.name}
+              message={state.errors?.name}
+              value={userData?.name ?? ''}
+            />
+            <CustomInput
+              {...userFormStructure.lastName}
+              message={state.errors?.lastName}
+              value={userData?.lastName ?? ''}
+            />
+            <CustomInput
+              {...userFormStructure.email}
+              message={state.errors?.email}
+              value={userData?.email ?? ''}
+              disabled={userData !== undefined}
+            />
+            {userData ? null : (
               <CustomInput {...userFormStructure.password} message={state.errors?.password} />
-            </FieldSet>
-          </FieldGroup>
+            )}
+          </FieldSet>
+        </FieldGroup>
 
-          <Button type="submit" disabled={isPending}>
-            {USER_FORM_LABELS.SUBMIT_BUTTON}
-          </Button>
-        </form>
-      </div>
-    </div>
+        <Button type="submit" disabled={isPending}>
+          {userData ? COMMON_LABELS.SAVE_CHANGES : USER_FORM_LABELS.SUBMIT_BUTTON}
+        </Button>
+      </form>
+    </section>
   )
 }
 
-export default User
+export default UserForm

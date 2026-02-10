@@ -4,6 +4,8 @@ import { FC } from 'react'
 import { prisma } from '@prisma/index'
 // COMPONENTS
 import SettingsForm from '@form-components/SettingsForm'
+import UserForm from '@form-components/UserForm'
+// SHARED
 import { getSession } from '@shared-functions/auth'
 
 const SettingsRootPage: FC = async () => {
@@ -11,7 +13,12 @@ const SettingsRootPage: FC = async () => {
   const loggedUser = await prisma.user.findUnique({
     where: { id: session!.user.id }
   })
-  return <SettingsForm userDaysToNotify={loggedUser?.daysToNotify ?? 30} />
+  return (
+    <>
+      <UserForm userData={loggedUser ?? undefined} />
+      <SettingsForm userDaysToNotify={loggedUser?.daysToNotify ?? 30} />
+    </>
+  )
 }
 
 export default SettingsRootPage

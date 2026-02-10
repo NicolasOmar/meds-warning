@@ -47,7 +47,7 @@ export enum PRESENTATION_FORM_ERRORS {
 }
 
 export enum SETTINGS_FORM_LABELS {
-  TITLE = 'Settings',
+  TITLE = 'Other Settings',
   DAYS_TO_NOTIFY = 'Days to Notify:',
   DAYS_TO_NOTIFY_PLACEHOLDER = 'Enter number of days',
   SUBMIT_BUTTON = 'Save Settings',
