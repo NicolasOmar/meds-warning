@@ -2,9 +2,10 @@ import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 // COMPONENTS
-import User from './index'
+import UserForm from './index'
 // SHARED
 import { USER_FORM_LABELS } from '@shared-constants/forms'
+import { COMMON_LABELS } from '@shared-constants/common'
 import { toast } from 'sonner'
 import { handleUserAction } from '@actions/user'
 // MOCKS
@@ -29,18 +30,18 @@ vi.mock('sonner', () => ({
   }
 }))
 
-describe('[User]', () => {
+describe('[UserForm]', () => {
   beforeEach(() => {
     vi.clearAllMocks()
   })
 
   test('renders the user form with title', () => {
-    render(<User />)
+    render(<UserForm />)
     const legend = screen.getByText(USER_FORM_LABELS.TITLE)
     expect(legend).toBeInTheDocument()
   })
 
-  test('renders user inputs with correct label', () => {
+  test('renders user inputs with correct label in create mode', () => {
     const labels = [
       USER_FORM_LABELS.NAME,
       USER_FORM_LABELS.LAST_NAME,
@@ -48,7 +49,7 @@ describe('[User]', () => {
       USER_FORM_LABELS.PASSWORD
     ]
 
-    render(<User />)
+    render(<UserForm />)
 
     labels.forEach(label => {
       const input = screen.getByLabelText(label)
@@ -56,8 +57,25 @@ describe('[User]', () => {
     })
   })
 
+  test('renders user inputs without email and password in edit mode', () => {
+    const labels = [USER_FORM_LABELS.NAME, USER_FORM_LABELS.LAST_NAME]
+
+    render(<UserForm userData={mockUserDataError} />)
+
+    labels.forEach(label => {
+      const input = screen.getByLabelText(label)
+      expect(input).toBeInTheDocument()
+    })
+
+    const emailInput = screen.queryByLabelText(USER_FORM_LABELS.EMAIL)
+    expect(emailInput).not.toBeInTheDocument()
+
+    const passwordInput = screen.queryByLabelText(USER_FORM_LABELS.PASSWORD)
+    expect(passwordInput).not.toBeInTheDocument()
+  })
+
   test('renders submit button', () => {
-    render(<User />)
+    render(<UserForm />)
     const button = screen.getByRole('button', { name: USER_FORM_LABELS.SUBMIT_BUTTON })
     expect(button).toBeInTheDocument()
     expect(button).toHaveAttribute('type', 'submit')
@@ -65,12 +83,12 @@ describe('[User]', () => {
   })
 
   test('renders within FieldSet and FieldGroup', () => {
-    const { container } = render(<User />)
+    const { container } = render(<UserForm />)
     const fieldGroup = container.querySelector('[role="group"]')
     expect(fieldGroup).toBeInTheDocument()
   })
 
-  test('renders user inputs with correct placeholders', () => {
+  test('renders user inputs with correct placeholders in create mode', () => {
     const placeholders = [
       USER_FORM_LABELS.NAME_PLACEHOLDER,
       USER_FORM_LABELS.LAST_NAME_PLACEHOLDER,
@@ -78,7 +96,7 @@ describe('[User]', () => {
       USER_FORM_LABELS.PASSWORD_PLACEHOLDER
     ]
 
-    render(<User />)
+    render(<UserForm />)
 
     placeholders.forEach(placeholder => {
       const input = screen.getByPlaceholderText(placeholder)
@@ -86,8 +104,25 @@ describe('[User]', () => {
     })
   })
 
+  test('renders user inputs with correct placeholders in edit mode without email and password', () => {
+    const placeholders = [USER_FORM_LABELS.NAME_PLACEHOLDER, USER_FORM_LABELS.LAST_NAME_PLACEHOLDER]
+
+    render(<UserForm userData={mockUserDataError} />)
+
+    placeholders.forEach(placeholder => {
+      const input = screen.getByPlaceholderText(placeholder)
+      expect(input).toBeInTheDocument()
+    })
+
+    const emailInput = screen.queryByPlaceholderText(USER_FORM_LABELS.EMAIL_PLACEHOLDER)
+    expect(emailInput).not.toBeInTheDocument()
+
+    const passwordInput = screen.queryByPlaceholderText(USER_FORM_LABELS.PASSWORD_PLACEHOLDER)
+    expect(passwordInput).not.toBeInTheDocument()
+  })
+
   test('displays success toast when message is provided and success is true', async () => {
-    render(<User />)
+    render(<UserForm />)
 
     await waitFor(
       () => {
@@ -106,9 +141,9 @@ describe('[User]', () => {
       errors: undefined
     })
 
-    const { rerender } = render(<User userData={mockUserDataError} />)
+    const { rerender } = render(<UserForm userData={mockUserDataError} />)
 
-    rerender(<User userData={mockUserDataError} />)
+    rerender(<UserForm userData={mockUserDataError} />)
 
     await waitFor(() => {
       expect(vi.mocked(toast)).toBeDefined()
@@ -116,24 +151,24 @@ describe('[User]', () => {
   })
 
   test('populates form fields with userData when provided', () => {
-    render(<User userData={mockUserDataError} />)
+    render(<UserForm userData={mockUserDataError} />)
 
     const nameInput = screen.getByDisplayValue(mockUserDataError.name)
-    const emailInput = screen.getByDisplayValue(mockUserDataError.email)
-
     expect(nameInput).toBeInTheDocument()
-    expect(emailInput).toBeInTheDocument()
+
+    const emailInput = screen.queryByDisplayValue(mockUserDataError.email)
+    expect(emailInput).not.toBeInTheDocument()
   })
 
   test('displays error messages from state.errors', () => {
-    render(<User userData={mockUserDataNullFields} />)
+    render(<UserForm userData={mockUserDataNullFields} />)
 
     const nameInput = screen.getByDisplayValue(mockUserDataNullFields.name)
     expect(nameInput).toBeInTheDocument()
   })
 
-  test('renders all field labels for user form', () => {
-    render(<User />)
+  test('renders all field labels for user form in create mode', () => {
+    render(<UserForm />)
 
     expect(screen.getByText(USER_FORM_LABELS.NAME)).toBeInTheDocument()
     expect(screen.getByText(USER_FORM_LABELS.LAST_NAME)).toBeInTheDocument()
@@ -141,8 +176,17 @@ describe('[User]', () => {
     expect(screen.getByText(USER_FORM_LABELS.PASSWORD)).toBeInTheDocument()
   })
 
+  test('renders field labels without email and password in edit mode', () => {
+    render(<UserForm userData={mockUserDataError} />)
+
+    expect(screen.getByText(USER_FORM_LABELS.NAME)).toBeInTheDocument()
+    expect(screen.getByText(USER_FORM_LABELS.LAST_NAME)).toBeInTheDocument()
+    expect(screen.queryByText(USER_FORM_LABELS.EMAIL)).not.toBeInTheDocument()
+    expect(screen.queryByText(USER_FORM_LABELS.PASSWORD)).not.toBeInTheDocument()
+  })
+
   test('renders form inputs without initial user data', () => {
-    render(<User />)
+    render(<UserForm />)
 
     const nameInput = screen.getByLabelText(USER_FORM_LABELS.NAME) as HTMLInputElement
     const emailInput = screen.getByLabelText(USER_FORM_LABELS.EMAIL) as HTMLInputElement
@@ -152,7 +196,7 @@ describe('[User]', () => {
   })
 
   test('form contains proper aria labels for accessibility', () => {
-    render(<User />)
+    render(<UserForm />)
 
     const nameField = screen.getByLabelText(USER_FORM_LABELS.NAME)
     const emailField = screen.getByLabelText(USER_FORM_LABELS.EMAIL)
@@ -161,28 +205,61 @@ describe('[User]', () => {
     expect(emailField).toHaveAccessibleName()
   })
 
-  test('user data shows all form values populated', () => {
-    render(<User userData={fullUserData} />)
+  test('user data shows name field populated', () => {
+    render(<UserForm userData={fullUserData} />)
 
     expect(screen.getByDisplayValue(fullUserData.name)).toBeInTheDocument()
-    expect(screen.getByDisplayValue(fullUserData.email)).toBeInTheDocument()
+
+    const emailInput = screen.queryByDisplayValue(fullUserData.email)
+    expect(emailInput).not.toBeInTheDocument()
   })
 
-  test('password field has correct input type', () => {
-    render(<User />)
+  test('password field has correct input type in create mode', () => {
+    render(<UserForm />)
     const passwordInput = screen.getByLabelText(USER_FORM_LABELS.PASSWORD)
     expect(passwordInput).toHaveAttribute('type', 'password')
   })
 
+  test('password field is not rendered in edit mode', () => {
+    render(<UserForm userData={fullUserData} />)
+    const passwordInput = screen.queryByLabelText(USER_FORM_LABELS.PASSWORD)
+    expect(passwordInput).not.toBeInTheDocument()
+  })
+
   test('email field has correct input type', () => {
-    render(<User />)
+    render(<UserForm />)
     const emailInput = screen.getByLabelText(USER_FORM_LABELS.EMAIL)
     expect(emailInput).toHaveAttribute('type', 'email')
   })
 
   test('lastName field is optional and renders empty when not provided', () => {
-    render(<User userData={mockUserDataNullFields} />)
+    render(<UserForm userData={mockUserDataNullFields} />)
     const lastNameInput = screen.getByLabelText(USER_FORM_LABELS.LAST_NAME) as HTMLInputElement
     expect(lastNameInput.value).toBe('')
+  })
+
+  test('email field is not rendered in edit mode', () => {
+    render(<UserForm userData={fullUserData} />)
+    const emailInput = screen.queryByLabelText(USER_FORM_LABELS.EMAIL)
+    expect(emailInput).not.toBeInTheDocument()
+  })
+
+  test('email field is rendered in create mode', () => {
+    render(<UserForm />)
+    const emailInput = screen.getByLabelText(USER_FORM_LABELS.EMAIL)
+    expect(emailInput).toBeInTheDocument()
+    expect(emailInput).toHaveAttribute('type', 'email')
+  })
+
+  test('button shows "Create UserForm" in create mode', () => {
+    render(<UserForm />)
+    const button = screen.getByRole('button', { name: USER_FORM_LABELS.SUBMIT_BUTTON })
+    expect(button).toBeInTheDocument()
+  })
+
+  test('button shows "Save Changes" in edit mode', () => {
+    render(<UserForm userData={fullUserData} />)
+    const button = screen.getByRole('button', { name: COMMON_LABELS.SAVE_CHANGES })
+    expect(button).toBeInTheDocument()
   })
 })

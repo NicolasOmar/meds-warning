@@ -13,15 +13,30 @@ import { hashPassword, generateJWT, setAuthCookie } from '@shared-functions/auth
 export async function handleUserAction(
   _: UserActionState,
   formData: FormData,
-  id?: string
+  id?: string,
+  email?: string
 ): Promise<UserActionState> {
-  const validatedUserObject = UserSchema.safeParse({
-    name: parseEmptyFormValueToNull(formData.get('name')),
-    lastName: parseEmptyFormValueToNull(formData.get('lastName')),
-    password: parseEmptyFormValueToNull(formData.get('password')),
-    email: parseEmptyFormValueToNull(formData.get('email')),
-    daysToNotify: 30
-  })
+  const isEditing = !!id
+  const basePassword = 'placeholder'
+  const baseDaysToNotify = 30
+
+  const validationData = isEditing
+    ? {
+        name: parseEmptyFormValueToNull(formData.get('name')),
+        lastName: parseEmptyFormValueToNull(formData.get('lastName')),
+        password: basePassword,
+        email: parseEmptyFormValueToNull(email ?? null),
+        daysToNotify: baseDaysToNotify
+      }
+    : {
+        name: parseEmptyFormValueToNull(formData.get('name')),
+        lastName: parseEmptyFormValueToNull(formData.get('lastName')),
+        password: parseEmptyFormValueToNull(formData.get('password')),
+        email: parseEmptyFormValueToNull(formData.get('email')),
+        daysToNotify: baseDaysToNotify
+      }
+
+  const validatedUserObject = UserSchema.safeParse(validationData)
 
   if (!validatedUserObject.success) {
     return {
@@ -31,23 +46,25 @@ export async function handleUserAction(
     }
   }
 
-  const hashedPassword = await hashPassword(validatedUserObject.data.password)
-
-  const userData = {
-    name: validatedUserObject.data.name,
-    lastName: validatedUserObject.data.lastName,
-    password: hashedPassword,
-    email: validatedUserObject.data.email,
-    daysToNotify: validatedUserObject.data.daysToNotify
-  }
-
   try {
-    if (id) {
+    if (isEditing) {
       await prisma.user.update({
         where: { id: +id },
-        data: userData
+        data: {
+          name: validatedUserObject.data.name,
+          lastName: validatedUserObject.data.lastName
+        }
       })
     } else {
+      const hashedPassword = await hashPassword(validatedUserObject.data.password)
+
+      const userData = {
+        name: validatedUserObject.data.name,
+        lastName: validatedUserObject.data.lastName,
+        password: hashedPassword,
+        email: validatedUserObject.data.email,
+        daysToNotify: validatedUserObject.data.daysToNotify
+      }
       const user = await prisma.user.create({
         data: userData
       })

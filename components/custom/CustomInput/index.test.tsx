@@ -40,4 +40,16 @@ describe('[CustomField]', () => {
     const input = screen.getByRole('textbox')
     expect(input).not.toBeRequired()
   })
+
+  test('renders input as disabled when provided', () => {
+    render(<CustomField {...defaultProps} disabled={true} />)
+    const input = screen.getByRole('textbox')
+    expect(input).toBeDisabled()
+  })
+
+  test('renders input as enabled by default', () => {
+    render(<CustomField {...defaultProps} />)
+    const input = screen.getByRole('textbox')
+    expect(input).not.toBeDisabled()
+  })
 })

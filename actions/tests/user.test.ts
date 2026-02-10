@@ -229,33 +229,45 @@ describe('User Actions', () => {
         ...validUserData2
       })
 
-      const formData = populateFormData(validUserData2)
-      const result = await handleUserAction({}, formData, '1')
+      const formData = populateFormData(validUserData2, ['password'])
+      const result = await handleUserAction({}, formData, '1', validUserData2.email)
 
       expect(result.message).toBe(USER_FORM_LABELS.UPDATE_SUCCESS)
       expect(result.success).toBe(true)
       expect(prisma.user.update).toHaveBeenCalled()
     })
 
-    test('calls prisma.user.update with correct parameters', async () => {
+    test('calls prisma.user.update with only name and lastName', async () => {
       vi.mocked(prisma.user.update).mockResolvedValue({
         id: 1,
         ...validUserData2
       })
 
-      const formData = populateFormData(validUserData2)
-      await handleUserAction({}, formData, '1')
+      const formData = populateFormData(validUserData2, ['password'])
+      await handleUserAction({}, formData, '1', validUserData2.email)
 
       expect(prisma.user.update).toHaveBeenCalledWith({
         where: { id: 1 },
         data: {
           name: validUserData2.name,
-          lastName: validUserData2.lastName,
-          password: `hashed_${validUserData2.password}`,
-          email: validUserData2.email,
-          daysToNotify: 30
+          lastName: validUserData2.lastName
         }
       })
+    })
+
+    test('does not update password or email in edit mode', async () => {
+      vi.mocked(prisma.user.update).mockResolvedValue({
+        id: 1,
+        ...validUserData2
+      })
+
+      const formData = populateFormData(validUserData2, ['password'])
+      await handleUserAction({}, formData, '1', validUserData2.email)
+
+      const callArgs = vi.mocked(prisma.user.update).mock.calls[0][0]
+      expect(callArgs.data).not.toHaveProperty('password')
+      expect(callArgs.data).not.toHaveProperty('email')
+      expect(callArgs.data).not.toHaveProperty('daysToNotify')
     })
 
     test('converts string id to number for update query', async () => {
@@ -264,8 +276,8 @@ describe('User Actions', () => {
         ...validUserData
       })
 
-      const formData = populateFormData(validUserData)
-      await handleUserAction({}, formData, '5')
+      const formData = populateFormData(validUserData, ['password'])
+      await handleUserAction({}, formData, '5', validUserData.email)
 
       expect(prisma.user.update).toHaveBeenCalledWith({
         where: { id: 5 },
@@ -336,8 +348,8 @@ describe('User Actions', () => {
       const dbError = new Error('Update failed')
       vi.mocked(prisma.user.update).mockRejectedValueOnce(dbError)
 
-      const formData = populateFormData(validUserData)
-      const result = await handleUserAction({}, formData, '1')
+      const formData = populateFormData(validUserData, ['password'])
+      const result = await handleUserAction({}, formData, '1', validUserData.email)
 
       expect(result.message).toBe('Update failed')
       expect(result.success).toBe(false)
@@ -367,8 +379,8 @@ describe('User Actions', () => {
 
       const { generateJWT, setAuthCookie } = await import('@shared-functions/auth')
 
-      const formData = populateFormData(validUserData)
-      await handleUserAction({}, formData, '1')
+      const formData = populateFormData(validUserData, ['password'])
+      await handleUserAction({}, formData, '1', validUserData.email)
 
       expect(generateJWT).not.toHaveBeenCalled()
       expect(setAuthCookie).not.toHaveBeenCalled()

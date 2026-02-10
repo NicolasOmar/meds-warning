@@ -8,6 +8,7 @@ import { CompleteFormFieldPorps } from '@shared-types/interfaces'
 interface CustomFieldProps extends CompleteFormFieldPorps {
   type: string
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  disabled?: boolean
 }
 
 const CustomInput: FC<CustomFieldProps> = ({
@@ -17,7 +18,8 @@ const CustomInput: FC<CustomFieldProps> = ({
   placeholder,
   value,
   message,
-  onChange
+  onChange,
+  disabled
 }) => {
   return (
     <FormFieldTemplate label={label} name={name} message={message}>
@@ -28,6 +30,7 @@ const CustomInput: FC<CustomFieldProps> = ({
         type={type}
         defaultValue={value}
         onChange={onChange}
+        disabled={disabled}
       />
     </FormFieldTemplate>
   )

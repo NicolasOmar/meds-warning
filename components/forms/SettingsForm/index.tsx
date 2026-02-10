@@ -5,7 +5,7 @@ import { FC, useActionState, useEffect } from 'react'
 import { updateSettings } from '@actions/settings'
 // COMPONENTS
 import { Button } from '@base-components/button'
-import { FieldGroup, FieldLegend } from '@base-components/field'
+import { FieldGroup, FieldLegend, FieldSet } from '@base-components/field'
 import CustomInput from '@custom-components/CustomInput'
 // SHARED
 import { SETTINGS_FORM_LABELS } from '@shared-constants/forms'
@@ -37,22 +37,24 @@ const SettingsForm: FC<SettingsFormProps> = ({ userDaysToNotify }) => {
   }, [state])
 
   return (
-    <div className="mx-auto w-full bg-card text-card-foreground rounded-lg shadow-sm border p-6">
+    <section className="mx-auto w-full bg-card text-card-foreground rounded-lg shadow-sm border p-6">
       <form action={settingsActionForm} className="flex flex-col gap-4">
         <FieldGroup>
-          <FieldLegend>{SETTINGS_FORM_LABELS.TITLE}</FieldLegend>
-          <CustomInput
-            {...settingsFormStructure.daysToNotify}
-            message={state.errors?.daysToNotify}
-            value={userDaysToNotify.toString()}
-          />
+          <FieldSet>
+            <FieldLegend>{SETTINGS_FORM_LABELS.TITLE}</FieldLegend>
+            <CustomInput
+              {...settingsFormStructure.daysToNotify}
+              message={state.errors?.daysToNotify}
+              value={userDaysToNotify.toString()}
+            />
+          </FieldSet>
         </FieldGroup>
 
         <Button type="submit" disabled={isPending}>
           {SETTINGS_FORM_LABELS.SUBMIT_BUTTON}
         </Button>
       </form>
-    </div>
+    </section>
   )
 }
 
