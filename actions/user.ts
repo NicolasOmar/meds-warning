@@ -23,7 +23,7 @@ export async function handleUserAction(
     ? {
         name: parseEmptyFormValueToNull(formData.get('name')),
         lastName: parseEmptyFormValueToNull(formData.get('lastName')),
-        password: 'placeholder_password_for_validation',
+        password: process.env.TEST_PASSWORD,
         email: parseEmptyFormValueToNull(email ?? null),
         daysToNotify: baseDaysToNotify
       }

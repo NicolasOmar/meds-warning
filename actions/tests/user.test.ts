@@ -20,6 +20,9 @@ vi.mock('@shared-functions/auth', () => ({
   setAuthCookie: vi.fn()
 }))
 
+// Set TEST_PASSWORD environment variable for edit mode validation
+process.env.TEST_PASSWORD = 'test_password_123'
+
 // MOCKS
 import {
   validUserData,

@@ -1,3 +1,4 @@
+<!-- README -->
 # MedsWarning
 A web system to help users manage and track their medication expiration dates and send reminders to renew those that have expired.
 
@@ -88,6 +89,7 @@ The tool's objective is to <u>create notifications across several channels that 
 Before cloning this repo, I recommend installing the following software:
 - [Node](https://nodejs.org/en/download/) >= `24.4.0` to install packages.
 - A [PostgreSQL database](https://www.postgresql.org/download/) on your local machine or in a cloud service.
+- A [Mailgun account](https://www.mailgun.com/) to access its API key and sender email address.
 
 ## Setup
 After cloning the repo, install the node packages in the project's root file.
@@ -98,9 +100,15 @@ npm run setup
 ```
 
 At last, create an `.env` file at your project's root with the following content.
-```
+```env
 DATABASE_URL=HERE_GOES_YOUR_DATABASE_CONNECTION_STRING
+MAILGUN_API=HERE_GOES_YOUR_MAILGUN_API
+MAILGUN_MAIL_SENDER=HERE_GOES_YOUR_MAILGUN_MAIL_SENDER
+JWT_SECRET=HERE_GOES_YOUR_JWT_SECRET
+TEST_PASSWORD=HERE_GOES_YOUR_TEST_PASSWORD
 ```
+
+> TEST_PASSWORD is only for a placeholder text in certain scenarios; its data will not impact any database
 
 ## How to run it
 To run it, simply execute
@@ -125,14 +133,14 @@ In case you have cloned the repo, it will show you the following folders:
 - `prisma:` Location of prisma implementation with its `models/entities` and migrations to mirror the entities relationship in the database.
 - `shared`: Location of shared pieces of reusable code to be used across the system.
   - `constants:`: Dedicated to labels, strings, regular expressions, and configuration objects.
-  - `functions:` Dedicated to generalistic functions that can be used across the application.
+  - `functions:`: Dedicated to generalistic functions that can be used across the application.
   - `ts:` Dedicated to typescript interfaces, types, enums, and other features.
 
 ## Branches and Environments
 After my previous experience with [semantic-release](https://semantic-release.gitbook.io/semantic-release/) in [other projects](https://github.com/NicolasOmar/reactive-bulma/issues/3), I decided to give the following meaning to the project's versions after `v4.0.0`:
 - Major versions (`5.0.0`, `6.0.0`, and beyond) will refer to milestone achievements and significant changes that will need extra attention before the update.
-- Minor versions (`4.1.0`, `4.2.0`, and so on) will refer to bug fixes that requried several and important code changes or specific new features.
-- Patch versions (`4.0.1`, `4.0.2`, and so on) will refer to bug fixes that requried small code changes or weekly dependency updates.
+- Minor versions (`4.1.0`, `4.2.0`, and so on) will refer to bug fixes that required several important code changes or specific new features.
+- Patch versions (`4.0.1`, `4.0.2`, and so on) will refer to bug fixes that required small code changes or weekly dependency updates.
 
 To check the current project's status, go to the [Roadmap](#roadmap) section.
 
