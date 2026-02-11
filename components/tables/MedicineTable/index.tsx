@@ -108,8 +108,8 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
                     label={MEDICINE_TABLE_LABELS.NEW_EXPIRATION_DATE_LABEL}
                     value={medicineItem.expirationDate ?? undefined}
                   />
-                  <section className="flex justify-end">
-                    <DialogClose className="flex gap-x-2">
+                  <section className="flex justify-end gap-x-2">
+                    <DialogClose asChild>
                       <Button
                         variant="outline"
                         disabled={isWorking || isExpirationDatePending}
@@ -117,6 +117,8 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
                       >
                         {COMMON_LABELS.CANCEL}
                       </Button>
+                    </DialogClose>
+                    <DialogClose asChild>
                       <Button type="submit" disabled={isWorking || isExpirationDatePending}>
                         {COMMON_LABELS.CONFIRM}
                       </Button>

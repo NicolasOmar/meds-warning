@@ -80,7 +80,9 @@ const MedicinePresentationTable: FC<MedicinePresentationTableProps> = ({ present
                           {COMMON_LABELS.CANCEL}
                         </Button>
                       </DialogClose>
-                      <Button type="submit">{COMMON_LABELS.CONFIRM}</Button>
+                      <DialogClose asChild>
+                        <Button type="submit">{COMMON_LABELS.CONFIRM}</Button>
+                      </DialogClose>
                     </section>
                   </form>
                 }
