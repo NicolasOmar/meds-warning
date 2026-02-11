@@ -16,6 +16,8 @@ export enum MEDICINE_PRESENTATION_TABLE_LABELS {
   TITLE = 'Medicine Presentations',
   HEADERS = 'ID,Description,Actions',
   DELETE_QUESTION = 'Are you sure you want to delete this medicine presentation? This action cannot be undone.',
+  REPLACE_LABEL = 'Replace with the existing presentation:',
+  MISSING_REPLACEMENT_ERROR = 'Please select a replacement presentation to proceed with the deletion.',
   DELETE_SUCCESS = 'Medicine presentation deleted successfully!',
   DELETE_ERROR = 'An error occurred while deleting the medicine presentation. Please try again later.'
 }

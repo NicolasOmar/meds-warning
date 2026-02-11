@@ -6,27 +6,33 @@ import Link from 'next/link'
 import { deletePresentation } from '@actions/presentation'
 // COMPONENTS
 import { toast } from 'sonner'
+import { PencilIcon, TrashIcon } from 'lucide-react'
+import { DialogClose } from '@base-components/dialog'
 import DataTable from '@custom-components/DataTable'
 import CustomDialog from '@custom-components/CustomModal'
+import CustomSelect from '@custom-components/CustomSelect'
 // SHARED
 import { MEDICINE_PRESENTATION_TABLE_LABELS } from '@shared-constants/tables'
 import { MedicinePresentationType } from '@shared-types/zod'
 import { Button } from '@base-components/button'
 import { COMMON_LABELS } from '@shared-constants/common'
 import { ROUTE_URLS } from '@shared-constants/routes'
-import { PencilIcon, TrashIcon } from 'lucide-react'
 
 interface MedicinePresentationTableProps {
   presentationList: MedicinePresentationType[]
 }
 
 const MedicinePresentationTable: FC<MedicinePresentationTableProps> = ({ presentationList }) => {
-  const handleDeleteClick = async (id: number) => {
-    const response = await deletePresentation(id)
-    if (response.message) {
-      const toastAction = response.errors ? toast.error : toast.success
+  const handleDeleteClick = async (id: number, replacement?: number) => {
+    if (id && replacement !== undefined && replacement !== 0) {
+      const response = await deletePresentation(id, replacement)
+      if (response.message) {
+        const toastAction = response.errors ? toast.error : toast.success
 
-      toastAction(response.message)
+        toastAction(response.message)
+      }
+    } else {
+      toast.error(MEDICINE_PRESENTATION_TABLE_LABELS.MISSING_REPLACEMENT_ERROR)
     }
   }
 
@@ -42,23 +48,46 @@ const MedicinePresentationTable: FC<MedicinePresentationTableProps> = ({ present
                 <PencilIcon />
               </Button>
             </Link>
-            <CustomDialog
-              initButton={{
-                text: <TrashIcon />,
-                title: COMMON_LABELS.DELETE
-              }}
-              title={`${COMMON_LABELS.DELETE} '${presentationItem.description}'`}
-              description={MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_QUESTION}
-              confirmButton={{
-                text: COMMON_LABELS.DELETE,
-                type: 'button',
-                onClick: () => handleDeleteClick(presentationItem.id!)
-              }}
-              cancelButton={{
-                text: COMMON_LABELS.CANCEL,
-                type: 'button'
-              }}
-            />
+            {presentationList.length > 1 ? (
+              <CustomDialog
+                initButton={{
+                  text: <TrashIcon />,
+                  title: COMMON_LABELS.DELETE
+                }}
+                title={`${COMMON_LABELS.DELETE} '${presentationItem.description}'`}
+                description={MEDICINE_PRESENTATION_TABLE_LABELS.DELETE_QUESTION}
+                body={
+                  <form
+                    className="flex flex-col gap-4"
+                    action={formData =>
+                      handleDeleteClick(presentationItem.id!, Number(formData.get('replacement')))
+                    }
+                  >
+                    <CustomSelect
+                      label={MEDICINE_PRESENTATION_TABLE_LABELS.REPLACE_LABEL}
+                      name="replacement"
+                      selectLabel={MEDICINE_PRESENTATION_TABLE_LABELS.REPLACE_LABEL}
+                      options={presentationList
+                        .filter(item => item.id !== presentationItem.id)
+                        .map(item => ({
+                          label: item.description,
+                          value: item.id!.toString()
+                        }))}
+                    />
+                    <section className="flex justify-end gap-x-2">
+                      <DialogClose asChild>
+                        <Button variant="outline" type="button">
+                          {COMMON_LABELS.CANCEL}
+                        </Button>
+                      </DialogClose>
+                      <DialogClose asChild>
+                        <Button type="submit">{COMMON_LABELS.CONFIRM}</Button>
+                      </DialogClose>
+                    </section>
+                  </form>
+                }
+              />
+            ) : null}
           </section>
         )
       })),

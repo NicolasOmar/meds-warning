@@ -1,6 +1,6 @@
 // CORE
 import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest'
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { render, screen, fireEvent, waitFor, act } from '@testing-library/react'
 import '@testing-library/jest-dom'
 // COMPONENTS
 import { toast } from 'sonner'
@@ -312,10 +312,10 @@ describe('[MedicineTable]', () => {
       expect(vi.mocked(getMedicines)).not.toHaveBeenCalled()
 
       // Advance timers past debounce delay (300ms)
-      vi.advanceTimersByTime(300)
-
-      // Run any pending promise callbacks
-      await vi.runAllTimersAsync()
+      await act(async () => {
+        vi.advanceTimersByTime(300)
+        await vi.runAllTimersAsync()
+      })
 
       expect(vi.mocked(getMedicines)).toHaveBeenCalledWith(basicMedicineData[0].name)
     })
@@ -339,10 +339,10 @@ describe('[MedicineTable]', () => {
       expect(vi.mocked(getMedicines)).not.toHaveBeenCalled()
 
       // Advance to complete the debounce
-      vi.advanceTimersByTime(300)
-
-      // Run any pending promise callbacks
-      await vi.runAllTimersAsync()
+      await act(async () => {
+        vi.advanceTimersByTime(300)
+        await vi.runAllTimersAsync()
+      })
 
       // Should only be called once with the final value
       expect(vi.mocked(getMedicines)).toHaveBeenCalledTimes(1)
@@ -373,8 +373,10 @@ describe('[MedicineTable]', () => {
       const searchInput = screen.getByPlaceholderText(MEDICINE_TABLE_LABELS.SEARCH_PLACEHOLDER)
       fireEvent.change(searchInput, { target: { value: 'Aspirin' } })
 
-      vi.advanceTimersByTime(300)
-      await vi.runAllTimersAsync()
+      await act(async () => {
+        vi.advanceTimersByTime(300)
+        await vi.runAllTimersAsync()
+      })
 
       expect(screen.getByText('Aspirin')).toBeInTheDocument()
     })
@@ -387,8 +389,10 @@ describe('[MedicineTable]', () => {
       const searchInput = screen.getByPlaceholderText(MEDICINE_TABLE_LABELS.SEARCH_PLACEHOLDER)
       fireEvent.change(searchInput, { target: { value: 'NonexistentMedicine' } })
 
-      vi.advanceTimersByTime(300)
-      await vi.runAllTimersAsync()
+      await act(async () => {
+        vi.advanceTimersByTime(300)
+        await vi.runAllTimersAsync()
+      })
 
       expect(vi.mocked(getMedicines)).toHaveBeenCalledWith('NonexistentMedicine')
       expect(screen.getByText(COMMON_TABLE_ERRORS.NO_DATA)).toBeInTheDocument()
@@ -406,11 +410,12 @@ describe('[MedicineTable]', () => {
       const searchInput = screen.getByPlaceholderText(MEDICINE_TABLE_LABELS.SEARCH_PLACEHOLDER)
       fireEvent.change(searchInput, { target: { value: 'Aspirin' } })
 
-      vi.advanceTimersByTime(300)
-
       // Component should handle error gracefully and still be rendered
       try {
-        await vi.runAllTimersAsync()
+        await act(async () => {
+          vi.advanceTimersByTime(300)
+          await vi.runAllTimersAsync()
+        })
       } catch {
         // Ignore error - we're just testing that the component doesn't crash
       }
@@ -457,15 +462,19 @@ describe('[MedicineTable]', () => {
 
       // First search
       fireEvent.change(searchInput, { target: { value: 'Aspirin' } })
-      vi.advanceTimersByTime(300)
-      await vi.runAllTimersAsync()
+      await act(async () => {
+        vi.advanceTimersByTime(300)
+        await vi.runAllTimersAsync()
+      })
 
       expect(screen.getByText('Aspirin')).toBeInTheDocument()
 
       // Second search
       fireEvent.change(searchInput, { target: { value: 'Ibuprofen' } })
-      vi.advanceTimersByTime(300)
-      await vi.runAllTimersAsync()
+      await act(async () => {
+        vi.advanceTimersByTime(300)
+        await vi.runAllTimersAsync()
+      })
 
       expect(screen.getByText('Ibuprofen')).toBeInTheDocument()
     })
@@ -498,8 +507,10 @@ describe('[MedicineTable]', () => {
       const searchInput = screen.getByPlaceholderText(MEDICINE_TABLE_LABELS.SEARCH_PLACEHOLDER)
       fireEvent.change(searchInput, { target: { value: 'Aspirin' } })
 
-      vi.advanceTimersByTime(300)
-      await vi.runAllTimersAsync()
+      await act(async () => {
+        vi.advanceTimersByTime(300)
+        await vi.runAllTimersAsync()
+      })
 
       const editButton = screen.getByTitle(COMMON_LABELS.EDIT)
       const deleteButton = screen.getByTitle(COMMON_LABELS.DELETE)
@@ -536,8 +547,10 @@ describe('[MedicineTable]', () => {
       const searchInput = screen.getByPlaceholderText(MEDICINE_TABLE_LABELS.SEARCH_PLACEHOLDER)
       fireEvent.change(searchInput, { target: { value: 'Aspirin' } })
 
-      vi.advanceTimersByTime(300)
-      await vi.runAllTimersAsync()
+      await act(async () => {
+        vi.advanceTimersByTime(300)
+        await vi.runAllTimersAsync()
+      })
       vi.useRealTimers()
 
       expect(screen.getByText('Aspirin')).toBeInTheDocument()

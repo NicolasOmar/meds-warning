@@ -17,14 +17,13 @@ export async function handleUserAction(
   email?: string
 ): Promise<UserActionState> {
   const isEditing = !!id
-  const basePassword = 'placeholder'
   const baseDaysToNotify = 30
 
   const validationData = isEditing
     ? {
         name: parseEmptyFormValueToNull(formData.get('name')),
         lastName: parseEmptyFormValueToNull(formData.get('lastName')),
-        password: basePassword,
+        password: process.env.TEST_PASSWORD,
         email: parseEmptyFormValueToNull(email ?? null),
         daysToNotify: baseDaysToNotify
       }
@@ -57,7 +56,6 @@ export async function handleUserAction(
       })
     } else {
       const hashedPassword = await hashPassword(validatedUserObject.data.password)
-
       const userData = {
         name: validatedUserObject.data.name,
         lastName: validatedUserObject.data.lastName,

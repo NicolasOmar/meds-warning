@@ -82,20 +82,16 @@ export async function handlePresentationAction(
   }
 }
 
-export async function deletePresentation(presentationId: number): Promise<MedicineActionState> {
+export async function deletePresentation(
+  presentationId: number,
+  replacementId: number
+): Promise<MedicineActionState> {
   const session = await getSession()
 
   try {
-    const availablePresentations = await prisma.medicine.findMany({
-      where: { userId: session!.user.id }
-    })
-    const presentation = availablePresentations.find(
-      presentationItem => presentationItem.presentation !== presentationId
-    )
-
     await prisma.medicine.updateMany({
       where: { presentation: presentationId, userId: session!.user.id },
-      data: { presentation: presentation!.id }
+      data: { presentation: replacementId }
     })
 
     await prisma.medicinePresentation.delete({

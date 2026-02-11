@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest'
 // SHARED
-import { parseMedicineToDataItem } from '../parsers'
+import { parseMedicineToDataItem, parseStringDateToISOString } from '../parsers'
 import { MedicineTypeExtended } from '@shared-types/zod'
 // MOCKS
 import mockedData from './parsers.mocks.json'
@@ -103,5 +103,37 @@ describe('[parseMedicineToDataItem]', () => {
     expect(keys).toContain('usedFor')
     expect(keys).toContain('sideEffects')
     expect(keys).toContain('comments')
+  })
+})
+
+describe('[parseStringDateToISOString]', () => {
+  test('converts valid date string to ISO format', () => {
+    const result = parseStringDateToISOString('2025-03-15')
+    expect(result).toBe('2025-03-15')
+  })
+
+  test('converts date with time to ISO date only', () => {
+    const result = parseStringDateToISOString('2025-03-15T10:30:00.000Z')
+    expect(result).toBe('2025-03-15')
+  })
+
+  test('returns null for null input', () => {
+    const result = parseStringDateToISOString(null)
+    expect(result).toBeNull()
+  })
+
+  test('returns null for invalid date string', () => {
+    const result = parseStringDateToISOString('invalid-date')
+    expect(result).toBeNull()
+  })
+
+  test('returns null for empty string', () => {
+    const result = parseStringDateToISOString('')
+    expect(result).toBeNull()
+  })
+
+  test('handles various valid date strings', () => {
+    expect(parseStringDateToISOString('2025-12-31')).toBe('2025-12-31')
+    expect(parseStringDateToISOString('2025-01-01')).toBe('2025-01-01')
   })
 })
