@@ -35,7 +35,6 @@ export async function handleUserAction(
         daysToNotify: baseDaysToNotify
       }
 
-  console.warn(validationData)
   const validatedUserObject = UserSchema.safeParse(validationData)
 
   if (!validatedUserObject.success) {
@@ -64,7 +63,6 @@ export async function handleUserAction(
         email: validatedUserObject.data.email,
         daysToNotify: validatedUserObject.data.daysToNotify
       }
-      console.warn('userData', userData)
       const user = await prisma.user.create({
         data: userData
       })
