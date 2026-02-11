@@ -1,3 +1,16 @@
+# [1.15.0](https://github.com/NicolasOmar/meds-warning/compare/v1.14.0...v1.15.0) (2026-02-11)
+
+
+### Bug Fixes
+
+* first iteration for adjust medicine presentation removal ([efe2c0f](https://github.com/NicolasOmar/meds-warning/commit/efe2c0f1498757fb32fd4049640d9afa35ec5b77))
+* removing hardcoded password text for data editing ([183e4e2](https://github.com/NicolasOmar/meds-warning/commit/183e4e2e7bb3cb62febd784cd1acb190908fee6e))
+
+
+### Features
+
+* Merge pull request [#86](https://github.com/NicolasOmar/meds-warning/issues/86)/[#85](https://github.com/NicolasOmar/meds-warning/issues/85) from NicolasOmar/feature/adjust-medicine-presentation-deletion ([d1fda47](https://github.com/NicolasOmar/meds-warning/commit/d1fda4746f82bcd383e73ba0419df9c4ec698334))
+
 # [1.14.0](https://github.com/NicolasOmar/meds-warning/compare/v1.13.1...v1.14.0) (2026-02-10)
 
 
