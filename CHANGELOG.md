@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/NicolasOmar/meds-warning/compare/v1.15.0...v1.16.0) (2026-02-12)
+
+
+### Features
+
+* implementation of password repeat step on user creation form ([68f9789](https://github.com/NicolasOmar/meds-warning/commit/68f9789ce96f2ff58f752a431fe928626a6582b7))
+
 # [1.15.0](https://github.com/NicolasOmar/meds-warning/compare/v1.14.0...v1.15.0) (2026-02-11)
 
 
