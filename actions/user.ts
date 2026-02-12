@@ -5,7 +5,7 @@ import { prisma } from '@prisma/index'
 // SHARED
 import { UserSchema } from '@shared-types/zod'
 import { UserActionState } from '@shared-types/states'
-import { USER_FORM_LABELS } from '@shared-constants/forms'
+import { USER_FORM_ERRORS, USER_FORM_LABELS } from '@shared-constants/forms'
 import { COMMON_FORM_ERRORS } from '@shared-constants/common'
 import { parseEmptyFormValueToNull } from '@shared-functions/helpers'
 import { hashPassword, generateJWT, setAuthCookie } from '@shared-functions/auth'
@@ -18,6 +18,15 @@ export async function handleUserAction(
 ): Promise<UserActionState> {
   const isEditing = !!id
   const baseDaysToNotify = 30
+  const formDataPassword = formData.get('password')
+  const formDataRepeatPassword = formData.get('repeatPassword')
+
+  if (!isEditing && formDataPassword !== formDataRepeatPassword) {
+    return {
+      message: USER_FORM_ERRORS.PASSWORDS_NOT_MATCH,
+      success: false
+    }
+  }
 
   const validationData = isEditing
     ? {

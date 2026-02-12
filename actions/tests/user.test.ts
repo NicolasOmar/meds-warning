@@ -33,7 +33,8 @@ import {
   invalidEmailUserData,
   invalidMaxDaysUserData,
   invalidPasswordShortUserData,
-  emptyNameUserData
+  emptyNameUserData,
+  passwordMismatchUserData
 } from './user.mocks.json'
 
 const populateFormData = (
@@ -47,7 +48,7 @@ const populateFormData = (
       baseFormData.append(key, value.toString())
     }
   })
-
+  baseFormData.append('repeatPassword', mockedData.password?.toString() ?? '')
   return baseFormData
 }
 
@@ -190,6 +191,25 @@ describe('User Actions', () => {
       expect(prisma.user.create).not.toHaveBeenCalled()
     })
 
+    test('returns error when passwords do not match', async () => {
+      const formData = populateFormData(passwordMismatchUserData)
+      const result = await handleUserAction({}, formData)
+
+      expect(result.success).toBe(false)
+      expect(result.message).toBe(USER_FORM_ERRORS.PASSWORDS_NOT_MATCH)
+      expect(result.errors).toBeUndefined()
+      expect(prisma.user.create).not.toHaveBeenCalled()
+    })
+
+    test('validates password match before schema validation', async () => {
+      const formData = populateFormData(passwordMismatchUserData)
+      const result = await handleUserAction({}, formData)
+
+      expect(result.message).toBe(USER_FORM_ERRORS.PASSWORDS_NOT_MATCH)
+      expect(result.errors).toBeUndefined()
+      expect(prisma.user.create).not.toHaveBeenCalled()
+    })
+
     test('generates JWT and sets auth cookie on successful creation', async () => {
       vi.mocked(prisma.user.create).mockResolvedValue({
         id: 1,
@@ -299,6 +319,22 @@ describe('User Actions', () => {
 
       expect(prisma.user.update).not.toHaveBeenCalled()
       expect(prisma.user.create).toHaveBeenCalled()
+    })
+
+    test('does not validate repeatPassword in edit mode', async () => {
+      vi.mocked(prisma.user.update).mockResolvedValue({
+        id: 1,
+        ...validUserData2
+      })
+
+      const formData = populateFormData(validUserData2, ['password'])
+      formData.append('password', 'newPassword123')
+
+      const result = await handleUserAction({}, formData, '1', validUserData2.email)
+
+      expect(result.success).toBe(true)
+      expect(result.message).toBe(USER_FORM_LABELS.UPDATE_SUCCESS)
+      expect(prisma.user.update).toHaveBeenCalled()
     })
   })
 

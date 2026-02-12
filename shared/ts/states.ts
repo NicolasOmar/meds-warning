@@ -38,6 +38,7 @@ export type UserActionState = BaseActionState & {
     name?: string[]
     lastName?: string[]
     password?: string[]
+    repeatPassword?: string[]
     email?: string[]
     daysToNotify?: string[]
   }

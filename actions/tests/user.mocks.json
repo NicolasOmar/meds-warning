@@ -68,5 +68,13 @@
     "password": "password123",
     "email": "empty@example.com",
     "daysToNotify": 30
+  },
+  "passwordMismatchUserData": {
+    "name": "Test",
+    "lastName": "User",
+    "password": "password123",
+    "repeatPassword": "differentPassword456",
+    "email": "test@example.com",
+    "daysToNotify": 30
   }
 }

@@ -43,6 +43,12 @@ const generateUserFormStructure = () => ({
     label: USER_FORM_LABELS.PASSWORD,
     type: 'password',
     placeholder: USER_FORM_LABELS.PASSWORD_PLACEHOLDER
+  },
+  repeatPassword: {
+    name: 'repeatPassword',
+    label: USER_FORM_LABELS.REPEAT_PASSWORD,
+    type: 'repeatPassword',
+    placeholder: USER_FORM_LABELS.REPEAT_PASSWORD_PLACEHOLDER
   }
 })
 
@@ -78,6 +84,12 @@ const UserForm: FC<UserFormProps> = ({ userData }) => {
             )}
             {userData ? null : (
               <CustomInput {...userFormStructure.password} message={state.errors?.password} />
+            )}
+            {userData ? null : (
+              <CustomInput
+                {...userFormStructure.repeatPassword}
+                message={state.errors?.repeatPassword}
+              />
             )}
           </FieldSet>
         </FieldGroup>
