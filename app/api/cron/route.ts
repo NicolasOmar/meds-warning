@@ -13,7 +13,7 @@ export async function GET(request: NextRequest) {
   const mailgun = new Mailgun(FormData)
   const mg = mailgun.client({
     username: 'api',
-    key: process.env.MAILGUN_API!
+    key: process.env.MAILGUN_API_KEY!
   })
 
   try {
@@ -30,8 +30,8 @@ export async function GET(request: NextRequest) {
           const todayDateInAdvance = new Date().getTime() + user.daysToNotify * 24 * 60 * 60 * 1000
 
           return expirationDateInAdvance === todayDateInAdvance
-            ? mg.messages.create(process.env.MAILGUN_MAIL_SENDER!, {
-                from: `Mailgun Sandbox <postmaster@${process.env.MAILGUN_MAIL_SENDER}>`,
+            ? mg.messages.create(process.env.MAILGUN_DOMAIN!, {
+                from: `Mailgun Sandbox <postmaster@${process.env.MAILGUN_DOMAIN}>`,
                 to: [`Recipient <${user.email}>`],
                 subject: 'Your medicine is about to expire!',
                 text: `Dear user, your medicine ${medicine.name} is about to expire. Please take necessary action.`

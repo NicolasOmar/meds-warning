@@ -39,7 +39,9 @@ describe('Auth Actions', () => {
         email: 'test@example.com',
         password: 'hashed-password',
         lastName: null,
-        daysToNotify: 30
+        daysToNotify: 30,
+        resetToken: null,
+        resetTokenExpiry: null
       }
 
       vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser)
@@ -111,7 +113,9 @@ describe('Auth Actions', () => {
         email: 'test@example.com',
         password: 'hashed-password',
         lastName: null,
-        daysToNotify: 30
+        daysToNotify: 30,
+        resetToken: null,
+        resetTokenExpiry: null
       }
 
       vi.mocked(prisma.user.findUnique).mockResolvedValue(mockUser)

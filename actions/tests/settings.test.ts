@@ -66,7 +66,9 @@ describe('Settings Actions', () => {
         lastName: null,
         password: 'hashed',
         daysToNotify: 30,
-        email: 'test@test.com'
+        email: 'test@test.com',
+        resetToken: null,
+        resetTokenExpiry: null
       })
 
       const formData = populateFormData(validSettingsData)
@@ -85,7 +87,9 @@ describe('Settings Actions', () => {
         lastName: null,
         password: 'hashed',
         daysToNotify: 30,
-        email: 'test@test.com'
+        email: 'test@test.com',
+        resetToken: null,
+        resetTokenExpiry: null
       })
 
       const formData = populateFormData(validSettingsData)
@@ -106,7 +110,9 @@ describe('Settings Actions', () => {
         lastName: null,
         password: 'hashed',
         daysToNotify: 30,
-        email: 'test@test.com'
+        email: 'test@test.com',
+        resetToken: null,
+        resetTokenExpiry: null
       })
 
       const formData = populateFormData(validSettingsData2)
@@ -129,7 +135,9 @@ describe('Settings Actions', () => {
         lastName: null,
         password: 'hashed',
         daysToNotify: 30,
-        email: 'test@test.com'
+        email: 'test@test.com',
+        resetToken: null,
+        resetTokenExpiry: null
       })
 
       const formData = populateFormData(validSettingsData3)
@@ -151,7 +159,9 @@ describe('Settings Actions', () => {
         lastName: null,
         password: 'hashed',
         daysToNotify: 30,
-        email: 'test@test.com'
+        email: 'test@test.com',
+        resetToken: null,
+        resetTokenExpiry: null
       })
 
       const formData = populateFormData(minDaysSettingsData)
@@ -174,7 +184,9 @@ describe('Settings Actions', () => {
         lastName: null,
         password: 'hashed',
         daysToNotify: 30,
-        email: 'test@test.com'
+        email: 'test@test.com',
+        resetToken: null,
+        resetTokenExpiry: null
       })
 
       const formData = populateFormData(maxDaysSettingsData)
@@ -230,7 +242,9 @@ describe('Settings Actions', () => {
         lastName: null,
         password: 'hashed',
         daysToNotify: 30,
-        email: 'test@test.com'
+        email: 'test@test.com',
+        resetToken: null,
+        resetTokenExpiry: null
       })
 
       const formData = new FormData()
@@ -276,7 +290,9 @@ describe('Settings Actions', () => {
         lastName: null,
         password: 'hashed',
         daysToNotify: 30,
-        email: 'test@test.com'
+        email: 'test@test.com',
+        resetToken: null,
+        resetTokenExpiry: null
       })
 
       const formData = populateFormData(validSettingsData)
@@ -387,7 +403,9 @@ describe('Settings Actions', () => {
         lastName: null,
         password: 'hashed',
         daysToNotify: 30,
-        email: 'test@test.com'
+        email: 'test@test.com',
+        resetToken: null,
+        resetTokenExpiry: null
       })
 
       const formData = new FormData()

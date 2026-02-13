@@ -63,7 +63,13 @@ const LoginForm: FC = () => {
             {LOGIN_FORM_LABELS.SUBMIT_BUTTON}
           </Button>
 
-          <div className="text-center text-sm">
+          <div className="flex flex-col gap-2 text-center text-sm">
+            <Link
+              href={ROUTE_URLS.PASSWORD_FORGOT}
+              className="text-blue-600 hover:underline dark:text-blue-400"
+            >
+              Forgot password?
+            </Link>
             <Link
               href={ROUTE_URLS.USER_CREATE}
               className="text-blue-600 hover:underline dark:text-blue-400"

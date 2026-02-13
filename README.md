@@ -102,13 +102,15 @@ npm run setup
 At last, create an `.env` file at your project's root with the following content.
 ```env
 DATABASE_URL=HERE_GOES_YOUR_DATABASE_CONNECTION_STRING
-MAILGUN_API=HERE_GOES_YOUR_MAILGUN_API
-MAILGUN_MAIL_SENDER=HERE_GOES_YOUR_MAILGUN_MAIL_SENDER
+MAILGUN_API_KEY=HERE_GOES_YOUR_MAILGUN_API_KEY
+MAILGUN_DOMAIN=HERE_GOES_YOUR_MAILGUN_DOMAIN
 JWT_SECRET=HERE_GOES_YOUR_JWT_SECRET
 TEST_PASSWORD=HERE_GOES_YOUR_TEST_PASSWORD
 ```
 
-> TEST_PASSWORD is only for a placeholder text in certain scenarios; its data will not impact any database
+> TEST_PASSWORD is only for a placeholder text in certain scenarios; its data will not impact any database.
+
+> MAILGUN_DOMAIN is the [domain you configured in Mailgun](https://help.mailgun.com/hc/en-us/articles/202464990-How-can-I-start-sending-email) in order to make the mailing sevice work.
 
 ## How to run it
 To run it, simply execute
