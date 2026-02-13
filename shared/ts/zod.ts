@@ -2,9 +2,11 @@
 import * as z from 'zod'
 // CONSTANTS
 import {
+  FORGOT_PASSWORD_FORM_ERRORS,
   LOGIN_FORM_ERRORS,
   MEDICINE_FORM_ERRORS,
   PRESENTATION_FORM_ERRORS,
+  RESET_PASSWORD_FORM_ERRORS,
   SETTINGS_FORM_ERRORS,
   USER_FORM_ERRORS
 } from '@shared-constants/forms'
@@ -85,3 +87,29 @@ export const LoginSchema = z.object({
 })
 
 export type LoginType = z.infer<typeof LoginSchema>
+
+export const ForgotPasswordSchema = z.object({
+  email: z
+    .string({ message: FORGOT_PASSWORD_FORM_ERRORS.EMAIL_REQUIRED })
+    .email(FORGOT_PASSWORD_FORM_ERRORS.EMAIL_INVALID)
+})
+
+export type ForgotPasswordType = z.infer<typeof ForgotPasswordSchema>
+
+export const ResetPasswordSchema = z
+  .object({
+    token: z.string({ message: RESET_PASSWORD_FORM_ERRORS.TOKEN_REQUIRED }),
+    password: z
+      .string({ message: RESET_PASSWORD_FORM_ERRORS.PASSWORD_REQUIRED })
+      .min(8, RESET_PASSWORD_FORM_ERRORS.PASSWORD_MIN)
+      .max(100, RESET_PASSWORD_FORM_ERRORS.PASSWORD_MAX),
+    confirmPassword: z.string({
+      message: RESET_PASSWORD_FORM_ERRORS.CONFIRM_PASSWORD_REQUIRED
+    })
+  })
+  .refine(data => data.password === data.confirmPassword, {
+    message: RESET_PASSWORD_FORM_ERRORS.PASSWORDS_NOT_MATCH,
+    path: ['confirmPassword']
+  })
+
+export type ResetPasswordType = z.infer<typeof ResetPasswordSchema>

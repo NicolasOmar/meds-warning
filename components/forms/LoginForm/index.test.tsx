@@ -52,6 +52,13 @@ describe('[LoginForm]', () => {
     expect(button).toHaveAttribute('type', 'submit')
   })
 
+  test('renders forgot password link', () => {
+    render(<LoginForm />)
+    const link = screen.getByText('Forgot password?')
+    expect(link).toBeInTheDocument()
+    expect(link).toHaveAttribute('href', '/password/forgot')
+  })
+
   test('renders create account link', () => {
     render(<LoginForm />)
     const link = screen.getByText(LOGIN_FORM_LABELS.CREATE_ACCOUNT)

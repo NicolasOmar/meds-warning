@@ -21,4 +21,4 @@ export enum AUTH_ERROR_MESSAGES {
   JWT_SECRET_MISSING = 'JWT_SECRET environment variable is not set'
 }
 
-export const PUBLIC_ROUTES = ['/login', '/user/create']
+export const PUBLIC_ROUTES = ['/login', '/user/create', '/password/forgot', '/password/reset']

@@ -115,3 +115,40 @@ export enum LOGIN_FORM_ERRORS {
   PASSWORD_MIN = 'Password must be at least 8 characters',
   INVALID_CREDENTIALS = 'Invalid email or password'
 }
+
+export enum FORGOT_PASSWORD_FORM_LABELS {
+  TITLE = 'Forgot Password',
+  SUBTITLE = 'Enter your email to receive a password reset link',
+  EMAIL = 'Email:',
+  EMAIL_PLACEHOLDER = 'your.email@example.com',
+  SUBMIT_BUTTON = 'Send Reset Link',
+  SUCCESS = 'If an account exists with this email, a password reset link has been sent.',
+  BACK_TO_LOGIN = 'Back to login'
+}
+
+export enum FORGOT_PASSWORD_FORM_ERRORS {
+  EMAIL_REQUIRED = 'Email is required',
+  EMAIL_INVALID = 'Email must be a valid email address'
+}
+
+export enum RESET_PASSWORD_FORM_LABELS {
+  TITLE = 'Reset Password',
+  SUBTITLE = 'Enter your new password',
+  PASSWORD = 'New Password:',
+  PASSWORD_PLACEHOLDER = 'Enter new password',
+  CONFIRM_PASSWORD = 'Confirm Password:',
+  CONFIRM_PASSWORD_PLACEHOLDER = 'Confirm new password',
+  SUBMIT_BUTTON = 'Update Password',
+  SUCCESS = 'Password reset successfully! Redirecting to login...',
+  BACK_TO_LOGIN = 'Back to login'
+}
+
+export enum RESET_PASSWORD_FORM_ERRORS {
+  PASSWORD_REQUIRED = 'Password is required',
+  PASSWORD_MIN = 'Password must be at least 8 characters',
+  PASSWORD_MAX = 'Password must be at most 100 characters',
+  CONFIRM_PASSWORD_REQUIRED = 'Please confirm your password',
+  PASSWORDS_NOT_MATCH = 'Passwords do not match',
+  INVALID_TOKEN = 'Invalid or expired reset token',
+  TOKEN_REQUIRED = 'Reset token is required'
+}

@@ -5,6 +5,8 @@ model User {
   password              String
   daysToNotify          Int                    @default(30)
   email                 String                 @unique
+  resetToken            String?
+  resetTokenExpiry      DateTime?
   medicines             Medicine[]
   medicinePresentations MedicinePresentation[]
 }

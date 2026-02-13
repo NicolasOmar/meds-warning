@@ -4,70 +4,90 @@
     "lastName": "Doe",
     "password": "password123",
     "email": "john.doe@example.com",
-    "daysToNotify": 30
+    "daysToNotify": 30,
+    "resetToken": null,
+    "resetTokenExpiry": null
   },
   "validUserData2": {
     "name": "Jane",
     "lastName": "Smith",
     "password": "securepass456",
     "email": "jane.smith@example.com",
-    "daysToNotify": 45
+    "daysToNotify": 45,
+    "resetToken": null,
+    "resetTokenExpiry": null
   },
   "validUserDataNoLastName": {
     "name": "Alice",
     "lastName": null,
     "password": "alicepass789",
     "email": "alice@example.com",
-    "daysToNotify": 60
+    "daysToNotify": 60,
+    "resetToken": null,
+    "resetTokenExpiry": null
   },
   "minDaysUserData": {
     "name": "Bob",
     "lastName": "Builder",
     "password": "bobpass123",
     "email": "bob@example.com",
-    "daysToNotify": 1
+    "daysToNotify": 1,
+    "resetToken": null,
+    "resetTokenExpiry": null
   },
   "maxDaysUserData": {
     "name": "Charlie",
     "lastName": "Brown",
     "password": "charliepass123",
     "email": "charlie@example.com",
-    "daysToNotify": 365
+    "daysToNotify": 365,
+    "resetToken": null,
+    "resetTokenExpiry": null
   },
   "invalidEmailUserData": {
     "name": "Invalid",
     "lastName": "User",
     "password": "password123",
     "email": "notanemail",
-    "daysToNotify": 30
+    "daysToNotify": 30,
+    "resetToken": null,
+    "resetTokenExpiry": null
   },
   "invalidMinDaysUserData": {
     "name": "Invalid",
     "lastName": "Days",
     "password": "password123",
     "email": "invalid@example.com",
-    "daysToNotify": 0
+    "daysToNotify": 0,
+    "resetToken": null,
+    "resetTokenExpiry": null
   },
   "invalidMaxDaysUserData": {
     "name": "Invalid",
     "lastName": "Days",
     "password": "password123",
     "email": "invalid@example.com",
-    "daysToNotify": 366
+    "daysToNotify": 366,
+    "resetToken": null,
+    "resetTokenExpiry": null
   },
   "invalidPasswordShortUserData": {
     "name": "Invalid",
     "lastName": "Pass",
     "password": "short",
     "email": "invalid@example.com",
-    "daysToNotify": 30
+    "daysToNotify": 30,
+    "resetToken": null,
+    "resetTokenExpiry": null
   },
   "emptyNameUserData": {
     "name": "",
     "lastName": "User",
     "password": "password123",
     "email": "empty@example.com",
-    "daysToNotify": 30
+    "daysToNotify": 30,
+    "resetToken": null,
+    "resetTokenExpiry": null
   },
   "passwordMismatchUserData": {
     "name": "Test",
@@ -75,6 +95,8 @@
     "password": "password123",
     "repeatPassword": "differentPassword456",
     "email": "test@example.com",
-    "daysToNotify": 30
+    "daysToNotify": 30,
+    "resetToken": null,
+    "resetTokenExpiry": null
   }
 }

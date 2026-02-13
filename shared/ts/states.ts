@@ -50,3 +50,17 @@ export type LoginActionState = BaseActionState & {
     password?: string[]
   }
 }
+
+export type ForgotPasswordActionState = BaseActionState & {
+  errors?: {
+    email?: string[]
+  }
+}
+
+export type ResetPasswordActionState = BaseActionState & {
+  errors?: {
+    token?: string[]
+    password?: string[]
+    confirmPassword?: string[]
+  }
+}
