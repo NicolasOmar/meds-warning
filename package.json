@@ -1,6 +1,6 @@
 {
   "name": "meds-warning",
-  "version": "1.16.0",
+  "version": "1.17.0",
   "description": "A web system to help users manage and track their medication expiration dates and remind them to renew them",
   "author": "Nicolás Omar González Passerino",
   "license": "GPL-3.0-only",

@@ -1,3 +1,10 @@
+# [1.17.0](https://github.com/NicolasOmar/meds-warning/compare/v1.16.0...v1.17.0) (2026-02-13)
+
+
+### Features
+
+* first iteration to handle forgot password feature ([8e9c910](https://github.com/NicolasOmar/meds-warning/commit/8e9c9101c0aceaa37e6d9a57094c6435503d32c0))
+
 # [1.16.0](https://github.com/NicolasOmar/meds-warning/compare/v1.15.0...v1.16.0) (2026-02-12)
 
 
