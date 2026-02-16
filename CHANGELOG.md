@@ -1,3 +1,22 @@
+# [2.0.0](https://github.com/NicolasOmar/meds-warning/compare/v1.17.0...v2.0.0) (2026-02-16)
+
+
+### Bug Fixes
+
+* adding documentation for RESET_PASSWORD_BASE_URL environment variable ([2ce1d45](https://github.com/NicolasOmar/meds-warning/commit/2ce1d45baa63428bb36451eeba6c48def8f2d8a9))
+* updating dependencies ([d8a0b17](https://github.com/NicolasOmar/meds-warning/commit/d8a0b17e76e905b272d19d7daacadf5dc2f29c42))
+
+
+### Features
+
+* implementation of mailgun templates in the system ([3e52f2d](https://github.com/NicolasOmar/meds-warning/commit/3e52f2db6ac2e092552f1f299ab543e923fa3cd7))
+* Merge pull request [#98](https://github.com/NicolasOmar/meds-warning/issues/98)/[#92](https://github.com/NicolasOmar/meds-warning/issues/92)/[#97](https://github.com/NicolasOmar/meds-warning/issues/97) from NicolasOmar/feature/improve-medicine-expiration-warning-email-and-flow ([892b3c3](https://github.com/NicolasOmar/meds-warning/commit/892b3c3cfb046fcfa1ce29cc8ea8fa12c50e4d50))
+
+
+### BREAKING CHANGES
+
+* Last 2.0 Update. Improve the medicine expiration warning email and flow
+
 # [1.17.0](https://github.com/NicolasOmar/meds-warning/compare/v1.16.0...v1.17.0) (2026-02-13)
 
 
