@@ -59,7 +59,7 @@ export async function handleForgotPasswordAction(
         templateName: EmailTemplateName.PasswordReset,
         templateVariables: {
           userName: user.name,
-          resetPasswordUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/password/reset/${resetToken}`
+          resetPasswordUrl: `${process.env.RESET_PASSWORD_BASE_URL}/password/reset/${resetToken}`
         }
       })
     }
