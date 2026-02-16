@@ -1,5 +1,5 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
-import { sendPasswordResetEmail } from '../email'
+import { sendTemplateEmail, EmailTemplateName } from '../email'
 
 const mockCreate = vi.fn()
 
@@ -17,77 +17,224 @@ vi.mock('mailgun.js', () => {
   }
 })
 
-describe('[sendPasswordResetEmail]', () => {
+describe('[sendTemplateEmail]', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     process.env.MAILGUN_API_KEY = 'test-api-key'
     process.env.MAILGUN_DOMAIN = 'test-domain.com'
-    process.env.NEXT_PUBLIC_APP_URL = 'http://localhost:3000'
   })
 
-  test('sends password reset email with correct parameters', async () => {
+  test('sends email with MedicineToExpire template', async () => {
     const params = {
-      to: 'test@example.com',
-      resetToken: 'test-token-123'
+      nameRecipient: 'John Doe',
+      emailRecipient: 'john@example.com',
+      subject: 'Your medicine is expiring soon',
+      templateName: EmailTemplateName.MedicineToExpire,
+      templateVariables: {
+        userName: 'John Doe',
+        medicineName: 'Aspirin',
+        expirationDate: '2026-03-15'
+      }
     }
 
     mockCreate.mockResolvedValue({ id: 'message-id' })
 
-    await sendPasswordResetEmail(params)
+    await sendTemplateEmail(params)
 
     expect(mockCreate).toHaveBeenCalledWith('test-domain.com', {
       from: 'MedsWarning <postmaster@test-domain.com>',
-      to: ['test@example.com'],
-      subject: 'Password Reset Request',
-      text: expect.stringContaining('http://localhost:3000/password/reset/test-token-123')
+      to: ['John Doe <john@example.com>'],
+      subject: 'Your medicine is expiring soon',
+      template: EmailTemplateName.MedicineToExpire,
+      'h:X-Mailgun-Variables': JSON.stringify({
+        userName: 'John Doe',
+        medicineName: 'Aspirin',
+        expirationDate: '2026-03-15'
+      })
     })
   })
 
-  test('includes reset URL in email text', async () => {
+  test('sends email with PasswordReset template', async () => {
     const params = {
-      to: 'user@example.com',
-      resetToken: 'abc123'
+      nameRecipient: 'Jane Smith',
+      emailRecipient: 'jane@example.com',
+      subject: 'Password Reset Request',
+      templateName: EmailTemplateName.PasswordReset,
+      templateVariables: {
+        userName: 'Jane Smith',
+        resetPasswordUrl: 'http://localhost:3000/password/reset/token123'
+      }
     }
 
-    mockCreate.mockResolvedValue({ id: 'message-id' })
+    mockCreate.mockResolvedValue({ id: 'message-id-2' })
 
-    await sendPasswordResetEmail(params)
+    await sendTemplateEmail(params)
 
-    const callArgs = mockCreate.mock.calls[0][1]
-    expect(callArgs.text).toContain('password reset')
-    expect(callArgs.text).toContain('expire in 1 hour')
-    expect(callArgs.text).toContain('/password/reset/abc123')
+    expect(mockCreate).toHaveBeenCalledWith('test-domain.com', {
+      from: 'MedsWarning <postmaster@test-domain.com>',
+      to: ['Jane Smith <jane@example.com>'],
+      subject: 'Password Reset Request',
+      template: EmailTemplateName.PasswordReset,
+      'h:X-Mailgun-Variables': JSON.stringify({
+        userName: 'Jane Smith',
+        resetPasswordUrl: 'http://localhost:3000/password/reset/token123'
+      })
+    })
   })
 
-  test('uses production URL when NEXT_PUBLIC_APP_URL is set', async () => {
-    process.env.NEXT_PUBLIC_APP_URL = 'https://production.com'
-
+  test('formats recipient with name and email correctly', async () => {
     const params = {
-      to: 'test@example.com',
-      resetToken: 'token-xyz'
+      nameRecipient: 'Test User',
+      emailRecipient: 'test@domain.com',
+      subject: 'Test Subject',
+      templateName: EmailTemplateName.MedicineToExpire,
+      templateVariables: { test: 'value' }
     }
 
-    mockCreate.mockResolvedValue({ id: 'message-id' })
+    mockCreate.mockResolvedValue({ id: 'msg-id' })
 
-    await sendPasswordResetEmail(params)
+    await sendTemplateEmail(params)
 
     const callArgs = mockCreate.mock.calls[0][1]
-    expect(callArgs.text).toContain('https://production.com/password/reset/token-xyz')
+    expect(callArgs.to).toEqual(['Test User <test@domain.com>'])
   })
 
-  test('defaults to localhost when NEXT_PUBLIC_APP_URL is not set', async () => {
-    delete process.env.NEXT_PUBLIC_APP_URL
+  test('includes correct from address with domain', async () => {
+    process.env.MAILGUN_DOMAIN = 'mail.example.com'
 
     const params = {
-      to: 'test@example.com',
-      resetToken: 'token-123'
+      nameRecipient: 'User',
+      emailRecipient: 'user@test.com',
+      subject: 'Test',
+      templateName: EmailTemplateName.PasswordReset,
+      templateVariables: {}
     }
 
-    mockCreate.mockResolvedValue({ id: 'message-id' })
+    mockCreate.mockResolvedValue({ id: 'msg-id' })
 
-    await sendPasswordResetEmail(params)
+    await sendTemplateEmail(params)
 
     const callArgs = mockCreate.mock.calls[0][1]
-    expect(callArgs.text).toContain('http://localhost:3000/password/reset/token-123')
+    expect(callArgs.from).toBe('MedsWarning <postmaster@mail.example.com>')
+  })
+
+  test('stringifies template variables correctly', async () => {
+    const complexVariables = {
+      userName: 'John',
+      medicineName: 'Test Medicine',
+      expirationDate: '2026-12-31',
+      additionalInfo: 'Some extra info'
+    }
+
+    const params = {
+      nameRecipient: 'John',
+      emailRecipient: 'john@test.com',
+      subject: 'Test',
+      templateName: EmailTemplateName.MedicineToExpire,
+      templateVariables: complexVariables
+    }
+
+    mockCreate.mockResolvedValue({ id: 'msg-id' })
+
+    await sendTemplateEmail(params)
+
+    const callArgs = mockCreate.mock.calls[0][1]
+    expect(callArgs['h:X-Mailgun-Variables']).toBe(JSON.stringify(complexVariables))
+  })
+
+  test('handles empty template variables object', async () => {
+    const params = {
+      nameRecipient: 'User',
+      emailRecipient: 'user@test.com',
+      subject: 'Test',
+      templateName: EmailTemplateName.PasswordReset,
+      templateVariables: {}
+    }
+
+    mockCreate.mockResolvedValue({ id: 'msg-id' })
+
+    await sendTemplateEmail(params)
+
+    const callArgs = mockCreate.mock.calls[0][1]
+    expect(callArgs['h:X-Mailgun-Variables']).toBe('{}')
+  })
+
+  test('uses correct mailgun domain from environment', async () => {
+    process.env.MAILGUN_DOMAIN = 'custom-domain.com'
+
+    const params = {
+      nameRecipient: 'User',
+      emailRecipient: 'user@test.com',
+      subject: 'Test',
+      templateName: EmailTemplateName.MedicineToExpire,
+      templateVariables: {}
+    }
+
+    mockCreate.mockResolvedValue({ id: 'msg-id' })
+
+    await sendTemplateEmail(params)
+
+    expect(mockCreate).toHaveBeenCalledWith('custom-domain.com', expect.any(Object))
+  })
+
+  test('passes subject exactly as provided', async () => {
+    const customSubject = 'Important: Your medicine expires tomorrow!'
+
+    const params = {
+      nameRecipient: 'User',
+      emailRecipient: 'user@test.com',
+      subject: customSubject,
+      templateName: EmailTemplateName.MedicineToExpire,
+      templateVariables: {}
+    }
+
+    mockCreate.mockResolvedValue({ id: 'msg-id' })
+
+    await sendTemplateEmail(params)
+
+    const callArgs = mockCreate.mock.calls[0][1]
+    expect(callArgs.subject).toBe(customSubject)
+  })
+
+  test('handles special characters in recipient name', async () => {
+    const params = {
+      nameRecipient: "O'Brien-Smith Jr.",
+      emailRecipient: 'obrien@test.com',
+      subject: 'Test',
+      templateName: EmailTemplateName.PasswordReset,
+      templateVariables: {}
+    }
+
+    mockCreate.mockResolvedValue({ id: 'msg-id' })
+
+    await sendTemplateEmail(params)
+
+    const callArgs = mockCreate.mock.calls[0][1]
+    expect(callArgs.to).toEqual(["O'Brien-Smith Jr. <obrien@test.com>"])
+  })
+
+  test('handles template variables with nested data', async () => {
+    const params = {
+      nameRecipient: 'User',
+      emailRecipient: 'user@test.com',
+      subject: 'Test',
+      templateName: EmailTemplateName.MedicineToExpire,
+      templateVariables: {
+        userName: 'Test',
+        data: {
+          nested: 'value',
+          count: 123
+        }
+      }
+    }
+
+    mockCreate.mockResolvedValue({ id: 'msg-id' })
+
+    await sendTemplateEmail(params)
+
+    const callArgs = mockCreate.mock.calls[0][1]
+    const parsedVariables = JSON.parse(callArgs['h:X-Mailgun-Variables'])
+    expect(parsedVariables.data.nested).toBe('value')
+    expect(parsedVariables.data.count).toBe(123)
   })
 })

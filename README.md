@@ -59,6 +59,7 @@ The tool's objective is to <u>create notifications across several channels that 
 ![postgres dependency][badge-dependency-postgres]
 ![tailwind dependency][badge-dependency-tailwind]
 ![zod dependency][badge-dependency-zod]
+![mailgin dependency][badge-dependency-mailgun]
 ![vitest dependency][badge-dependency-vitest]
 ![react testing library dependency][badge-dependency-react-testing-library]
 ![eslint dependency][badge-dependency-eslint]
@@ -76,8 +77,9 @@ The tool's objective is to <u>create notifications across several channels that 
 [badge-dependency-postgres]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/pg/main?logo=postgresql
 [badge-dependency-prisma]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/prisma/main?logo=prisma
 [badge-dependency-zod]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/zod/main?logo=zod
+[badge-dependency-mailgun]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/mailgun.js/main?logo=mailgun
 [badge-dependency-vitest]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/vitest/main?logo=vitest
-[badge-dependency-react-testing-library]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/my-pets/dev/@testing-library/react/main?logo=testinglibrary
+[badge-dependency-react-testing-library]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/@testing-library/react/main?logo=testinglibrary
 [badge-dependency-eslint]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/eslint/main?logo=eslint
 [badge-dependency-prettier]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/prettier/main?logo=prettier
 [badge-dependency-lint-staged]: https://img.shields.io/github/package-json/dependency-version/nicolasomar/meds-warning/dev/lint-staged/main?logo=lint-staged
@@ -106,6 +108,7 @@ MAILGUN_API_KEY=HERE_GOES_YOUR_MAILGUN_API_KEY
 MAILGUN_DOMAIN=HERE_GOES_YOUR_MAILGUN_DOMAIN
 JWT_SECRET=HERE_GOES_YOUR_JWT_SECRET
 TEST_PASSWORD=HERE_GOES_YOUR_TEST_PASSWORD
+RESET_PASSWORD_BASE_URL=HERE_GOES_YOUR_RESET_PASSWORD_BASE_URL
 ```
 
 > TEST_PASSWORD is only for a placeholder text in certain scenarios; its data will not impact any database.
