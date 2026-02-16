@@ -25,7 +25,11 @@ vi.mock('@shared-functions/auth', () => ({
 }))
 
 vi.mock('@shared-functions/email', () => ({
-  sendPasswordResetEmail: vi.fn()
+  sendTemplateEmail: vi.fn(),
+  EmailTemplateName: {
+    MedicineToExpire: 'warning about medicine to expire',
+    PasswordReset: 'reset-password'
+  }
 }))
 
 describe('Password Actions', () => {
@@ -50,7 +54,7 @@ describe('Password Actions', () => {
       vi.mocked(prisma.user.update).mockResolvedValue({ ...mockUser, resetToken: 'token' })
 
       const { generateJWT } = await import('@shared-functions/auth')
-      const { sendPasswordResetEmail } = await import('@shared-functions/email')
+      const { sendTemplateEmail, EmailTemplateName } = await import('@shared-functions/email')
       vi.mocked(generateJWT).mockReturnValue('reset-token-123')
 
       const formData = new FormData()
@@ -67,9 +71,15 @@ describe('Password Actions', () => {
           resetTokenExpiry: expect.any(Date)
         }
       })
-      expect(sendPasswordResetEmail).toHaveBeenCalledWith({
-        to: 'test@example.com',
-        resetToken: 'reset-token-123'
+      expect(sendTemplateEmail).toHaveBeenCalledWith({
+        nameRecipient: 'Test User',
+        emailRecipient: 'test@example.com',
+        subject: 'Password Reset Request',
+        templateName: EmailTemplateName.PasswordReset,
+        templateVariables: {
+          userName: 'Test User',
+          resetPasswordUrl: expect.stringContaining('/password/reset/reset-token-123')
+        }
       })
     })
 

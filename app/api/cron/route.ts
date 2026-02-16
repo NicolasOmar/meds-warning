@@ -1,20 +1,14 @@
 'use server'
 import { NextResponse, type NextRequest } from 'next/server'
 import { prisma } from '@prisma/index'
-import FormData from 'form-data'
-import Mailgun from 'mailgun.js'
+// SHARED
+import { EmailTemplateName, sendTemplateEmail } from '@shared-functions/email'
 
 export async function GET(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return new NextResponse('Unauthorized', { status: 401 })
   }
-
-  const mailgun = new Mailgun(FormData)
-  const mg = mailgun.client({
-    username: 'api',
-    key: process.env.MAILGUN_API_KEY!
-  })
 
   try {
     const users = await prisma.user.findMany({
@@ -30,11 +24,16 @@ export async function GET(request: NextRequest) {
           const todayDateInAdvance = new Date().getTime() + user.daysToNotify * 24 * 60 * 60 * 1000
 
           return expirationDateInAdvance === todayDateInAdvance
-            ? mg.messages.create(process.env.MAILGUN_DOMAIN!, {
-                from: `Mailgun Sandbox <postmaster@${process.env.MAILGUN_DOMAIN}>`,
-                to: [`Recipient <${user.email}>`],
-                subject: 'Your medicine is about to expire!',
-                text: `Dear user, your medicine ${medicine.name} is about to expire. Please take necessary action.`
+            ? sendTemplateEmail({
+                nameRecipient: user.name,
+                emailRecipient: user.email,
+                subject: `Your medicine ${medicine.name} is about to expire!`,
+                templateName: EmailTemplateName.MedicineToExpire,
+                templateVariables: {
+                  userName: user.name,
+                  medicineName: medicine.name,
+                  expirationDate: medicine.expirationDate!.toISOString().split('T')[0]
+                }
               })
             : null
         })

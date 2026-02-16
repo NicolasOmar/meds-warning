@@ -12,7 +12,7 @@ import {
 } from '@shared-constants/forms'
 import { COMMON_FORM_ERRORS } from '@shared-constants/common'
 import { generateJWT, hashPassword, verifyJWT } from '@shared-functions/auth'
-import { sendPasswordResetEmail } from '@shared-functions/email'
+import { EmailTemplateName, sendTemplateEmail } from '@shared-functions/email'
 
 export async function handleForgotPasswordAction(
   _: ForgotPasswordActionState,
@@ -52,9 +52,15 @@ export async function handleForgotPasswordAction(
         }
       })
 
-      await sendPasswordResetEmail({
-        to: user.email,
-        resetToken
+      await sendTemplateEmail({
+        nameRecipient: user.name,
+        emailRecipient: user.email,
+        subject: 'Password Reset Request',
+        templateName: EmailTemplateName.PasswordReset,
+        templateVariables: {
+          userName: user.name,
+          resetPasswordUrl: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/password/reset/${resetToken}`
+        }
       })
     }
 
