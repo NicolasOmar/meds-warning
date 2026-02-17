@@ -1,3 +1,15 @@
+# [2.1.0](https://github.com/NicolasOmar/meds-warning/compare/v2.0.0...v2.1.0) (2026-02-17)
+
+
+### Bug Fixes
+
+* improving date handling on the app ([c190cb3](https://github.com/NicolasOmar/meds-warning/commit/c190cb3b201da964c782a952bd73c5c46af2240f))
+
+
+### Features
+
+* Merge pull request [#101](https://github.com/NicolasOmar/meds-warning/issues/101)/[#99](https://github.com/NicolasOmar/meds-warning/issues/99) from NicolasOmar/feat/normalize-date-handling-in-the-application ([7009777](https://github.com/NicolasOmar/meds-warning/commit/700977755f85a6b9259ebd9c3ebef0b9c4c35511))
+
 # [2.0.0](https://github.com/NicolasOmar/meds-warning/compare/v1.17.0...v2.0.0) (2026-02-16)
 
 
