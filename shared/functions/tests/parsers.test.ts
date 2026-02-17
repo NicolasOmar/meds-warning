@@ -62,7 +62,7 @@ describe('[parseMedicineToDataItem]', () => {
 
     const result = parseMedicineToDataItem(medicineList)
 
-    expect(result[0].expirationDate).toBe('2025-03-15')
+    expect(result[0].expirationDate).toBe('2025-03-15T10:30:00.000Z')
   })
 
   test('handles empty medicine list', () => {

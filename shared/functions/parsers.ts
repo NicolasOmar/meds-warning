@@ -1,3 +1,4 @@
+import { format } from 'date-fns'
 import { MedicineTypeExtended } from '@shared-types/zod'
 
 interface MedicineTableDataItem {
@@ -10,6 +11,16 @@ interface MedicineTableDataItem {
   sideEffects: string | null
   comments: string | null
   actions?: React.ReactNode
+}
+
+/**
+ * Converts a UTC ISO string to a display-formatted date string using the UTC calendar day,
+ * preventing the off-by-one issue for users in negative UTC offsets.
+ */
+export const formatUTCISODateForDisplay = (isoString: string): string => {
+  const d = new Date(isoString)
+  const utcDate = new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())
+  return format(utcDate, 'MMM d, yyyy')
 }
 
 export const parseStringDateToISOString = (dateString: string | null): string | null => {
@@ -27,9 +38,7 @@ export const parseMedicineToDataItem = (
     name: medItem.name,
     laboratory: medItem.laboratory,
     presentation: medItem.medicinePresentation?.description ?? '',
-    expirationDate: medItem.expirationDate
-      ? medItem.expirationDate.toISOString().split('T')[0]
-      : null,
+    expirationDate: medItem.expirationDate ? medItem.expirationDate.toISOString() : null,
     usedFor: medItem.usedFor,
     sideEffects: medItem.sideEffects,
     comments: medItem.comments

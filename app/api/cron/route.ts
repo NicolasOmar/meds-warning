@@ -1,5 +1,6 @@
 'use server'
 import { NextResponse, type NextRequest } from 'next/server'
+import { differenceInCalendarDays, format, startOfDay } from 'date-fns'
 import { prisma } from '@prisma/index'
 // SHARED
 import { EmailTemplateName, sendTemplateEmail } from '@shared-functions/email'
@@ -15,15 +16,16 @@ export async function GET(request: NextRequest) {
       include: { medicines: true }
     })
 
+    const today = startOfDay(new Date())
+
     const allMailPromises = users.flatMap(user =>
       user.medicines
         .filter(medicine => medicine.expirationDate !== null)
         .map(medicine => {
-          const expirationDateInAdvance =
-            medicine.expirationDate!.getTime() - user.daysToNotify * 24 * 60 * 60 * 1000
-          const todayDateInAdvance = new Date().getTime() + user.daysToNotify * 24 * 60 * 60 * 1000
+          const expirationDay = startOfDay(medicine.expirationDate!)
+          const daysUntilExpiry = differenceInCalendarDays(expirationDay, today)
 
-          return expirationDateInAdvance === todayDateInAdvance
+          return daysUntilExpiry === user.daysToNotify
             ? sendTemplateEmail({
                 nameRecipient: user.name,
                 emailRecipient: user.email,
@@ -32,7 +34,7 @@ export async function GET(request: NextRequest) {
                 templateVariables: {
                   userName: user.name,
                   medicineName: medicine.name,
-                  expirationDate: medicine.expirationDate!.toISOString().split('T')[0]
+                  expirationDate: format(medicine.expirationDate!, 'MMMM d, yyyy')
                 }
               })
             : null

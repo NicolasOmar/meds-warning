@@ -20,7 +20,10 @@ export const MedicineSchema = z.object({
     .max(50, MEDICINE_FORM_ERRORS.NAME_MAX),
   laboratory: z.string().max(50, MEDICINE_FORM_ERRORS.LABORATORY_MAX).nullable(),
   presentation: z.number(MEDICINE_FORM_ERRORS.PRESENTATION_REQUIRED).int(),
-  expirationDate: z.date().nullable(),
+  expirationDate: z.iso
+    .datetime()
+    .nullable()
+    .transform(val => (val ? new Date(val) : null)),
   usedFor: z.string().max(75, MEDICINE_FORM_ERRORS.USED_FOR_MAX).nullable(),
   sideEffects: z.string().max(100, MEDICINE_FORM_ERRORS.SIDE_EFFECTS_MAX).nullable(),
   comments: z.string().max(200, MEDICINE_FORM_ERRORS.COMMENTS_MAX).nullable()

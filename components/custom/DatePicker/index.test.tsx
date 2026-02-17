@@ -13,17 +13,23 @@ describe('[DatePicker]', () => {
   }
   const selectDateRegExp = /select date/i
 
-  test('renders the field label', () => {
+  test('renders label, input with correct id, and hidden input with correct name', () => {
     render(<DatePicker {...defaultProps} />)
-    const label = screen.getByText(defaultProps.label)
-    expect(label).toBeInTheDocument()
+    expect(screen.getByText(defaultProps.label)).toBeInTheDocument()
+
+    const input = screen.getByRole('textbox')
+    expect(input).toHaveAttribute('id', defaultProps.name)
+    expect(input).not.toHaveAttribute('name')
+
+    const hiddenInput = document.querySelector('input[type="hidden"]') as HTMLInputElement
+    expect(hiddenInput).toBeInTheDocument()
+    expect(hiddenInput).toHaveAttribute('name', defaultProps.name)
   })
 
   test('renders the input field with placeholder', () => {
     render(<DatePicker {...defaultProps} />)
     const input = screen.getByPlaceholderText(defaultProps.placeholder)
     expect(input).toBeInTheDocument()
-    expect(input).toHaveAttribute('name', defaultProps.name)
   })
 
   test('renders the calendar button', () => {
@@ -32,21 +38,7 @@ describe('[DatePicker]', () => {
     expect(button).toBeInTheDocument()
   })
 
-  test('initializes with empty value when not provided', () => {
-    render(<DatePicker {...defaultProps} />)
-    const input = screen.getByRole('textbox')
-    expect(input).toBeInTheDocument()
-    expect(input).toHaveAttribute('id', defaultProps.name)
-  })
-
-  test('renders with custom placeholder', () => {
-    const customPlaceholder = 'Choose a date'
-    render(<DatePicker {...defaultProps} placeholder={customPlaceholder} />)
-    const input = screen.getByPlaceholderText(customPlaceholder)
-    expect(input).toBeInTheDocument()
-  })
-
-  test('renders with different name and label', () => {
+  test('renders with different name and label, assigning id and name to separate elements', () => {
     const customProps = {
       label: 'Birth Date',
       name: 'birthDate',
@@ -56,74 +48,42 @@ describe('[DatePicker]', () => {
     expect(screen.getByText(customProps.label)).toBeInTheDocument()
 
     const input = screen.getByRole('textbox')
-    expect(input).toHaveAttribute('name', customProps.name)
     expect(input).toHaveAttribute('id', customProps.name)
+
+    const hiddenInput = document.querySelector('input[type="hidden"]') as HTMLInputElement
+    expect(hiddenInput).toHaveAttribute('name', customProps.name)
   })
 
-  test('calendar button is properly positioned', () => {
-    render(<DatePicker {...defaultProps} />)
-    const button = screen.getByRole('button', { name: selectDateRegExp })
-    expect(button).toBeInTheDocument()
+  test('renders with custom placeholder', () => {
+    const customPlaceholder = 'Choose a date'
+    render(<DatePicker {...defaultProps} placeholder={customPlaceholder} />)
+    const input = screen.getByPlaceholderText(customPlaceholder)
+    expect(input).toBeInTheDocument()
   })
 
-  test('input can be typed into', async () => {
-    const customDate = '01/15/2024'
-    const user = userEvent.setup()
-    render(<DatePicker {...defaultProps} />)
+  test('initializes from UTC ISO string with correct calendar date and hidden value', () => {
+    render(<DatePicker {...defaultProps} value="2025-11-02T00:00:00.000Z" />)
 
     const input = screen.getByRole('textbox')
-    await user.type(input, customDate)
-    expect((input as HTMLInputElement).value).toContain(customDate)
+    expect((input as HTMLInputElement).value).toBe('November 02, 2025')
+
+    const hiddenInput = document.querySelector('input[type="hidden"]') as HTMLInputElement
+    expect(hiddenInput).toHaveValue('2025-11-02T00:00:00.000Z')
   })
 
   test('formatDate helper handles valid dates', () => {
-    const dateValue = new Date('2024-01-15')
-    render(<DatePicker {...defaultProps} value={dateValue.toISOString()} />)
+    render(<DatePicker {...defaultProps} value="2024-01-15T00:00:00.000Z" />)
     const input = screen.getByRole('textbox')
-    // Should display formatted date
-    expect((input as HTMLInputElement).value).toBeTruthy()
     expect((input as HTMLInputElement).value).toMatch(/January|01/i)
   })
 
-  test('handles invalid date input', async () => {
+  test('handles invalid date input gracefully', async () => {
     const user = userEvent.setup()
     render(<DatePicker {...defaultProps} />)
 
     const input = screen.getByRole('textbox')
     await user.type(input, 'invalid-date')
-    // Component should handle invalid input gracefully
     expect(input).toBeInTheDocument()
-  })
-
-  test('arrow key interaction with input', async () => {
-    const user = userEvent.setup()
-    render(<DatePicker {...defaultProps} />)
-    const input = screen.getByRole('textbox')
-
-    await user.click(input)
-    await user.keyboard('{ArrowDown}')
-
-    // After pressing ArrowDown, popover should be triggered
-    expect(input).toBeInTheDocument()
-  })
-
-  test('calendar button can be clicked', async () => {
-    const user = userEvent.setup()
-    render(<DatePicker {...defaultProps} />)
-    const button = screen.getByRole('button', { name: selectDateRegExp })
-
-    await user.click(button)
-    // Button click should be handled
-    expect(button).toBeInTheDocument()
-  })
-
-  test('input field receives focus', async () => {
-    const user = userEvent.setup()
-    render(<DatePicker {...defaultProps} />)
-    const input = screen.getByRole('textbox')
-
-    await user.click(input)
-    expect(input).toHaveFocus()
   })
 
   test('value prop creates formatted date on render', () => {
@@ -138,5 +98,43 @@ describe('[DatePicker]', () => {
     render(<DatePicker {...defaultProps} value="" />)
     const input = screen.getByRole('textbox')
     expect(input).toBeInTheDocument()
+  })
+
+  test('input can be typed into and updates display value', async () => {
+    const customDate = '01/15/2024'
+    const user = userEvent.setup()
+    render(<DatePicker {...defaultProps} />)
+
+    const input = screen.getByRole('textbox')
+    await user.type(input, customDate)
+    expect((input as HTMLInputElement).value).toContain(customDate)
+  })
+
+  test('arrow key opens calendar popover', async () => {
+    const user = userEvent.setup()
+    render(<DatePicker {...defaultProps} />)
+    const input = screen.getByRole('textbox')
+
+    await user.click(input)
+    await user.keyboard('{ArrowDown}')
+    expect(input).toBeInTheDocument()
+  })
+
+  test('calendar button can be clicked', async () => {
+    const user = userEvent.setup()
+    render(<DatePicker {...defaultProps} />)
+    const button = screen.getByRole('button', { name: selectDateRegExp })
+
+    await user.click(button)
+    expect(button).toBeInTheDocument()
+  })
+
+  test('input field receives focus on click', async () => {
+    const user = userEvent.setup()
+    render(<DatePicker {...defaultProps} />)
+    const input = screen.getByRole('textbox')
+
+    await user.click(input)
+    expect(input).toHaveFocus()
   })
 })
