@@ -1,6 +1,10 @@
 import { describe, test, expect } from 'vitest'
 // SHARED
-import { parseMedicineToDataItem, parseStringDateToISOString } from '../parsers'
+import {
+  formatUTCISODateForDisplay,
+  parseMedicineToDataItem,
+  parseStringDateToISOString
+} from '../parsers'
 import { MedicineTypeExtended } from '@shared-types/zod'
 // MOCKS
 import mockedData from './parsers.mocks.json'
@@ -103,6 +107,26 @@ describe('[parseMedicineToDataItem]', () => {
     expect(keys).toContain('usedFor')
     expect(keys).toContain('sideEffects')
     expect(keys).toContain('comments')
+  })
+})
+
+describe('[formatUTCISODateForDisplay]', () => {
+  test('formats UTC midnight ISO string to readable date using UTC calendar day, not local time', () => {
+    // "2025-11-02T00:00:00.000Z" is UTC midnight Nov 2.
+    // In UTC-N locals it would be Oct 31/Nov 1 in local time — the function must return Nov 2.
+    const result = formatUTCISODateForDisplay('2025-11-02T00:00:00.000Z')
+    expect(result).toBe('Nov 2, 2025')
+  })
+
+  test('formats UTC ISO string with non-midnight time by extracting the UTC calendar date only', () => {
+    // "2025-03-15T10:30:00.000Z" — UTC date is Mar 15; only the calendar date should be shown
+    const result = formatUTCISODateForDisplay('2025-03-15T10:30:00.000Z')
+    expect(result).toBe('Mar 15, 2025')
+  })
+
+  test('formats UTC ISO date string and preserves month boundaries correctly', () => {
+    expect(formatUTCISODateForDisplay('2025-01-01T00:00:00.000Z')).toBe('Jan 1, 2025')
+    expect(formatUTCISODateForDisplay('2025-12-31T00:00:00.000Z')).toBe('Dec 31, 2025')
   })
 })
 
