@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest'
-import { render, screen } from '@testing-library/react'
+import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import '@testing-library/jest-dom'
 // COMPONENTS
@@ -136,5 +136,49 @@ describe('[DatePicker]', () => {
 
     await user.click(input)
     expect(input).toHaveFocus()
+  })
+
+  test('invalid value prop results in empty display and hidden inputs', () => {
+    render(<DatePicker {...defaultProps} value="not-a-valid-iso-date" />)
+
+    const input = screen.getByRole('textbox')
+    expect((input as HTMLInputElement).value).toBe('')
+
+    const hiddenInput = document.querySelector('input[type="hidden"]') as HTMLInputElement
+    expect(hiddenInput.value).toBe('')
+  })
+
+  test('selecting a date from the calendar updates display and hidden inputs', async () => {
+    const user = userEvent.setup()
+    render(<DatePicker {...defaultProps} value="2025-11-02T00:00:00.000Z" />)
+
+    await user.click(screen.getByRole('button', { name: selectDateRegExp }))
+
+    const dialog = screen.getByRole('dialog')
+    const day15 = within(dialog)
+      .getAllByRole('button')
+      .find(btn => btn.textContent?.trim() === '15')!
+    await user.click(day15)
+
+    expect((screen.getByRole('textbox') as HTMLInputElement).value).toBe('November 15, 2025')
+    const hiddenInput = document.querySelector('input[type="hidden"]') as HTMLInputElement
+    expect(hiddenInput.value).toBe('2025-11-15T00:00:00.000Z')
+  })
+
+  test('deselecting a calendar date clears the display and hidden inputs', async () => {
+    const user = userEvent.setup()
+    render(<DatePicker {...defaultProps} value="2025-11-02T00:00:00.000Z" />)
+
+    await user.click(screen.getByRole('button', { name: selectDateRegExp }))
+
+    const dialog = screen.getByRole('dialog')
+    const day2 = within(dialog)
+      .getAllByRole('button')
+      .find(btn => btn.textContent?.trim() === '2')!
+    await user.click(day2)
+
+    const hiddenInput = document.querySelector('input[type="hidden"]') as HTMLInputElement
+    expect(hiddenInput.value).toBe('')
+    expect((screen.getByRole('textbox') as HTMLInputElement).value).toBe('')
   })
 })
