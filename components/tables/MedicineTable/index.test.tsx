@@ -10,6 +10,7 @@ import { deleteMedicine, getMedicines } from '@actions/medicine'
 // SHARED
 import { COMMON_TABLE_ERRORS, COMMON_LABELS } from '@shared-constants/common'
 import { MEDICINE_TABLE_ERRORS, MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
+import { formatUTCISODateForDisplay } from '@shared-functions/parsers'
 // MOCKS
 import {
   basicMedicineData,
@@ -143,7 +144,9 @@ describe('[MedicineTable]', () => {
     expect(screen.getByText(medicine.name)).toBeInTheDocument()
     expect(screen.getByText(medicine.laboratory)).toBeInTheDocument()
     expect(screen.getByText(medicine.presentation)).toBeInTheDocument()
-    expect(screen.getByText(medicine.expirationDate)).toBeInTheDocument()
+    expect(
+      screen.getByText(formatUTCISODateForDisplay(medicine.expirationDate))
+    ).toBeInTheDocument()
     expect(screen.getByText(medicine.usedFor)).toBeInTheDocument()
     expect(screen.getByText(medicine.sideEffects)).toBeInTheDocument()
     expect(screen.getByText(medicine.comments)).toBeInTheDocument()

@@ -8,6 +8,7 @@ import ListMedicinePage from './page'
 // SHARED
 import { COMMON_TABLE_ERRORS } from '@shared-constants/common'
 import { MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
+import { formatUTCISODateForDisplay } from '@shared-functions/parsers'
 // MOCKS
 import {
   medicineListResponse,
@@ -29,7 +30,13 @@ vi.mock('@prisma/index', () => ({
 }))
 
 describe('[ListMedicinePage]', () => {
-  const avoidProps = new Set(['id', 'userId', 'presentation', 'medicinePresentation'])
+  const avoidProps = new Set([
+    'id',
+    'userId',
+    'presentation',
+    'medicinePresentation',
+    'expirationDate'
+  ])
 
   beforeEach(() => {
     vi.clearAllMocks()
@@ -64,7 +71,7 @@ describe('[ListMedicinePage]', () => {
     })
   })
 
-  test('renders medicine data in table rows', async () => {
+  test('renders medicine data in table rows and formats expiration date correctly', async () => {
     vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(
       secondMedicineListResponse.map(med => ({
         ...med,
@@ -80,6 +87,10 @@ describe('[ListMedicinePage]', () => {
         expect(screen.getByText(value.toString())).toBeInTheDocument()
       }
     })
+
+    expect(
+      screen.getByText(formatUTCISODateForDisplay(secondMedicineListResponse[0].expirationDate))
+    ).toBeInTheDocument()
   })
 
   test('handles null values in medicine data', async () => {
@@ -98,21 +109,7 @@ describe('[ListMedicinePage]', () => {
     expect(dashElements.length).toBe(5)
   })
 
-  test('formats expiration date correctly', async () => {
-    vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(
-      secondMedicineListResponse.map(med => ({
-        ...med,
-        expirationDate: new Date(med.expirationDate)
-      }))
-    )
-
-    const component = await ListMedicinePage({})
-    render(component)
-
-    expect(screen.getByText(secondMedicineListResponse[0].expirationDate)).toBeInTheDocument()
-  })
-
-  test('renders multiple medicines in the table', async () => {
+  test('renders multiple medicines in the table with formatted expiration dates', async () => {
     const mockMedicines = [...medicineListResponse, ...secondMedicineListResponse]
 
     vi.mocked(prisma.medicine.findMany).mockResolvedValueOnce(
@@ -128,6 +125,14 @@ describe('[ListMedicinePage]', () => {
           expect(screen.getByText(value.toString())).toBeInTheDocument()
         }
       })
+    })
+
+    mockMedicines.forEach(medObj => {
+      if (medObj.expirationDate) {
+        expect(
+          screen.getByText(formatUTCISODateForDisplay(medObj.expirationDate))
+        ).toBeInTheDocument()
+      }
     })
   })
 

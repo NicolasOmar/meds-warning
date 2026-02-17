@@ -1,6 +1,7 @@
 'use client'
 // CORE
 import { FC, useState } from 'react'
+import { format } from 'date-fns'
 import { CalendarIcon } from 'lucide-react'
 // COMPONENTS
 import { Button } from '@base-components/button'
@@ -11,46 +12,59 @@ import FormFieldTemplate from '@template-components/FormFieldTemplate'
 // SHARED
 import { CompleteFormFieldPorps } from '@shared-types/interfaces'
 
-function formatDate(date: Date | undefined) {
-  if (!date) {
-    return ''
-  }
-
-  return date.toLocaleDateString('en-US', {
-    day: '2-digit',
-    month: 'long',
-    year: 'numeric'
-  })
+/**
+ * Converts a UTC ISO string to a local Date that represents the same calendar day
+ * as the UTC date, preventing the off-by-one issue for users in negative UTC offsets.
+ */
+function toUTCCalendarDate(isoString: string): Date | undefined {
+  const d = new Date(isoString)
+  if (Number.isNaN(d.getTime())) return undefined
+  return new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate())
 }
 
-function isValidDate(date: Date | undefined) {
-  if (!date) {
-    return false
-  }
+/**
+ * Converts a local calendar Date (year/month/day the user selected) to a UTC midnight
+ * ISO string, producing an unambiguous value safe to transfer to the server.
+ */
+function toUTCMidnightISO(date: Date): string {
+  return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())).toISOString()
+}
+
+function formatDate(date: Date | undefined): string {
+  if (!date) return ''
+  return format(date, 'MMMM dd, yyyy')
+}
+
+function isValidDate(date: Date | undefined): boolean {
+  if (!date) return false
   return !Number.isNaN(date.getTime())
 }
 
 const DatePicker: FC<CompleteFormFieldPorps> = ({ label, name, value: propValue, placeholder }) => {
   const [open, setOpen] = useState(false)
-  const [date, setDate] = useState<Date | undefined>(propValue ? new Date(propValue) : new Date())
+  const initialDate = propValue ? toUTCCalendarDate(propValue) : new Date()
+  const [date, setDate] = useState<Date | undefined>(initialDate)
   const [month, setMonth] = useState<Date | undefined>(date)
-  const [value, setValue] = useState(formatDate(date))
+  const [displayValue, setDisplayValue] = useState(formatDate(date))
+  const [hiddenValue, setHiddenValue] = useState(initialDate ? toUTCMidnightISO(initialDate) : '')
 
   return (
     <FormFieldTemplate label={label} name={name} message={undefined}>
+      <input type="hidden" name={name} value={hiddenValue} />
       <section className="relative flex gap-2">
         <Input
           id={name}
-          name={name}
-          value={value}
+          value={displayValue}
           placeholder={placeholder}
           className="bg-background pr-10"
           onChange={e => {
-            const date = new Date(e.target.value)
-            setValue(e.target.value)
-            if (isValidDate(date)) {
-              setDate(date)
-              setMonth(date)
+            const typed = e.target.value
+            setDisplayValue(typed)
+            const parsed = new Date(typed)
+            if (isValidDate(parsed)) {
+              setDate(parsed)
+              setMonth(parsed)
+              setHiddenValue(toUTCMidnightISO(parsed))
             }
           }}
           onKeyDown={e => {
@@ -83,9 +97,10 @@ const DatePicker: FC<CompleteFormFieldPorps> = ({ label, name, value: propValue,
               captionLayout="dropdown"
               month={month}
               onMonthChange={setMonth}
-              onSelect={date => {
-                setDate(date)
-                setValue(formatDate(date))
+              onSelect={selected => {
+                setDate(selected)
+                setDisplayValue(formatDate(selected))
+                setHiddenValue(selected ? toUTCMidnightISO(selected) : '')
                 setOpen(false)
               }}
             />

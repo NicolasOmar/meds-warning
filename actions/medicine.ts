@@ -18,17 +18,13 @@ export async function handleMedicineAction(
   formData: FormData,
   id?: string
 ): Promise<MedicineActionState> {
-  const expirationDate = formData.get('expirationDate')
-    ? new Date(formData.get('expirationDate') as string)
-    : null
-
   const validatedMedicineObject = MedicineSchema.safeParse({
     name: parseEmptyFormValueToNull(formData.get('name')),
     laboratory: parseEmptyFormValueToNull(formData.get('laboratory')),
     presentation: parseEmptyFormValueToNull(formData.get('presentation'))
       ? +(formData.get('presentation') as string)
       : null,
-    expirationDate,
+    expirationDate: formData.get('expirationDate') || null,
     usedFor: parseEmptyFormValueToNull(formData.get('usedFor')),
     sideEffects: parseEmptyFormValueToNull(formData.get('sideEffects')),
     comments: parseEmptyFormValueToNull(formData.get('comments'))
@@ -47,7 +43,7 @@ export async function handleMedicineAction(
     name: validatedMedicineObject.data.name,
     laboratory: validatedMedicineObject.data.laboratory,
     presentation: validatedMedicineObject.data.presentation,
-    expirationDate,
+    expirationDate: validatedMedicineObject.data.expirationDate,
     usedFor: validatedMedicineObject.data.usedFor,
     sideEffects: validatedMedicineObject.data.sideEffects,
     comments: validatedMedicineObject.data.comments

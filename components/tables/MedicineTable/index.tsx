@@ -18,7 +18,7 @@ import { COMMON_LABELS } from '@shared-constants/common'
 import { MEDICINE_TABLE_LABELS } from '@shared-constants/tables'
 import { ROUTE_URLS } from '@shared-constants/routes'
 import { debounce } from '@shared-functions/helpers'
-import { parseMedicineToDataItem } from '@shared-functions/parsers'
+import { formatUTCISODateForDisplay, parseMedicineToDataItem } from '@shared-functions/parsers'
 import { handleCommonFormState } from '@shared-functions/forms'
 
 interface MedicineDataItem {
@@ -86,6 +86,9 @@ const MedicineTable: FC<MedicineTableProps> = ({ medicineList }) => {
     () =>
       medicines.map(medicineItem => ({
         ...medicineItem,
+        expirationDate: medicineItem.expirationDate
+          ? formatUTCISODateForDisplay(medicineItem.expirationDate)
+          : null,
         actions: (
           <section className="flex gap-2">
             <Link href={`${ROUTE_URLS.MEDICINE_ROOT}/${medicineItem.id}`}>
