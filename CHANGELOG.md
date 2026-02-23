@@ -1,3 +1,11 @@
+## [2.1.1](https://github.com/NicolasOmar/meds-warning/compare/v2.1.0...v2.1.1) (2026-02-23)
+
+
+### Bug Fixes
+
+* updating majority of dependencies ([a1863a6](https://github.com/NicolasOmar/meds-warning/commit/a1863a6e2009afd5a974cdb51472c907093a4c3a))
+* updating other couple of dependencies ([8f0426e](https://github.com/NicolasOmar/meds-warning/commit/8f0426e8c16ed94eb0f7d464ab9921d76d214644))
+
 # [2.1.0](https://github.com/NicolasOmar/meds-warning/compare/v2.0.0...v2.1.0) (2026-02-17)
 
 
