@@ -11,6 +11,12 @@ const eslintConfig = defineConfig([
     languageOptions: {
       ecmaVersion: 2020
     },
+    settings: {
+      // Explicitly set the React version to bypass eslint-plugin-react's
+      // auto-detection (which calls context.getFilename(), removed in ESLint v10).
+      // Track: https://github.com/vercel/next.js/issues/89764
+      react: { version: "19" }
+    },
     rules: {
       ...nextVitals.rules
     },
