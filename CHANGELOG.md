@@ -1,3 +1,11 @@
+## [2.1.2](https://github.com/NicolasOmar/meds-warning/compare/v2.1.1...v2.1.2) (2026-03-04)
+
+
+### Bug Fixes
+
+* updating eslint version to v10 ([414db3d](https://github.com/NicolasOmar/meds-warning/commit/414db3deb50fdac3942e5b1dfd7b0dc1b9f73dd8))
+* updating majority of dependencies ([1570748](https://github.com/NicolasOmar/meds-warning/commit/15707480a365f38329bb3538a11ce70c7cd1291a))
+
 ## [2.1.1](https://github.com/NicolasOmar/meds-warning/compare/v2.1.0...v2.1.1) (2026-02-23)
 
 
