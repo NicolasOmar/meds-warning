@@ -1,4 +1,3 @@
-<!-- README -->
 # MedsWarning
 A web system to help users manage and track their medication expiration dates and send reminders to renew those that have expired.
 
@@ -156,15 +155,17 @@ Given the mentioned release logic, `main` is the only static branch, and each de
 ## Roadmap
 The first version/release ([`v1.0`](https://github.com/NicolasOmar/meds-warning/milestone/1)) was created to investigate, pick, and integrate several libraries as project technical foundations, which took the shape of a proof of concept that you can review [here](https://meds-warning.vercel.app/).
 
-Right now, I have listed the first series of features related to the project's objective. which will be shipped as part of [release `v2.0`](https://github.com/NicolasOmar/meds-warning/milestone/2)
+<!-- Since the first release, I have listed the first series of features related to the project's objective. which will be shipped as part of [release `v2.0`](https://github.com/NicolasOmar/meds-warning/milestone/2).
 
 Right before delivering the last feature, I will work on at least a third series of improvements in order to create a solid solution for any user.
 
-I will keep you posted on any updates, which will be forthcoming shortly.
-
 Nowadays, I am updating the rest of the dependencies every week, creating a PR alongside its related branch and PR to maintain track of those updates.
 
-If you want the actual short-term status, go to the [project board](https://github.com/users/NicolasOmar/projects/4) (powered by `GitHub Projects`).
+If you want the actual short-term status, go to the [project board](https://github.com/users/NicolasOmar/projects/4) (powered by `GitHub Projects`). -->
+
+Since 23/03/2026, I have archived the project for an indeterminate time because I need to refocus my time on other priorities related to my current assignments and career path, which will take a big part of my time.
+
+I will keep you posted on any updates, which will be forthcoming shortly.
 
 ## License
 **GPL 3.0**
