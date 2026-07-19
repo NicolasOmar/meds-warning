@@ -1,7 +1,7 @@
 name: Create weekly updates reminder
 on:
   schedule:
-    - cron: '30 10 * * 0'
+    - cron: '15 10 * * 0'
 
 jobs:
   create_issue:
@@ -57,8 +57,8 @@ jobs:
 
             - [ ] Run the script for the update and wait until the new installed versions. `npm run update`.
             - [ ] Check if the linter suite runs without stoppers. `npm run lint`.
-            - [ ] Check prettier suit runs without stoppers. `npm run prettier`.
-            - [ ] Check that the test suite runs without stoppers and that its coverage is correct. `npm run test:ci`.
+            - [ ] Check prettier suit runs without stoppers. `npm run format:check`.
+            - [ ] Check that the test suite runs without stoppers and that its coverage is correct. `npm run test:coverage`.
             - [ ] Check vite build process runs without stoppers. `npm run build`.
             - [ ] Create the branch and PR associated with the abovementioned changes.
           PINNED: false

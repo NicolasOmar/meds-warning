@@ -142,4 +142,8 @@ vite.config.ts.timestamp-*
 .vscode
 /generated
 /schemas/*.json
+
+# agents in general
+CLAUDE.md
+AGENTS.md
 .claude

@@ -134,6 +134,7 @@ In case you have cloned the repo, it will show you the following folders:
   - `base:` Those installed from [shadcn](https://ui.shadcn.com/).
   - `custom:` Implementations of base components with logic included to handle specific tasks.
   - `forms:` Form components with their own input structure and action call. Those are client components due to the [useActionState](https://react.dev/reference/react/useActionState) hook.
+- `configs:` Used to wrap all the configuration files related to local and third-party services (for a cleaner project organization).
 - `prisma:` Location of prisma implementation with its `models/entities` and migrations to mirror the entities relationship in the database.
 - `shared`: Location of shared pieces of reusable code to be used across the system.
   - `constants:`: Dedicated to labels, strings, regular expressions, and configuration objects.

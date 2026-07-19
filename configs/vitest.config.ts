@@ -3,19 +3,19 @@ import react from '@vitejs/plugin-react';
 import path from 'node:path';
 
 const alias = {
-  '@': path.resolve(__dirname, './'),
-  '@actions': path.resolve(__dirname, './actions'),
-  '@base-components': path.resolve(__dirname, './components/base/ui'),
-  '@custom-components': path.resolve(__dirname, './components/custom'),
-  '@form-components': path.resolve(__dirname, './components/forms'),
-  '@prisma/index': path.resolve(__dirname, './prisma/index.mock.ts'),
-  '@prisma': path.resolve(__dirname, './prisma'),
-  '@shadcn': path.resolve(__dirname, './components/base'),
-  '@shared-constants': path.resolve(__dirname, './shared/constants'),
-  '@shared-functions': path.resolve(__dirname, './shared/functions'),
-  '@shared-types': path.resolve(__dirname, './shared/ts'),
-  '@table-components': path.resolve(__dirname, './components/tables'),
-  '@template-components': path.resolve(__dirname, './components/templates')
+  '@': path.resolve(__dirname, '../'),
+  '@actions': path.resolve(__dirname, '../actions'),
+  '@base-components': path.resolve(__dirname, '../components/base/ui'),
+  '@custom-components': path.resolve(__dirname, '../components/custom'),
+  '@form-components': path.resolve(__dirname, '../components/forms'),
+  '@prisma/index': path.resolve(__dirname, '../prisma/index.mock.ts'),
+  '@prisma': path.resolve(__dirname, '../prisma'),
+  '@shadcn': path.resolve(__dirname, '../components/base'),
+  '@shared-constants': path.resolve(__dirname, '../shared/constants'),
+  '@shared-functions': path.resolve(__dirname, '../shared/functions'),
+  '@shared-types': path.resolve(__dirname, '../shared/ts'),
+  '@table-components': path.resolve(__dirname, '../components/tables'),
+  '@template-components': path.resolve(__dirname, '../components/templates')
 }
 
 export default defineConfig({
@@ -23,7 +23,7 @@ export default defineConfig({
     watch: false,
     reporters: 'verbose',
     globals: true,
-    setupFiles: ['./vitest.setup.ts'],
+    setupFiles: [path.resolve(__dirname, './vitest.setup.ts')],
     coverage: {
       include: [
         'actions/**/*.ts',
@@ -35,7 +35,7 @@ export default defineConfig({
       ],
       exclude: ['app/api/**/*'],
       reporter: ['html', 'lcov'],
-      reportsDirectory: './coverage'
+      reportsDirectory: path.resolve(__dirname, '../coverage')
     },
     projects: [
       defineProject({
@@ -45,7 +45,7 @@ export default defineConfig({
           name: 'node',
           environment: 'node',
           globals: true,
-          setupFiles: ['./vitest.setup.ts'],
+          setupFiles: [path.resolve(__dirname, './vitest.setup.ts')],
           include: ['**/*.test.ts'],
           exclude: ['node_modules/**'],
         }
@@ -58,7 +58,7 @@ export default defineConfig({
           name: 'jsdom',
           environment: 'jsdom',
           globals: true,
-          setupFiles: ['./vitest.setup.ts'],
+          setupFiles: [path.resolve(__dirname, './vitest.setup.ts')],
           include: ['**/*.test.tsx'],
           exclude: ['node_modules/**'],
         }
