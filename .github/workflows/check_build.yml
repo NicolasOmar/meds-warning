@@ -10,7 +10,7 @@ jobs:
 
     steps:
     - name: 1/6 | Checkout repo
-      uses: actions/checkout@v6
+      uses: actions/checkout@v7
     - name: 2/6 | Setup Node environment
       uses: actions/setup-node@v6
       with:
